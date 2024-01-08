@@ -23,6 +23,17 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
+                            <label for="name" class="form-label fw-bold text-black">IP Address</label>
+                            <input type="text" class="form-control @error('ip_address') is-invalid @enderror"
+                                value="{{ old('ip_address') }}" name="ip_address" id="ip_address"
+                                placeholder="IP Address">
+                            @error('ip_address')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-12">
                             <label for="name" class="form-label fw-bold text-black">Name</label>
                             <input type="text" class="form-control @error('computer_name') is-invalid @enderror"
                                 value="{{ old('computer_name') }}" name="computer_name" id="name"
@@ -79,8 +90,8 @@
                             <select class="form-select @error('status') is-invalid @enderror" name="status"
                                 id="status">
                                 <option value="">Select Status</option>
-                                <option value="Working">Working</option>
-                                <option value="Not Working">Not Working</option>
+                                <option value="Online">Offline</option>
+                                <option value="Offline">Offline</option>
                             </select>
                             @error('status')
                                 <div class="text-danger">{{ $message }}</div>

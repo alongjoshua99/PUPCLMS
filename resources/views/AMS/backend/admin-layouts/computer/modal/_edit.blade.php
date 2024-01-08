@@ -17,6 +17,15 @@
                                 placeholder="Computer no." value="{{ $computer->computer_number }}">
                         </div>
                     </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label for="name" class="form-label fw-bold text-black">IP Address</label>
+                            <input type="text" class="form-control" name="ip_address" id="ip_address"
+                                placeholder="IP Address" value="{{ $computer->ip_address }}">
+                        </div>
+                    </div>
+
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="name" class="form-label fw-bold text-black">Name</label>
@@ -58,10 +67,10 @@
                             <select class="form-select @error('status') is-invalid @enderror" name="status"
                                 id="status">
                                 <option value="">Select Status</option>
-                                <option value="Working" {{ $computer->status == 'Working' ? 'selected' : '' }}>Working
+                                <option value="Online" {{ $computer->status == 'Online' ? 'selected' : '' }}>Online
                                 </option>
-                                <option value="Not Working" {{ $computer->status == 'Not Working' ? 'selected' : '' }}>
-                                    Not Working</option>
+                                <option value="Offline" {{ $computer->status == 'Offline' ? 'selected' : '' }}>
+                                Offline</option>
                             </select>
                             @error('status')
                                 <div class="text-danger">{{ $message }}</div>

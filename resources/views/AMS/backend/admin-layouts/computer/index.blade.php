@@ -25,8 +25,9 @@
                                     <th scope="col">Computer no.</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Specification</th>
+                                    <th scope="col">Ip Address</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Active</th>
+
                                     <th scope="col" class="text-center">Action</th>
                                 </tr>
                             </thead>
@@ -50,23 +51,19 @@
                                             @include('AMS.backend.admin-layouts.computer.modal._specs')
                                         </td>
                                         <td>
-                                            @if ($computer->getStatus() === "Working")
-                                                <span class="badge bg-success">Working</span>
-                                            @elseif ($computer->getStatus() === "Not Working")
-                                                <span class="badge bg-danger">Not Working</span>
+                                            {{ $computer->ip_address }}
+                                        </td>
+                                        <td>
+                                            @if ($computer->getStatus() === "Online")
+                                                <span class="badge bg-success">Online</span>
+                                            @elseif ($computer->getStatus() === "Offline")
+                                                <span class="badge bg-danger">Offline</span>
                                             @elseif ($computer->getStatus() === "Undermaintenance")
                                                 <span class="badge bg-danger">Undermaintenance</span>
                                             @else
                                                 <span class="badge bg-warning">No data</span>
                                             @endif
-                                        </td>
-                                        <td>
-                                            @if ($computer->isActive())
-                                                <span class="badge bg-success">Active</span>
-                                            @else
-                                                <span class="badge bg-warning">Inactive</span>
-                                            @endif
-                                        </td>
+                                        </td>      
 
 
                                         <td>

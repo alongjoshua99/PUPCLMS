@@ -34,6 +34,7 @@ class ComputerController extends Controller
         $request->validate([
             'computer_number' => 'required|unique:computers,computer_number',
             'computer_name' => 'required',
+            'ip_address' => 'required',
             'os' => 'required',
             'processor' => 'required',
             'memory' => 'required',
@@ -44,6 +45,7 @@ class ComputerController extends Controller
             Computer::create([
                 'computer_number' => $request->computer_number,
                 'computer_name' => $request->computer_name,
+                'ip_address' => $request->ip_address,
                 'os' => $request->os,
                 'processor' => $request->processor,
                 'memory' => $request->memory,
@@ -83,6 +85,7 @@ class ComputerController extends Controller
             $computer->update([
                 'computer_number' => $request->computer_number,
                 'computer_name' => $request->computer_name,
+                'ip_address'=> $request->ip_address,
                 'os' => $request->os,
                 'processor' => $request->processor,
                 'memory' => $request->memory,
