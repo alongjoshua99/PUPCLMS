@@ -6,6 +6,7 @@
         Accounts
     @else
         Informations
+        
     @endif
 @endsection
 
@@ -62,10 +63,10 @@
                                             </td>
 
                                             <td>
-                                                @if ($user->status == 'online')
+                                                @if ($user->status == 'Online')
                                                     <span class="badge bg-success">{{ $user->status }}</span>
                                                 @endif
-                                                @if ($user->status == 'offline')
+                                                @if ($user->status == 'Offline')
                                                     <span class="badge bg-danger">Last active {{ $user->updated_at->diffForHumans() }}</span>
                                                 @endif
                                             </td>
@@ -89,7 +90,7 @@
                                                     <button class="btn btn-link text-danger" type="button"
                                                         data-bs-toggle="modal" data-bs-target="#delete{{ $user->id }}"
                                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Logout User"
-                                                        {{ $user->status == 'offline' ? 'disabled' : '' }}>
+                                                        {{ $user->status == 'Offline' ? 'disabled' : '' }}>
                                                         <i class="ri-shut-down-line text-danger" aria-hidden="true"></i>
                                                     </button>
                                                     @include('AMS.backend.admin-layouts.user.faculty.modal._edit')

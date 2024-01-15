@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\TeacherClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\AttendanceLog;
 
 class DashboardController extends Controller
 {
@@ -17,6 +18,8 @@ class DashboardController extends Controller
         try {
 
             $schedules = Auth::user()->facultyMember->teacherClasses()->get();
+            $recentLogs = AttendanceLog::where('student_id','!=', null)->orderBy('created_at', 'desc')->take(5)->get();
+            $recentLogs = AttendanceLog::where('student_id','!=', null)->orderBy('created_at', 'desc')->take(5)->get();
             return view('AMS.backend.faculty-layouts.dashboard.index', compact('schedules', 'filter'));
             dd('Invalid filter.');
         } catch (\Throwable $th) {

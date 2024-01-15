@@ -21,9 +21,9 @@
                                 <tr>
                                     <th scope="col">Computer</th>
                                     <th scope="col">Status</th>
-                                    <th scope="col">Date Checked</th>
+                                    <th scope="col">Created Date</th>
                                     <th scope="col">Description</th>
-                                    <th scope="col">Reported By</th>
+                                    <th scope="col">Response</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -32,9 +32,9 @@
                                     <tr>
                                         <td>{{ $report->computer->computer_name }}</td>
                                         <td>
-                                            @if ($report->status == 'Working')
+                                            @if ($report->status == 'Online')
                                                 <span class="badge bg-success">{{ $report->status }}</span>
-                                            @elseif($report->status == 'Not Working')
+                                            @elseif($report->status == 'Offline')
                                                 <span class="badge bg-danger">{{ $report->status }}</span>
                                             @else
                                                 <span class="badge bg-warning">{{ $report->status }}</span>
@@ -49,7 +49,7 @@
                                             </button>
                                             @include('AMS.backend.admin-layouts.reports.computer.modal._description')
                                         </td>
-                                        <td>{{ $report->user->facultyMember->getFullName() }}</td>
+                                        <td>{{ $report->user->facultyMember->getFullName()}}</td>
                                         <td>
                                             <div class="">
 

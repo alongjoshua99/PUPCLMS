@@ -18,7 +18,7 @@ class CheckUserStatusMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // Check if user is online
-        if (auth()->user()->status == "online") {
+        if (auth()->user()->status == "Online") {
             // Get the user's last activity time as a Carbon object
             $last_activity = session(Auth::id() . "_last_activity");
 
@@ -30,7 +30,7 @@ class CheckUserStatusMiddleware
                 // remove last_activity from session
                 $request->session()->forget(Auth::id() . "_last_activity");
                 // set the user's status to offline
-                Auth::user()->status = "offline";
+                Auth::user()->status = "Offline";
                 Auth::user()->save();
                 $log = Log::where('user_id', Auth::id())
                     ->whereNull('time_out')
@@ -56,7 +56,7 @@ class CheckUserStatusMiddleware
         if (auth()->user()->status == "inactive") {
             return redirect()->route('login.index')->with('errorAlert', 'Your account is inactive. Please contact the administrator.');
         }
-        if (auth()->user()->status == "offline") {
+        if (auth()->user()->status == "Offline") {
             return redirect()->route('login.index')->with('errorAlert', 'Your account is offline due to inactive or force logout.');
         }
         $request->session()->forget(Auth::id() . "_last_activity");

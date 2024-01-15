@@ -5,7 +5,7 @@
                 <h5 class="modal-title text-white">Add Computer</h5>
 
             </div>
-            <form action="{{ route('admin.computer.store') }}" method="POST">
+            <form action="{{ route('faculty.computer.store') }}" method="POST">
                 <div class="modal-body">
                     @csrf
                     @method('POST')
@@ -23,21 +23,9 @@
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <label for="name" class="form-label fw-bold text-black">IP Address</label>
-                            <input type="text" class="form-control @error('ip_address') is-invalid @enderror"
-                                value="{{ old('ip_address') }}" name="ip_address" id="ip_address"
-                                placeholder="IP Address">
-                            @error('ip_address')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
                             <label for="name" class="form-label fw-bold text-black">Name</label>
                             <input type="text" class="form-control @error('computer_name') is-invalid @enderror"
-                                value="{{ old('computer_name') }}" name="computer_name" id="name"
-                                placeholder="Name">
+                                value="{{ old('computer_name') }}" name="computer_name" id="name" placeholder="Name">
                             @error('computer_name')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -66,8 +54,8 @@
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="name" class="form-label fw-bold text-black">Memory</label>
-                            <input type="text" class="form-control @error('memory') is-invalid @enderror"
-                                value="{{ old('processor') }}" name="memory" id="memory" placeholder="Memory">
+                            <input type="text" class="form-control @error('memory') is-invalid @enderror" value="{{ old('processor') }}"
+                                name="memory" id="memory" placeholder="Memory">
                             @error('memory')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
@@ -76,24 +64,9 @@
                     <div class="row mb-3">
                         <div class="col-md-12">
                             <label for="name" class="form-label fw-bold text-black">Storage</label>
-                            <input type="text" class="form-control @error('storage') is-invalid @enderror"
-                                value="{{ old('storage') }}" name="storage" id="storage" placeholder="Storage">
+                            <input type="text" class="form-control @error('storage') is-invalid @enderror" value="{{ old('storage') }}"
+                                name="storage" id="storage" placeholder="Storage">
                             @error('storage')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
-                    {{-- generate a select for status --}}
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="name" class="form-label fw-bold text-black">Status</label>
-                            <select class="form-select @error('status') is-invalid @enderror" name="status"
-                                id="status">
-                                <option value="">Select Status</option>
-                                <option value="Working">Working</option>
-                                <option value="Not Working">Not Working</option>
-                            </select>
-                            @error('status')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>

@@ -10,6 +10,9 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Termwind\Components\Dd;
+use App\Models\UserMasterList;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UserMasterListImport;
 
 class FacultyMemberController extends Controller
 {
@@ -39,6 +42,27 @@ class FacultyMemberController extends Controller
         }
     }
 
+    public function upload(Request $request)
+    {
+        $previousRouteName = app('router')->getRoutes()->match(app('request')->create(url()->previous()))->getName();
+        // Validate the uploaded file
+        $request->validate([
+            'file' => 'required|file|mimes:csv,excel|max:2048',
+        ]);
+
+        // Process the uploaded file and insert records into the usermasterlist table
+        try {
+            Excel::import(new UserMasterListImport, $request->file('file'));
+
+            // If the import was successful, redirect back with a success message
+            return redirect()->route('usermasterlist.index')->with('success', 'Bulk upload successful.');
+
+            //return redirect()->route('admin.user.usermasterlist.index')->with('success', 'Bulk upload successful.');
+        } catch (\Exception $e) {
+            // If an error occurs during import, redirect back with an error message
+            return redirect()->back()->with('error', 'Error during bulk upload: ' . $e->getMessage());
+        }
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -174,13 +198,31 @@ class FacultyMemberController extends Controller
     {
         try {
             $user = User::find($id);
+    
+            // Generate a random password with at least 10 characters
+            $randomPassword = $this->generateRandomPassword(10);
+    
             $user->update([
-                'password' => Hash::make('PUPCPassword'),
+                'password' => Hash::make($randomPassword),
             ]);
-            return back()->with('successToast', 'User password successfully reset!');
+
+            return back()->with('successToast', 'User password successfully reset.')->with('randomPassword', $randomPassword);
         } catch (\Throwable $th) {
             return back()->with('errorAlert', $th->getMessage());
         }
+    }
+    private function generateRandomPassword($length = 10)
+    {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|;:,.<>?';
+
+        $password = '';
+        $maxIndex = strlen($characters) - 1;
+
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[random_int(0, $maxIndex)];
+        }
+
+        return $password;
     }
     public function resetAllPassword()
     {

@@ -67,10 +67,6 @@
             </li> --}}
             <!-- End Forms Nav -->
 
-
-
-
-
             </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#reports" data-bs-toggle="collapse" href="#">
@@ -127,6 +123,12 @@
                 </a>
                 <ul id="users" class="nav-content collapse p-2" data-bs-parent="#sidebar-nav">
                     <li>
+                    <a href="{{ route('admin.user.account.usermasterlist.index') }}">
+                        <i class="bi bi-circle"></i><span>User's Master List</span>
+                    </a>
+
+                    </li>
+                    <li>
                         <a href="{{ route('admin.user.account.faculty.index') }}">
                             <i class="bi bi-circle"></i><span>Faculty</span>
                         </a>
@@ -136,7 +138,6 @@
                             <i class="bi bi-circle"></i><span>Student</span>
                         </a>
                     </li>
-
                 </ul>
 
             </li><!-- End Icons Nav -->

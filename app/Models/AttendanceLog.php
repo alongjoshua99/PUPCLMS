@@ -33,7 +33,7 @@ class AttendanceLog extends Model
     public function computer()
     {
         return $this->belongsTo(Computer::class, 'computer_id','id')->withDefault([
-            'status' => 'Not Working'
+            'status' => 'Offline'
         ]);
     }
     public function course()

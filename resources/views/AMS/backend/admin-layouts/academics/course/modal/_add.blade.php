@@ -5,7 +5,7 @@
                 <h5 class="modal-title text-white">Add Course</h5>
 
             </div>
-            <form action="{{ route('faculty.academic.course.store') }}" method="POST">
+            <form action="{{ route('admin.academic.course.store') }}" method="POST">
                 <div class="modal-body">
                     @csrf
                     @method('POST')

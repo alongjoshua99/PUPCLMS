@@ -76,4 +76,12 @@ class User extends Authenticatable
             return $this->facultyMember->first_name.' '.$this->facultyMember->last_name;
         }
     }
+    public function getFacultyId(){
+        return $this->facultyMember->id;
+    }
+    public function getstudentId(){
+        if($this->role->name == 'student'){
+            return $this->student->id;
+        }
+    }
 }

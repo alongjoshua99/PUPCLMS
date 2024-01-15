@@ -24,8 +24,11 @@ use App\Http\Controllers\Faculty\SectionController as FacultySectionController;
 use App\Http\Controllers\Faculty\StudentController as FacultyStudentController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
 use App\Http\Controllers\Student\AttendanceController as StudentAttendanceController;
+use App\Http\Controllers\Faculty\AttendanceLogController as FacultyAttendanceLogController;
+use App\Http\Controllers\Admin\UserMasterListController as MasterListController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImportController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -135,8 +138,6 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
         });
     });
 
-
-
     /* SUBJECT */
     Route::prefix('subject')->name('subject.')->controller(SubjectController::class)->group(function () {
         Route::get('/', 'index')->name('index');
@@ -150,6 +151,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
     /* USERS */
     Route::prefix('user')->name('user.')->group(function () {
         Route::prefix('information')->name('information.')->group(function () {
+                     
             /* FACULTY */
             Route::prefix('faculty')->name('faculty.')->controller(FacultyMemberController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -159,6 +161,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
                 Route::put('/{id}/update', 'update')->name('update');
                 Route::delete('/{id}/destroy', 'destroy')->name('destroy');
             });
+
             /* STUDENT */
             Route::prefix('student')->name('student.')->controller(StudentController::class)->group(function () {
                 Route::get('/{section_id?}', 'index')->name('index');
@@ -170,17 +173,26 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
             });
         });
         Route::prefix('account')->name('account.')->group(function () {
+            /* USERS MASTER LIST */
+            Route::prefix('usermasterlist')->name('usermasterlist.')->controller(MasterListController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::put('/{id}/update', 'update')->name('update');
+                Route::post('/upload', 'upload')->name('upload');
+            });
+            
             /* FACULTY */
             Route::prefix('faculty')->name('faculty.')->controller(FacultyMemberController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/{id}', 'show')->name('show');
                 Route::post('/store', 'store')->name('store');
+                Route::post('/upload', 'upload')->name('upload');
                 Route::put('/{id}/edit', 'edit')->name('edit');
                 Route::put('/{id}/update', 'update')->name('update');
                 Route::put('/{id}/reset/password', 'resetPassword')->name('resetPassword');
                 Route::get('/reset/all/password', 'resetAllPassword')->name('resetAllPassword');
                 Route::delete('/{id}/destroy', 'destroy')->name('destroy');
             });
+         
             Route::prefix('log')->name('log.')->controller(UserLogController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/{id}', 'show')->name('show');
@@ -208,17 +220,17 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
         Route::put('/update', [ChangePasswordController::class, 'update'])->name('update');
     });
 });
-
-
+//faculty here
 Route::middleware(['auth', 'alert', 'checkStatus', 'isFaculty'])->prefix('faculty')->name('faculty.')->group(function () {
-    Route::get('/dashboard/{filter?}', [FacultyDashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/dashboard/{filter?}', [FacultyDashboardController::class, 'index'])->name('dashboard.index'); 
+    
     Route::prefix('academics')->name('academic.')->group(function () {
 
         /* COURSE */
         Route::prefix('course')->name('course.')->controller(FacultyCourseController::class)->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{id}', 'show')->name('show');
-            Route::post('/store', 'store')->name('store');
+             Route::post('/store', 'store')->name('store');
             Route::put('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}/update', 'update')->name('update');
             Route::delete('/{id}/destroy', 'destroy')->name('destroy');
@@ -252,6 +264,22 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isFaculty'])->prefix('facult
         Route::put('/{id}/update', 'update')->name('update');
         Route::delete('/{id}/destroy', 'destroy')->name('destroy');
     });
+
+            /* REPORTS */
+    Route::prefix('report')->name('report.')->group(function () {
+
+         /* ATTENDANCE LOG */
+        Route::prefix('attendance')->name('attendance.')->controller(FacultyAttendanceLogController::class)->group(function () {
+       
+        Route::get('/', 'index')->name('index');
+        Route::get('/charts', 'charts')->name('charts');
+        Route::get('/{id?}/{date_id?}', 'show')->name('show');
+        Route::post('/store', 'store')->name('store');
+        Route::put('/{id}/edit', 'edit')->name('edit');
+        Route::put('/{id}/update', 'update')->name('update');
+        Route::delete('/{id}/destroy', 'destroy')->name('destroy');
+        });
+    });
     /* FACULTY */
     Route::prefix('faculty')->name('faculty.')->controller(FacultyFacultyMemberController::class)->group(function () {
         Route::get('/', 'index')->name('index');
@@ -272,6 +300,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isFaculty'])->prefix('facult
         Route::delete('/{id}/destroy', 'destroy')->name('destroy');
     });
 
+ 
     /* STUDENT */
     Route::prefix('student')->name('student.')->controller(FacultyStudentController::class)->group(function () {
         Route::get('/', 'index')->name('index');
@@ -286,6 +315,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isFaculty'])->prefix('facult
         Route::put('/update', [ChangePasswordController::class, 'update'])->name('update');
     });
 });
+
 Route::middleware(['auth', 'alert', 'checkStatus', 'isStudent'])->prefix('student')->name('student.')->group(function () {
     Route::get('/dashboard/{filter?}', [StudentDashboardController::class, 'index'])->name('dashboard.index');
 
@@ -304,6 +334,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isStudent'])->prefix('studen
         Route::put('/update', [ChangePasswordController::class, 'update'])->name('update');
     });
 });
+
 Route::get('admin/export/masterlist', 'App\Http\Controllers\ExportController@masterlist')->name('admin.export.masterlist');
 
 

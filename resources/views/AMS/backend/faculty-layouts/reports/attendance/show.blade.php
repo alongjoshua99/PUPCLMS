@@ -1,4 +1,4 @@
-@extends('AMS.backend.admin-layouts.sidebar')
+@extends('AMS.backend.faculty-layouts.sidebar')
 
 @section('page-title')
     {{ $section }} - {{ $subject }} @if ($ScheduleDate)
@@ -18,7 +18,7 @@
                         <h3 class="text-maroon">@yield('page-title')</h3>
 
                         <div class="d-flex">
-                            <a href="{{ route('admin.report.attendance.index') }}" class="btn btn-outline-maroon me-1">
+                            <a href="{{ route('faculty.report.attendance.index') }}" class="btn btn-outline-maroon me-1">
                                 <i class="ri-arrow-go-back-line"></i>
                                 Back
                             </a>
@@ -30,11 +30,11 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     @foreach ($schedule->scheduleDates as $schedule_date)
                                         <li><a class="dropdown-item {{ $ScheduleDate && $ScheduleDate->id == $schedule_date->id ? 'active' : '' }}"
-                                                href="{{ route('admin.report.attendance.show', ['id' => $schedule->id, 'date_id' => $schedule_date->id]) }}">{{ date('F d, Y', strtotime($schedule_date->date)) }}</a>
+                                                href="{{ route('faculty.report.attendance.show', ['id' => $schedule->id, 'date_id' => $schedule_date->id]) }}">{{ date('F d, Y', strtotime($schedule_date->date)) }}</a>
                                         </li>
                                     @endforeach
                                     <li>
-                                        <a href="{{ route('admin.report.attendance.show', ['id' => $schedule->id]) }}"
+                                        <a href="{{ route('faculty.report.attendance.show', ['id' => $schedule->id]) }}"
                                             class="dropdown-item">
                                             <div class="d-flex align-items-center">
                                                 <span class="me-1">Reset filter</span> <i class="ri-refresh-line"></i>
@@ -114,7 +114,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between border-bottom-0">
                         <h3 class="text-maroon">@yield('page-title')</h3>
-                        <a href="{{ route('admin.report.attendance.index') }}" class="btn btn-outline-maroon">
+                        <a href="{{ route('faculty.report.attendance.index') }}" class="btn btn-outline-maroon">
                             <i class="ri-arrow-go-back-line"></i>
                             Back
                         </a>

@@ -39,12 +39,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            @if (Route::is('admin.user.account.student.index'))
-                                <a href="{{ route('admin.user.account.student.resetAllPassword') }}"
-                                    class="btn btn-outline-maroon">Reset All Password</a>
-                            @endif
-                            <!-- Add the "Masterlist" button -->
-                            <a href="{{ route('admin.export.masterlist') }}" class="btn btn-outline-maroon">Masterlist</a>
+
                         </div>
                     </div>
                     <div class="card-body">
@@ -71,10 +66,10 @@
                                                 {{ $user->email }}
                                             </td>
                                             <td>
-                                                @if ($user->status == 'online')
+                                                @if ($user->status == 'Online')
                                                     <span class="badge bg-success">{{ $user->status }}</span>
                                                 @endif
-                                                @if ($user->status == 'offline')
+                                                @if ($user->status == 'Offline')
                                                     <span class="badge bg-danger">Last active {{ $user->updated_at->diffForHumans() }}</span>
                                                 @endif
                                             </td>
@@ -97,7 +92,7 @@
                                                     <button class="btn btn-link text-danger" type="button"
                                                         data-bs-toggle="modal" data-bs-target="#delete{{ $user->id }}"
                                                         data-bs-toggle="tooltip" data-bs-placement="top" title="Logout User"
-                                                        {{ $user->status == 'offline' ? 'disabled' : '' }}>
+                                                        {{ $user->status == 'Offline' ? 'disabled' : '' }}>
                                                         <i class="ri-shut-down-line text-danger" aria-hidden="true"></i>
                                                     </button>
                                                     @include('AMS.backend.admin-layouts.user.student.modal._edit')
@@ -166,6 +161,7 @@
 @endsection
 
 @section('scripts')
+
     <script>
         $(document).ready(function() {
             $('#students-table').DataTable({

@@ -2,26 +2,26 @@
     if (Route::is('admin.user.account.student.index')) {
         $id = $user->id;
     } else {
-        $id = $student->id;
+        $id = $facultyMem->id;
     }
+    
 @endphp
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 <div class="modal fade" id="edit{{ $id }}" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <h5 class="modal-title text-white">
-                    @if (Route::is('admin.user.account.student.index'))
                         Reset Password
-                    @else
-                        Edit Information
-                    @endif
+           
                 </h5>
 
             </div>
 
             @if (Route::is('admin.user.account.student.index'))
-                <form action="{{ route('admin.user.account.student.resetPassword', ['id' => $user->id]) }}"
-                    method="POST">
+            <form action="{{ route('admin.user.account.student.resetPassword', ['id' => $user->id]) }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         @method('PUT')
@@ -141,3 +141,40 @@
         </div>
     </div>
 </div>
+
+<!-- Add this to your modal.blade.php -->
+<div class="modal fade" id="resetPasswordModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title text-white">Reset Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Password has been reset to:</p>
+                <input type="text" id="passwordInput" class="form-control" value="{{ session('randomPassword') }}" readonly>
+                <button id="copyFacButton" class="btn btn-primary" onclick="copyPassword()">Copy to Clipboard</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Trigger the modal when it contains the 'randomPassword' session data
+    @if(session('randomPassword'))
+        $(document).ready(function(){
+            $('#resetPasswordModal').modal('show');
+        });
+    @endif
+
+    // Initialize Clipboard.js
+    new ClipboardJS('#copyFacButton');
+
+    // Define the copyPassword function
+    function copyPassword() {
+        var copyText = document.getElementById("passwordInput");
+        copyText.select();
+        document.execCommand("copy");
+    }
+</script>
+

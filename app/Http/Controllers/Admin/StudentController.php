@@ -116,14 +116,33 @@ class StudentController extends Controller
     {
         try {
             $user = User::find($id);
+    
+            // Generate a random password with at least 10 characters
+            $randomPassword = $this->generateRandomPassword(10);
+    
             $user->update([
-                'password' => Hash::make('PUPCPassword'),
+                'password' => Hash::make($randomPassword),
             ]);
-            return back()->with('successToast', 'User password successfully reset!');
+
+            return back()->with('successToast', 'User password successfully reset.')->with('randomPassword', $randomPassword);
         } catch (\Throwable $th) {
             return back()->with('errorAlert', $th->getMessage());
         }
     }
+    private function generateRandomPassword($length = 10)
+    {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}|;:,.<>?';
+
+        $password = '';
+        $maxIndex = strlen($characters) - 1;
+
+        for ($i = 0; $i < $length; $i++) {
+            $password .= $characters[random_int(0, $maxIndex)];
+        }
+
+        return $password;
+    }
+
     public function resetAllPassword()
     {
         try {

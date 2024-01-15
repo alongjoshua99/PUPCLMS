@@ -13,15 +13,20 @@
                 </a>
             </li><!-- End Dashboard Nav -->
 
-
             <li class="nav-item">
-                <a class="nav-link {{ Route::is('faculty.computer.index') ? 'active' : '' }}"
-                    href="{{ route('faculty.computer.index') }}">
-                    <i class="ri-computer-line"></i><span>Computers</span>
+                <a class="nav-link collapsed" data-bs-target="#facultyReports" data-bs-toggle="collapse" href="#">
+                    <i class="ri-booklet-line"></i><span>Reports</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
+                <ul id="facultyReports" class="nav-content collapse p-2" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="{{ route('faculty.report.attendance.index') }}">
+                            <i class="bi bi-circle"></i>
+                            <span>Attendance Log</span>
+                        </a>
+                </ul>
 
             </li>
-
+       
             <li class="nav-item">
                 <a class="nav-link {{ Route::is('faculty.schedule.*') ? 'active' : '' }}"
                     href="{{ route('faculty.schedule.index') }}">

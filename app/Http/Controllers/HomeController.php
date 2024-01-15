@@ -95,7 +95,7 @@ class HomeController extends Controller
             }
 
             // Authentication was successful...
-            Auth::user()->status = "online";
+            Auth::user()->status = "Online";
             Auth::user()->save();
 
             Log::create([
@@ -132,8 +132,8 @@ class HomeController extends Controller
         // remove last_activity from session
         $request->session()->forget(Auth::id() . "_last_activity");
         // set the user's status to offline
-        Auth::user()->status = "offline";
-        Auth::user()->save();
+        Auth::user()->status = "Offline";
+       // Auth::user()->save();
         // create a log
         $log = Log::where('user_id', Auth::id())
             ->whereNull('time_out')

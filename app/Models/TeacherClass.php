@@ -44,12 +44,11 @@ class TeacherClass extends Model
     {
         return $this->belongsTo(SchoolYear::class, 'sy_id');
     }
-
+    // TeacherClass model
     public function semester()
     {
         return $this->belongsTo(Semester::class, 'semester_id');
     }
-
     public function scheduleDates()
     {
         return $this->hasMany(ScheduleDate::class, 'teacher_class_id');
@@ -107,9 +106,30 @@ class TeacherClass extends Model
     public function checkIfStudentHasScheduleToday()
     {
         try {
-            return $this->scheduleDates()->whereDate('date', now()->format('Y-m-d'))->first() ? true : false;
+
+            $today = now()->format('Y-m-d');
+
+            info("Today's date: $today");
+
+            // Get the current semester for the teacher class
+            $currentSemester = $this->semester;
+
+            // Check if the current semester is active
+            if (!$currentSemester || !$currentSemester->isActiveOnDate($today)) {
+                // Handle the case where the semester is not active
+                return false;
+            }
+            // Debug statements
+            info("Has hasSemesterSchedule for today: " . ($currentSemester ? 'Yes' : 'No'));
+
+            // Check if there is a schedule for today in the current semester
+            $hasSchedule = $this->scheduleDates()
+                ->whereDate('date', $today)
+                ->exists();
+
+            return $hasSchedule;
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            // Log or handle the exception if needed
             return false;
         }
     }

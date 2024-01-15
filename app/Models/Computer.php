@@ -16,6 +16,7 @@ class Computer extends Model
         'processor',
         'memory',
         'storage',
+           'ip_address',
         'created_at',
         'updated_at',
         'deleted_at',

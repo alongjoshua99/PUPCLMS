@@ -15,8 +15,11 @@ class ComputerStatusLogController extends Controller
      */
     public function index()
     {
+        $schedules = Auth::user()->student->getScheduleBy('today');
         $computers = Computer::all();
-        return view('AMS.backend.faculty-layouts.computer.index', compact('computers'));
+        return view('AMS.backend.student-layouts.computer.index', compact('schedules', 'computers'));
+       // $computers = Computer::all();
+        //return view('AMS.backend.faculty-layouts.computer.index', compact('computers'));
     }
 
     /**
