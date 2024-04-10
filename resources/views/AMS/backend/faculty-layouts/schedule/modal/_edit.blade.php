@@ -8,22 +8,20 @@
             <form action="{{ route('faculty.schedule.reschedule') }}" method="POST">
                 <div class="modal-body">
                     @csrf
+     
                     <div class="row mb-3">
-                        <div class="col-sm-6">
-                            <label for="date_id" class="form-label fw-bold text-black">Old Date</label>
-                            {{-- generate aselect for scheduled dates --}}
-                            <select class="form-select" aria-label="Default select example" name="date_id" id="date_id">
-                                <option value="" selected>----- Select Date -----</option>
-                                @foreach ($schedule->scheduleDates as $date)
-                                    @if ($date->date > now()->subDay()->format('Y-m-d'))
-                                    <option value="{{ $date->id }}">{{ date('F d, Y', strtotime($date->date)) }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                            @error('date')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
+                    <div class="col-sm-6">
+                        <label for="old_date_id" class="form-label fw-bold text-black">Old Date</label>
+                        @foreach ($schedule->scheduleDates as $date)
+                    
+                                <input type="date" readonly class="form-control"  id="old_date_id" value="{{ $date->date }}">
+                                <input type="text" hidden  class="form-control" name="date_id" id="date_id" value="{{ $date->id }}">
+
+                        @endforeach
+                        @error('date')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>            
                     </div>
                     <div class="row mb-3">
                         <div class="col-sm-6">

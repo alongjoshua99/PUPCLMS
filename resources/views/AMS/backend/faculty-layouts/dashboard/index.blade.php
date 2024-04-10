@@ -105,7 +105,7 @@
                             }
                         @endphp
                             {
-                                title: '{{ $schedule->subject->subject_name }}',
+                                title: '{{ $schedule->subject->date }}',
                                 start: '{{ $schedule_date->date }}',
                                 end: '{{ $schedule_date->date }}',
                                 color: '{{  $color }}', // Assign a unique color for each subject

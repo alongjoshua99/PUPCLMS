@@ -5,307 +5,117 @@
 @endsection
 
 @section('contents')
-    <div class="row">
-        <!-- Left side columns -->
-        <div class="col-lg-8">
-            <div class="row">
+    <section class="section">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
 
-                <!-- Sales Card -->
-                <div class="col-xxl-4 col-md-6">
-                    <div class="card info-card sales-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Working Computers {{-- <span>| Today</span> --}}</h5>
-
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="ri-computer-line"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <h6>{{ $workingComputers }}</h6>
-                                    {{-- <span class="text-success small pt-1 fw-bold">12%</span> <span
-                                        class="text-muted small pt-2 ps-1">increase</span> --}}
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div><!-- End Sales Card -->
-
-                <!-- Revenue Card -->
-                <div class="col-xxl-4 col-md-6">
-                    <div class="card info-card revenue-card">
-
-                        <div class="card-body">
-                            <h5 class="card-title">Active Users {{-- <span>| This Month</span> --}}</h5>
-
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="ri-user-3-line"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <h6>{{ $activeUsers }}</h6>
-                                    {{-- <span class="text-success small pt-1 fw-bold">8%</span> <span
-                                        class="text-muted small pt-2 ps-1">increase</span> --}}
-
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div><!-- End Revenue Card -->
-
-                <!-- Customers Card -->
-                {{--   <div class="col-xxl-4 col-xl-12">
-
-                    <div class="card info-card customers-card">
-
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <li class="dropdown-header text-start">
-                                    <h6>Filter</h6>
-                                </li>
-
-                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="card-body">
-                            <h5 class="card-title">Customers <span>| This Year</span></h5>
-
-                            <div class="d-flex align-items-center">
-                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                    <i class="bi bi-people"></i>
-                                </div>
-                                <div class="ps-3">
-                                    <h6>1244</h6>
-                                    <span class="text-danger small pt-1 fw-bold">12%</span> <span
-                                        class="text-muted small pt-2 ps-1">decrease</span>
-
-                                </div>
-                            </div>
-
-                        </div>
+                    <div class="card-header">
+                        <h5 class="mb-0">Schedules</h5>
                     </div>
 
-                </div> --}}
-                <!-- End Customers Card -->
+                    <div class="card-body p-3">
 
-                <!-- Reports -->
-                {{-- <div class="col-12">
-                    <div class="card">
-
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <li class="dropdown-header text-start">
-                                    <h6>Filter</h6>
-                                </li>
-
-                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="card-body">
-                            <h5 class="card-title">Reports <span>/Today</span></h5>
-
-                            <!-- Line Chart -->
-                            <div id="reportsChart"></div>
-
-                            <script>
-                                document.addEventListener("DOMContentLoaded", () => {
-                                    new ApexCharts(document.querySelector("#reportsChart"), {
-                                        series: [{
-                                            name: 'Sales',
-                                            data: [31, 40, 28, 51, 42, 82, 56],
-                                        }, {
-                                            name: 'Revenue',
-                                            data: [11, 32, 45, 32, 34, 52, 41]
-                                        }, {
-                                            name: 'Customers',
-                                            data: [15, 11, 32, 18, 9, 24, 11]
-                                        }],
-                                        chart: {
-                                            height: 350,
-                                            type: 'area',
-                                            toolbar: {
-                                                show: false
-                                            },
-                                        },
-                                        markers: {
-                                            size: 4
-                                        },
-                                        colors: ['#4154f1', '#2eca6a', '#ff771d'],
-                                        fill: {
-                                            type: "gradient",
-                                            gradient: {
-                                                shadeIntensity: 1,
-                                                opacityFrom: 0.3,
-                                                opacityTo: 0.4,
-                                                stops: [0, 90, 100]
-                                            }
-                                        },
-                                        dataLabels: {
-                                            enabled: false
-                                        },
-                                        stroke: {
-                                            curve: 'smooth',
-                                            width: 2
-                                        },
-                                        xaxis: {
-                                            type: 'datetime',
-                                            categories: ["2018-09-19T00:00:00.000Z", "2018-09-19T01:30:00.000Z",
-                                                "2018-09-19T02:30:00.000Z", "2018-09-19T03:30:00.000Z",
-                                                "2018-09-19T04:30:00.000Z", "2018-09-19T05:30:00.000Z",
-                                                "2018-09-19T06:30:00.000Z"
-                                            ]
-                                        },
-                                        tooltip: {
-                                            x: {
-                                                format: 'dd/MM/yy HH:mm'
-                                            },
-                                        }
-                                    }).render();
-                                });
-                            </script>
-                            <!-- End Line Chart -->
-
-                        </div>
+                        <div id='calendar'></div>
 
                     </div>
-                </div> --}}
-                <!-- End Reports -->
-
-                <!-- Recent Sales -->
-                <div class="col-12">
-                    <div class="card recent-sales overflow-auto">
-
-                        <div class="filter">
-                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <li class="dropdown-header text-start">
-                                    <h6>Filter</h6>
-                                </li>
-
-                                <li><a class="dropdown-item" href="#">Today</a></li>
-                                <li><a class="dropdown-item" href="#">This Month</a></li>
-                                <li><a class="dropdown-item" href="#">This Year</a></li>
-                            </ul>
-                        </div>
-
-                        {{--  <div class="card-body">
-                            <h5 class="card-title">Recent Sales <span>| Today</span></h5>
-
-                            <table class="table table-borderless datatable">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Customer</th>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row"><a href="#">#2457</a></th>
-                                        <td>Brandon Jacob</td>
-                                        <td><a href="#" class="text-primary">At praesentium minu</a>
-                                        </td>
-                                        <td>$64</td>
-                                        <td><span class="badge bg-success">Approved</span></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row"><a href="#">#2147</a></th>
-                                        <td>Bridie Kessler</td>
-                                        <td><a href="#" class="text-primary">Blanditiis dolor omnis
-                                                similique</a></td>
-                                        <td>$47</td>
-                                        <td><span class="badge bg-warning">Pending</span></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row"><a href="#">#2049</a></th>
-                                        <td>Ashleigh Langosh</td>
-                                        <td><a href="#" class="text-primary">At recusandae
-                                                consectetur</a></td>
-                                        <td>$147</td>
-                                        <td><span class="badge bg-success">Approved</span></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row"><a href="#">#2644</a></th>
-                                        <td>Angus Grady</td>
-                                        <td><a href="#" class="text-primar">Ut voluptatem id earum
-                                                et</a></td>
-                                        <td>$67</td>
-                                        <td><span class="badge bg-danger">Rejected</span></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row"><a href="#">#2644</a></th>
-                                        <td>Raheem Lehner</td>
-                                        <td><a href="#" class="text-primary">Sunt similique
-                                                distinctio</a></td>
-                                        <td>$165</td>
-                                        <td><span class="badge bg-success">Approved</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div> --}}
-
-                    </div>
-                </div><!-- End Recent Sales -->
-
+                </div>
 
 
             </div>
-        </div><!-- End Left side columns -->
+            {{-- <div class="card top-selling overflow-auto">
 
-        <!-- Right side columns -->
-        <div class="col-lg-4">
+                    <div class="filter">
+                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li class="dropdown-header text-start">
+                                <h6>Filter</h6>
+                            </li>
 
-            <!-- Recent Activity -->
-            <div class="card">
-                {{-- <div class="filter">
-                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                        <li class="dropdown-header text-start">
-                            <h6>Filter</h6>
-                        </li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('admin.dashboard.index',['filter' => 'today']) }}">Today</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('admin.dashboard.index', ['filter' => 'week']) }}">This Week</a></li>
+                            <li><a class="dropdown-item"
+                                    href="{{ route('admin.dashboard.index', ['filter' => 'month']) }}">This Month</a></li>
+                        </ul>
+                    </div>
 
-                        <li><a class="dropdown-item" href="#">Today</a></li>
-                        <li><a class="dropdown-item" href="#">This Month</a></li>
-                        <li><a class="dropdown-item" href="#">This Year</a></li>
-                    </ul>
-                </div> --}}
+                    <div class="card-body pb-0" style="height: 40%">
+                        <h5 class="card-title">Schedules <span>| {{ Str::ucfirst($filter) }}</span></h5>
 
-                <div class="card-body">
-                    <h5 class="card-title">Recent Attendance Logs {{-- <span>| Today</span> --}}</h5>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Subject</th>
+                                    <th scope="col">Section</th>
+                                    <th scope="col">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @forelse ($schedules as $schedule)
+                                    <tr>
+                                        <td>
+                                            wew
+                                        </td>
+                                        <td>
+                                            test
+                                        </td>
 
-                    <div class="activity">
-                        @foreach ($recentLogs as $item)
-                            
-                        <div class="activity-item d-flex">
-                            <div class="activite-label">{{ $item->created_at->diffForHumans() }}</div>
-                            <i class='bi bi-circle-fill activity-badge text-success align-self-start'></i>
-                            <div class="activity-content">
-                                {{ $item->student->first_name }} attended on {{ $item->teacherClass->subject->subject_name }}
-                                <a href="#" class="fw-bold text-dark"></a>
-                            </div>
-                        </div><!-- End activity item-->
-                        @endforeach
+                                        <td>
+                                            {{ date('F d, Y', strtotime($schedule->date)) }}
+                                            <br>
+                                            At {{ date('h:i:a', strtotime($schedule->start_time)) }} -
+                                            {{ date('h:i:a', strtotime($schedule->end_time)) }}
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="3" class="text-center">
+                                            No schedules for {{ $filter }}.
+                                        </td>
+                                @endforelse
+                            </tbody>
+                        </table>
 
                     </div>
 
-                </div>
-            </div><!-- End Recent Activity -->
-
-
-        </div><!-- End Right side columns -->
-
-    </div>
+                </div> --}}
+        </div>
+        </div>
+    </section>
+@endsection
+@section('styles')
+    <script src="{{ asset('assets/packages/fullcalendar-6.1.8/packages/core/index.global.min.js') }}"></script>
+    <script src="{{ asset('assets/packages/fullcalendar-6.1.8/packages/daygrid/index.global.min.js') }}"></script>
+@endsection
+@section('scripts')
+    <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    events: [
+                        @foreach ($schedules as $schedule)
+                            @foreach ($schedule->scheduleDates as $schedule_date)
+                            @php
+                            $color = $schedule->color;
+                                if ($schedule->checkIfTeacherUsingComLab($schedule_date->id)) {
+                                    $color = "#444";
+                                }
+                            @endphp
+                                {
+                                    title: '{{ $schedule->subject->date }}',
+                                    start: '{{ $schedule_date->date }}',
+                                    end: '{{ $schedule_date->date }}',
+                                    color: '{{  $color }}', // Assign a unique color for each subject
+                                    textColor: 'white'
+                                },
+                            @endforeach
+                        @endforeach
+                    ]
+                });
+                calendar.render();
+            });
+    </script>
 @endsection

@@ -54,15 +54,38 @@ class TeacherClass extends Model
         return $this->hasMany(ScheduleDate::class, 'teacher_class_id');
     }
 
+    public function getTeacherUsingComLab($teacher_class_id)
+    {
+        info("Checking if teacher is using ComLab. Teacher Class ID: $teacher_class_id");
+
+        $result = $this->attendanceLogs()
+            ->where('teacher_class_id', $teacher_class_id )
+
+            ->first();
+    
+        // Log the result or output it for debugging
+        info("Result of checkIfTeacherUsingComLab: " . ($result ? 'true' : 'false'));
+    
+        return $result ? true : false;
+    }
+
     public function checkIfTeacherUsingComLab($teacher_class_id)
     {
-        return $this->attendanceLogs()
+        info("Checking if teacher is using ComLab. Teacher Class ID: $teacher_class_id");
+
+        $result = $this->attendanceLogs()
             ->where('teacher_class_id', $teacher_class_id )
             ->where('faculty_member_id', '!=' ,null )
             ->where('time_out', '=', null)
             ->whereDate('created_at', now())
-            ->first() ? true : false;
+            ->first();
+    
+        // Log the result or output it for debugging
+        info("Result of checkIfTeacherUsingComLab: " . ($result ? 'true' : 'false'));
+    
+        return $result ? true : false;
     }
+    
     public function checkIfStudentAlreadyHasAttendance()
     {
         return $this->attendanceLogs()

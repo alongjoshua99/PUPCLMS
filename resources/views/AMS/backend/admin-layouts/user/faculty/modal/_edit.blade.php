@@ -9,6 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
+
 <div class="modal fade" id="edit{{ $id }}" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">

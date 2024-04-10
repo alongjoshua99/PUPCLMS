@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\ScheduleDate;
 use App\Models\ScheduleRequest;
 use Illuminate\Http\Request;
 
@@ -55,21 +56,51 @@ class ScheduleRequestController extends Controller
     public function update(string $id, string $status)
     {
         try {
-            $schedule = ScheduleRequest::find($id);
+            $user = auth()->user();
+            $role = optional($user->role);
+
+            $currentScheddate = ScheduleDate::find(3);
+
+
+            $schedule = ScheduleRequest::with('teacherClass', 'scheduleDate')->find($id);
+            info("Id has passed from request: $id");
+
+            info("date value from ScheduleRequest: $schedule->{$schedule->status}");
+            
             $schedule->status = $status;
             $schedule->save();
-            if ($status == 'approved') {
+            info("ScheduleRequest with relationship: " . json_encode($schedule->toArray()));
+
+            if ($status == 'approved' && $schedule->teacherClass) {
                 $schedule->teacherClass->update([
                     'date' => $schedule->date,
                     'start_time' => $schedule->start_time,
                     'end_time' => $schedule->end_time,
+                    'approved_by' => $role->name,
+                    'approved_at' => now(),
                 ]);
             }
+            
+            if ($schedule->scheduleDate) {
+                info("Updating schedule_date: " . json_encode($schedule->scheduleDate->toArray()));
+                $schedule->scheduleDate->update([
+                    'start_time' => $schedule->start_time,
+                    'end_time' => $schedule->end_time,
+                    'date' => $schedule->new_date,
+                    'id' => $schedule->date_id,
+                ]);
+            } else {
+                info("No schedule_date associated.");
+            }
+            
+            info("datenow: " . now());
+
             return redirect()->back()->with('successToast', 'Request ' . $status . ' successfully!');
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }
     }
+
 
     /**
      * Remove the specified resource from storage.

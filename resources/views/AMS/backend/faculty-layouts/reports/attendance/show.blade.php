@@ -4,7 +4,7 @@
     {{ $section }} - {{ $subject }} @if ($ScheduleDate)
     ({{ date('F d, Y', strtotime($ScheduleDate->date)) }})
 @else
-    (No Schedule for today)
+<!--  (No Schedule for today)-->
 @endif
 @endsection
 

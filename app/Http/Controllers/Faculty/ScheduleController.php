@@ -100,68 +100,38 @@ class ScheduleController extends Controller
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }
     }
-    // public function update(Request $request, string $id)
-    // {
-    //     $request->validate([
-    //         'date' => 'required|date',
-    //         'start_time' => 'required|',
-    //         'end_time' => 'required|after:start_time',
-    //         'reason' => 'required|string',
-    //     ]);
-    //     try {
-    //         $date = Carbon::createFromFormat('Y-m-d', $request->date,);
-    //         $start_time = Carbon::parse($request->start_time);
-    //         $end_time = Carbon::parse($request->end_time);
-
-    //         $start_datetime = $date->setTime($start_time->hour, $start_time->minute, $start_time->second);
-    //         $end_datetime = $date->setTime($end_time->hour, $end_time->minute, $end_time->second);
-
-    //         $request->merge([
-    //             'start_time' => $start_datetime,
-    //             'end_time' => $end_datetime,
-    //         ]);
-
-
-    //         $schedule = Auth::user()->facultyMember->teacherClasses()->findOrFail($id);
-    //         ScheduleRequest::create([
-    //             'teacher_class_id' => $schedule->id,
-    //             'date' => $request->date,
-    //             'start_time' => $request->start_time,
-    //             'end_time' => $request->end_time,
-    //             'reason' => $request->reason,
-    //         ]);
-
-    //         return redirect()->back()->with('successToast', 'Schedule updated successfully.');
-    //     } catch (\Throwable $th) {
-    //         return redirect()->back()->with('errorAlert', $th->getMessage());
-    //     }
-    // }
-
+    
     /**
      * Remove the specified resource from storage.
      */
     public function reschedule(Request $request)
     {
         try {
-            // dd($request->all());
             if ($request->has('reason') && $request->reason != null) {
+                info("date value from input: $request->date_id ");
                 ScheduleRequest::create([
+                    
                     'date_id' => $request->date_id,
+
                     'new_date' => $request->new_date,
                     'start_time' => $request->start_time,
                     'end_time' => $request->end_time,
                     'reason' => $request->reason,
                 ]);
+            }else{
+                info("date value reason null: $request->date_id ");
+                ScheduleRequest::create([
+                    'date_id' => $request->date_id,
+                    'new_date' => $request->new_date,
+                    'start_time' => $request->start_time,
+                    'end_time' => $request->end_time,
+                ]);
+
             }
-            ScheduleRequest::create([
-                'date_id' => $request->date_id,
-                'new_date' => $request->new_date,
-                'start_time' => $request->start_time,
-                'end_time' => $request->end_time,
-            ]);
             return redirect()->back()->with('successToast', 'Request sent');
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }
     }
+    
 }

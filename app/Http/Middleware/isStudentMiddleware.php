@@ -20,7 +20,7 @@ class isStudentMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         // Check if the user is a student
-        if (Auth::user()->role->name !== 'student' || Auth::user()->role->name !== 'admin') {
+        if (Auth::user()->role->name !== 'student') {
             return redirect()->back()->with('errorAlert', 'For Student error, You are not authorized to access this page');
         }
 

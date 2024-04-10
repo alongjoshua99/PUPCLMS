@@ -25,7 +25,7 @@ class CheckUserStatusMiddleware
             // Convert the Carbon object to a timestamp
             $last_activity_timestamp = $last_activity->timestamp;
             // Check if the user's last activity was more than 10 minutes ago
-            if (time() - $last_activity_timestamp > 600) {
+            if (time() - $last_activity_timestamp > 5600) {//600
                 // The user's last activity was more than 10 minutes ago
                 // remove last_activity from session
                 $request->session()->forget(Auth::id() . "_last_activity");

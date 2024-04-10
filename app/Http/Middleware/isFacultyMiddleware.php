@@ -23,7 +23,7 @@ class isFacultyMiddleware
         // Log user and role information for debugging
         Log::debug("User {$user->name} (ID: {$user->id}) has role: {$role->name} (Faculty Id: {$role->id})");
 
-        if ($role->name !== 'faculty' && $role->name !== 'admin') {
+        if ($role->name !== 'faculty') {
             return redirect()->back()->with('errorAlert', 'Faculty!, You are not authorized to access this page');
         }
 
