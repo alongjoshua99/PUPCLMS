@@ -30,7 +30,7 @@ class Computer extends Model
 
     public function computerStatusLog()
     {
-        return $this->hasOne(ComputerStatusLog::class, 'computer_id');
+        return $this->hasOne(ComputerLog::class, 'computer_id');
     }
 
     public function getStatus()

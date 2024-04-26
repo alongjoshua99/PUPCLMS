@@ -62,10 +62,10 @@ class TeacherClass extends Model
             ->where('teacher_class_id', $teacher_class_id )
 
             ->first();
-    
+
         // Log the result or output it for debugging
         info("Result of checkIfTeacherUsingComLab: " . ($result ? 'true' : 'false'));
-    
+
         return $result ? true : false;
     }
 
@@ -74,18 +74,18 @@ class TeacherClass extends Model
         info("Checking if teacher is using ComLab. Teacher Class ID: $teacher_class_id");
 
         $result = $this->attendanceLogs()
-            ->where('teacher_class_id', $teacher_class_id )
+            ->where('teacher_class_id', $teacher_class_id)
             ->where('faculty_member_id', '!=' ,null )
             ->where('time_out', '=', null)
             ->whereDate('created_at', now())
             ->first();
-    
+
         // Log the result or output it for debugging
         info("Result of checkIfTeacherUsingComLab: " . ($result ? 'true' : 'false'));
-    
+
         return $result ? true : false;
     }
-    
+
     public function checkIfStudentAlreadyHasAttendance()
     {
         return $this->attendanceLogs()

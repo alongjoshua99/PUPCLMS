@@ -19,40 +19,26 @@
                         <table class="table" id="reports-table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Computer</th>
+                                    <th scope="col">IP ADDRESS</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Created Date</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Response</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($reports as $report)
                                     <tr>
-                                        <td>{{ $report->computer->computer_name }}</td>
+                                        <td>{{ $report->ip_address }}</td>
                                         <td>
-                                            @if ($report->status == 'Online')
+                                            @if ($report->status == 'checked')
                                                 <span class="badge bg-success">{{ $report->status }}</span>
-                                            @elseif($report->status == 'Offline')
-                                                <span class="badge bg-danger">{{ $report->status }}</span>
-                                            @else
-                                                <span class="badge bg-warning">{{ $report->status }}</span>
+                                            @elseif($report->status == 'pending')
+                                                <span class="badge bg-info">{{ $report->status }}</span>
                                             @endif
                                         </td>
-                                        <td>{{ date('M d, Y', strtotime($report->checked_at)) }} at {{ date('h:i A', strtotime($report->checked_at)) }}</td>
-                                        <td>
-                                            <button class="btn btn-link text-info" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#description{{ $report->id }}">
-                                                {{-- eye icon --}}
-                                                <i class="ri-eye-line"></i>
-                                            </button>
-                                            @include('AMS.backend.admin-layouts.reports.computer.modal._description')
-                                        </td>
-                                        <td>{{ $report->user->facultyMember->getFullName()}}</td>
+                                        <td>{{ date('M d, Y', strtotime($report->created_at)) }}</td>
                                         <td>
                                             <div class="">
-
                                                 <button
                                                     class="btn btn-link text-primary"
                                                     type="button" data-bs-toggle="modal"

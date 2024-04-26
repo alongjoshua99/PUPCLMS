@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 
 class User extends Authenticatable
@@ -47,6 +48,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    protected $appends = [
+        'full_name'
+    ];
+
+    public function getFullNameAttribute()
+    {
+    if($this->role->name == 'student'){
+        return Str::ucfirst($this->student->first_name) . ' ' . Str::ucfirst($this->student->last_name);
+        }else{
+        return Str::ucfirst($this->facultyMember->first_name) . ' ' . Str::ucfirst($this->facultyMember->last_name);
+        }
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id');
@@ -61,7 +75,7 @@ class User extends Authenticatable
     }
     public function computerStatusLogs()
     {
-        return $this->hasMany(ComputerStatusLog::class, 'user_id');
+        return $this->hasMany(ComputerLog::class, 'user_id');
     }
     public function logs(){
         return $this->hasMany(Log::class, 'user_id');

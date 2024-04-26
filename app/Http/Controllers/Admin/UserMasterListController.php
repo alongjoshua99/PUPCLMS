@@ -19,9 +19,9 @@ class UserMasterListController extends Controller
        // return view('admin.user.usermasterlist.index', compact('userMaster'));
         /* get the current route name */
        // $currentRouteName = app('router')->getRoutes()->match(app('request')->create(url()->current()))->getName();
-        return view('AMS.backend.admin-layouts.user.usermasterlist.index', compact('userMasterList'));    
-       // return view('admin.user.masterlist.index', compact('userMasterList')); 
-        
+        return view('AMS.backend.admin-layouts.user.usermasterlist.index', compact('userMasterList'));
+       // return view('admin.user.masterlist.index', compact('userMasterList'));
+
     }
 
     public function upload(Request $request)
@@ -50,10 +50,10 @@ class UserMasterListController extends Controller
     {
         // Retrieve the UserMasterList record based on the provided ID
         $userMaster = UserMasterList::findOrFail($id);
-    
+
         // Return the view for editing with the retrieved record
         return view('admin.user.usermasterlist.edit', compact('userMaster'));
-    }   
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -94,7 +94,7 @@ class UserMasterListController extends Controller
     {
        // $user = User::find($id);
        // $departments = Department::all();
-       // $pageTitle = "Faculty - " . $user->facultyMember->getFullName();
+       // $pageTitle = "Faculty - " . $user->facultyMember->full_name;
        return view('admin.user.usermasterlist.index', compact('userMaster'));
     }
 

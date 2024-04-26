@@ -104,8 +104,6 @@ class Add extends Component
     {
         $validatedData = $this->validate();
 
-
-
         $dates = $this->getDates($validatedData['start_date'], $validatedData['end_date'], $this->days);
         $key = 'successToast';
         $message = 'Schedule successfully added!';
@@ -159,11 +157,6 @@ class Add extends Component
                 ]);
             }
         }
-
-
-
-
-
 
         // Perform database operations or other actions with the validated data
 

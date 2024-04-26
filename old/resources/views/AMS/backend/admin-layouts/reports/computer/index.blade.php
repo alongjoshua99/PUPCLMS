@@ -49,7 +49,7 @@
                                             </button>
                                             @include('AMS.backend.admin-layouts.reports.computer.modal._description')
                                         </td>
-                                        <td>{{ $report->user->facultyMember->getFullName()}}</td>
+                                        <td>{{ $report->user->facultyMember->full_name}}</td>
                                         <td>
                                             <div class="">
 

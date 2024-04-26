@@ -175,7 +175,7 @@
                     <img src="{{ asset('assets/images/User.png') }}" alt="Profile" class="rounded-circle">
                     <span class="d-none d-md-block dropdown-toggle ps-2 text-maroon">
                         @if (Auth::user()->faculty_member_id !== null)
-                            {{ Auth::user()->facultyMember->getFullName() }}
+                            {{ Auth::user()->facultyMember->full_name }}
                         @else
                             {{ Auth::user()->student->getFullName() }}
                         @endif
@@ -186,7 +186,7 @@
                     <li class="dropdown-header">
                         <h6>
                             @if (Auth::user()->faculty_member_id !== null)
-                                {{ Auth::user()->facultyMember->getFullName() }}
+                                {{ Auth::user()->facultyMember->full_name }}
                             @else
                                 {{ Auth::user()->student->getFullName() }}
                             @endif

@@ -23,7 +23,7 @@
                                     <option selected="">Select Faculty</option>
                                     @foreach ($facultyMembers as $facultyMember)
                                         <option value="{{ $facultyMember->id }}">
-                                            {{ $facultyMember->getFullName() }}
+                                            {{ $facultyMember->full_name }}
                                         </option>
                                     @endforeach
                                 </select>

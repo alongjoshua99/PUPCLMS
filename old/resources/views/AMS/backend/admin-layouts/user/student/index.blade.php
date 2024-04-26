@@ -60,7 +60,7 @@
                                     @foreach ($students as $user)
                                         <tr>
                                             <td>
-                                                {{ $user->getName() }}
+                                                {{ $user->full_name }}
                                             </td>
                                             <td>
                                                 {{ $user->email }}

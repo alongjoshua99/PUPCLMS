@@ -49,7 +49,7 @@
                                     <tr>
                                         <td>
                                             <div class="d-flex flex-column">
-                                                <span>{{ $user->facultyMember->getFullName() }}</span>
+                                                <span>{{ $user->facultyMember->full_name }}</span>
                                                 <span class="fs-6">{{ $user->facultyMember->email }}</span>
                                             </div>
                                         </td>

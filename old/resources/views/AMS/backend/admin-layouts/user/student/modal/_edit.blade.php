@@ -4,7 +4,7 @@
     } else {
         $id = $facultyMem->id;
     }
-    
+
 @endphp
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -15,7 +15,7 @@
             <div class="modal-header bg-primary">
                 <h5 class="modal-title text-white">
                         Reset Password
-           
+
                 </h5>
 
             </div>
@@ -25,7 +25,7 @@
                     <div class="modal-body">
                         @csrf
                         @method('PUT')
-                        Are you sure you want to reset {{ $user->getName() }}'s password?
+                        Are you sure you want to reset {{ $user->full_name }}'s password?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

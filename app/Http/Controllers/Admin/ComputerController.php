@@ -39,7 +39,7 @@ class ComputerController extends Controller
             'processor' => 'required',
             'memory' => 'required',
             'storage' => 'required',
-            'status'=> 'required'
+            'status'=> 'required',
         ]);
         try {
             Computer::create([

@@ -38,7 +38,7 @@ class UserLogController extends Controller
     public function show( $id)
     {
         $user = User::find($id);
-        $pageTitle = $user->getName().' Logs';
+        $pageTitle = $user->full_name.' Logs';
         return view('AMS.backend.admin-layouts.user.logs', compact('user','pageTitle'));
     }
 

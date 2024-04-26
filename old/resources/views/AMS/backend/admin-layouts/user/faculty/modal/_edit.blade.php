@@ -28,7 +28,7 @@
                     <div class="modal-body">
                         @csrf
                         @method('PUT')
-                        Are you sure you want to reset {{ $user->getName() }}'s password?
+                        Are you sure you want to reset {{ $user->full_name }}'s password?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

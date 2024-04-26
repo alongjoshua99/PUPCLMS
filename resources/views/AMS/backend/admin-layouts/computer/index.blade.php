@@ -24,10 +24,9 @@
                                 <tr>
                                     <th scope="col">Computer no.</th>
                                     <th scope="col">Name</th>
-                                    <th scope="col">Specification</th>
                                     <th scope="col">Ip Address</th>
+                                    <th scope="col">Specification</th>
                                     <th scope="col">Status</th>
-
                                     <th scope="col" class="text-center">Action</th>
                                 </tr>
                             </thead>
@@ -41,7 +40,9 @@
                                         <td>
                                             {{ $computer->computer_name }}
                                         </td>
-
+                                        <td>
+                                            {{ $computer->ip_address }}
+                                        </td>
                                         <td>
                                             <button class="btn btn-link text-primary" type="button" data-bs-toggle="modal"
                                                 data-bs-target="#specs{{ $computer->id }}" data-bs-toggle="tooltip"
@@ -50,20 +51,18 @@
                                             </button>
                                             @include('AMS.backend.admin-layouts.computer.modal._specs')
                                         </td>
+
                                         <td>
-                                            {{ $computer->ip_address }}
-                                        </td>
-                                        <td>
-                                            @if ($computer->getStatus() === "Online")
+                                            @if ($computer->status === "active")
                                                 <span class="badge bg-success">Online</span>
-                                            @elseif ($computer->getStatus() === "Offline")
+                                            @elseif ($computer->status === "offline")
                                                 <span class="badge bg-danger">Offline</span>
-                                            @elseif ($computer->getStatus() === "Undermaintenance")
-                                                <span class="badge bg-danger">Undermaintenance</span>
+                                            @elseif ($computer->status === "under_maintenance")
+                                                <span class="badge bg-danger">Under Maintenance</span>
                                             @else
                                                 <span class="badge bg-warning">No data</span>
                                             @endif
-                                        </td>      
+                                        </td>
 
 
                                         <td>

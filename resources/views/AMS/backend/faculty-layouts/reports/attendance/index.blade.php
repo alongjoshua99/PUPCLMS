@@ -12,7 +12,7 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between border-bottom-0">
                         <h3 class="text-maroon">@yield('page-title')</h3>
-                
+
                     </div>
                     <div class="card-body">
 
@@ -29,7 +29,7 @@
                                 @foreach ($schedules as $schedule)
                                     <tr>
                                         <td>
-                                            {{ $schedule->teacher->getFullName() }}
+                                            {{ $schedule->teacher->full_name }}
                                         </td>
                                         <td>
                                             <a

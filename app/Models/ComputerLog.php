@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ComputerStatusLog extends Model
+class ComputerLog extends Model
 {
     use HasFactory;
     /* protected $fillable = [
@@ -19,14 +19,4 @@ class ComputerStatusLog extends Model
     ]; */
     protected $guarded = [];
 
-    public function computer()
-    {
-        return $this->belongsTo(Computer::class, 'computer_id')->withDefault([
-            'status' => 'Offline'
-        ]);
-    }
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
 }

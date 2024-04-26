@@ -1,40 +1,32 @@
-@php
-    if (Route::is('admin.user.account.student.index')) {
-        $id = $user->id;
-    } else {
-        $id = $facultyMem->id;
-    }
-    
-@endphp
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-<div class="modal fade" id="edit{{ $id }}" tabindex="-1">
+@if (Route::is('admin.user.account.student.index'))
+    <div class="modal fade" id="edit{{ $user->id }}" tabindex="-1">
+    @else
+        <div class="modal fade" id="edit{{ $student->id }}" tabindex="-1">
+@endif
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <h5 class="modal-title text-white">
-                        Reset Password
-           
+                    Reset Password
                 </h5>
 
             </div>
 
             @if (Route::is('admin.user.account.student.index'))
-            <form action="{{ route('admin.user.account.student.resetPassword', ['id' => $user->id]) }}" method="POST">
+                <form action="{{ route('admin.user.account.student.resetPassword', ['id' => $user->id]) }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         @method('PUT')
-                        Are you sure you want to reset {{ $user->getName() }}'s password?
+                        Are you sure you want to reset {{ $user->full_name }}'s password?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                         <button type="submit" id="submit-e" class="btn btn-primary">Reset Password</button>
                     </div>
                 </form>
+                
             @else
-                <form action="{{ route('admin.user.information.student.update', ['id' => $student->id]) }}"
-                    method="POST">
+                <form action="{{ route('admin.user.information.student.update', ['id' => $student->id]) }}" method="POST">
                     <div class="modal-body">
                         @csrf
                         @method('PUT')
@@ -113,8 +105,9 @@
                                 <label for="gender" class="form-label fw-bold">Gender:</label>
                                 <select class="form-control" id="gender" name="gender" required>
                                     <option value="">Select Gender</option>
-                                    <option value="Male" @if ($student->gender === "Male") selected @endif>Male</option>
-                                    <option value="Female" @if ($student->gender === "Female") selected @endif>Female</option>
+                                    <option value="Male" @if ($student->gender === 'Male') selected @endif>Male</option>
+                                    <option value="Female" @if ($student->gender === 'Female') selected @endif>Female
+                                    </option>
                                 </select>
                             </div>
                         </div>
@@ -148,21 +141,27 @@
         <div class="modal-content">
             <div class="modal-header bg-primary">
                 <h5 class="modal-title text-white">Reset Password</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p>Password has been reset to:</p>
-                <input type="text" id="passwordInput" class="form-control" value="{{ session('randomPassword') }}" readonly>
-                <button id="copyFacButton" class="btn btn-primary" onclick="copyPassword()">Copy to Clipboard</button>
+                <input type="text" id="passwordInput" class="form-control"
+                    value="{{ session('randomPassword') }}" readonly>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="copyFacButton" class="btn btn-primary" onclick="copyPassword()">Copy to clipboard</button>
             </div>
         </div>
     </div>
 </div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     // Trigger the modal when it contains the 'randomPassword' session data
-    @if(session('randomPassword'))
-        $(document).ready(function(){
+    @if (session('randomPassword'))
+        $(document).ready(function() {
             $('#resetPasswordModal').modal('show');
         });
     @endif
@@ -177,4 +176,3 @@
         document.execCommand("copy");
     }
 </script>
-

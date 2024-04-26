@@ -4,7 +4,7 @@
             <div class="modal-header bg-maroon">
                 <h5 class="modal-title text-white">
                     @if (Route::is('admin.user.faculty.index'))
-                        {{ $user->facultyMember->getFullName() }}`s
+                        {{ $user->facultyMember->full_name }}`s
                     @endif
                     @if (Route::is('admin.user.student.index'))
                         {{ $user->student->getFullName() }}`s

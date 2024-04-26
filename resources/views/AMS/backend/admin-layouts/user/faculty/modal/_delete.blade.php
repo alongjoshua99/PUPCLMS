@@ -5,7 +5,7 @@
                 <h5 class="modal-title text-white">Logout User</h5>
             </div>
             <div class="modal-body">
-                <p>Are you sure you want to logout {{ $user->getName() }}?</p>
+                <p>Are you sure you want to logout {{ $user->full_name }}?</p>
             </div>
             <div class="modal-footer">
                 <form action="{{ route('admin.user.account.faculty.resetPassword', ['id' => $user->id]) }}" method="POST">

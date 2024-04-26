@@ -40,6 +40,7 @@ class CheckUserStatusMiddleware
                 $log->update([
                     'time_out' => now(),
                 ]);
+                updateComputerStatus($request, 'logout');
                 //regenerate   session
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();

@@ -32,7 +32,7 @@
                                         {{ $schedule->subject->subject_name }}
                                     </td>
                                     <td>
-                                        {{ $schedule->teacher->getFullName() }}
+                                        {{ $schedule->teacher->full_name }}
                                     </td>
                                     <td>
                                         @php

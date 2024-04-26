@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Computer;
 use App\Models\Student;
 use App\Models\Semester;
 use Closure;
@@ -50,11 +51,17 @@ class isStudentMiddleware
             return $this->handleNoSchedule($request);
         }
 
+        // update the ip address of the computer the student using
+        updateComputerStatus($request, 'login');
+
+
         return $next($request);
     }
 
+
     protected function handleInactiveSemester(Request $request): Response
     {
+        updateComputerStatus($request, 'logout');
         // Remove last_activity from session
         $request->session()->forget(Auth::id() . "_last_activity");
         // Set the user's status to offline
@@ -82,4 +89,5 @@ class isStudentMiddleware
 
         return redirect()->route('home.index')->with('errorAlert', 'You have no schedule today');
     }
+
 }

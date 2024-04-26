@@ -30,7 +30,7 @@
                                 @foreach ($requests as $request)
                                     <tr>
                                         <td>
-                                            {{ $request->scheduleDate->schedule->teacher->getFullName() }} <br>
+                                            {{ $request->scheduleDate->schedule->teacher->full_name }} <br>
                                             {{ $request->scheduleDate->schedule->subject->subject_name }}
                                         </td>
 

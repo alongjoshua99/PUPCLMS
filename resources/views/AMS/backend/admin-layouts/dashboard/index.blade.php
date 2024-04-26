@@ -97,21 +97,13 @@
                     initialView: 'dayGridMonth',
                     events: [
                         @foreach ($schedules as $schedule)
-                            @foreach ($schedule->scheduleDates as $schedule_date)
-                            @php
-                            $color = $schedule->color;
-                                if ($schedule->checkIfTeacherUsingComLab($schedule_date->id)) {
-                                    $color = "#444";
-                                }
-                            @endphp
-                                {
-                                    title: '{{ $schedule->subject->date }}',
-                                    start: '{{ $schedule_date->date }}',
-                                    end: '{{ $schedule_date->date }}',
-                                    color: '{{  $color }}', // Assign a unique color for each subject
+                        {
+                                    title: '{{ $schedule['title'] }}',
+                                    start: '{{ $schedule['start'] }}',
+                                    end: '{{ $schedule['end'] }}',
+                                    color: '{{  $schedule['color'] }}', // Assign a unique color for each subject
                                     textColor: 'white'
                                 },
-                            @endforeach
                         @endforeach
                     ]
                 });

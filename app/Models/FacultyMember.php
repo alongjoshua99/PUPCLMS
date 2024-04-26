@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+
 class FacultyMember extends Model
 {
     use HasFactory;
@@ -19,6 +20,15 @@ class FacultyMember extends Model
         'deleted_at',
     ]; */
     protected $guarded = [];
+
+    protected $appends = [
+        'full_name'
+    ];
+
+    public function getFullNameAttribute()
+    {
+        return Str::ucfirst($this->first_name) . ' ' . Str::ucfirst($this->last_name);
+    }
 
     public function department()
     {
@@ -38,14 +48,10 @@ class FacultyMember extends Model
     }
     public function checkIfTeacherAlreadyTimeIn()
     {
-        $log = $this->attendanceLogs()->where('time_in', '!=',null)->where('time_out', '=',null)->whereDate('created_at', now())->first();
+        $log = $this->attendanceLogs()->where('time_in', '!=', null)->where('time_out', '=', null)->whereDate('created_at', now())->first();
         if ($log) {
             return true;
         }
         return false;
-    }
-    public function getFullName()
-    {
-        return Str::ucfirst($this->first_name) . ' ' . Str::ucfirst($this->last_name);
     }
 }

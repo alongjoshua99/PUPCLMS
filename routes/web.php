@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountSettings\ChangePasswordController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AttendanceLogController;
 use App\Http\Controllers\Admin\ComputerController;
+use App\Http\Controllers\Admin\ComputerLogController;
 use App\Http\Controllers\Admin\ComputerStatusLogController;
 use App\Http\Controllers\Admin\CourseController;
 use App\Http\Controllers\Admin\FacultyMemberController;
@@ -28,7 +29,7 @@ use App\Http\Controllers\Faculty\AttendanceLogController as FacultyAttendanceLog
 use App\Http\Controllers\Admin\UserMasterListController as MasterListController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImportController;
-
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,7 +118,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
             Route::delete('/{id}/destroy', 'destroy')->name('destroy');
         });
         /* COMPUTER LOG */
-        Route::prefix('computer')->name('computer.')->controller(ComputerStatusLogController::class)->group(function () {
+        Route::prefix('computer')->name('computer.')->controller(ComputerLogController::class)->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/charts', 'charts')->name('charts');
             Route::get('/{id}', 'show')->name('show');
@@ -151,7 +152,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
     /* USERS */
     Route::prefix('user')->name('user.')->group(function () {
         Route::prefix('information')->name('information.')->group(function () {
-                     
+
             /* FACULTY */
             Route::prefix('faculty')->name('faculty.')->controller(FacultyMemberController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -179,7 +180,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
                 Route::put('/{id}/update', 'update')->name('update');
                 Route::post('/upload', 'upload')->name('upload');
             });
-            
+
             /* FACULTY */
             Route::prefix('faculty')->name('faculty.')->controller(FacultyMemberController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
@@ -192,7 +193,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
                 Route::get('/reset/all/password', 'resetAllPassword')->name('resetAllPassword');
                 Route::delete('/{id}/destroy', 'destroy')->name('destroy');
             });
-         
+
             Route::prefix('log')->name('log.')->controller(UserLogController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/{id}', 'show')->name('show');
@@ -220,17 +221,17 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
         Route::put('/update', [ChangePasswordController::class, 'update'])->name('update');
     });
 });
-//faculty here
+//faculty
 Route::middleware(['auth', 'alert', 'checkStatus', 'isFaculty'])->prefix('faculty')->name('faculty.')->group(function () {
-    Route::get('/dashboard/{filter?}', [FacultyDashboardController::class, 'index'])->name('dashboard.index'); 
-    
+    Route::get('/dashboard/{filter?}', [FacultyDashboardController::class, 'index'])->name('dashboard.index');
+
     Route::prefix('academics')->name('academic.')->group(function () {
 
         /* COURSE */
         Route::prefix('course')->name('course.')->controller(FacultyCourseController::class)->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{id}', 'show')->name('show');
-             Route::post('/store', 'store')->name('store');
+            Route::post('/store', 'store')->name('store');
             Route::put('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}/update', 'update')->name('update');
             Route::delete('/{id}/destroy', 'destroy')->name('destroy');
@@ -265,19 +266,19 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isFaculty'])->prefix('facult
         Route::delete('/{id}/destroy', 'destroy')->name('destroy');
     });
 
-            /* REPORTS */
+    /* REPORTS */
     Route::prefix('report')->name('report.')->group(function () {
 
-         /* ATTENDANCE LOG */
+        /* ATTENDANCE LOG */
         Route::prefix('attendance')->name('attendance.')->controller(FacultyAttendanceLogController::class)->group(function () {
-       
-        Route::get('/', 'index')->name('index');
-        Route::get('/charts', 'charts')->name('charts');
-        Route::get('/{id?}/{date_id?}', 'show')->name('show');
-        Route::post('/store', 'store')->name('store');
-        Route::put('/{id}/edit', 'edit')->name('edit');
-        Route::put('/{id}/update', 'update')->name('update');
-        Route::delete('/{id}/destroy', 'destroy')->name('destroy');
+
+            Route::get('/', 'index')->name('index');
+            Route::get('/charts', 'charts')->name('charts');
+            Route::get('/{id?}/{date_id?}', 'show')->name('show');
+            Route::post('/store', 'store')->name('store');
+            Route::put('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}/update', 'update')->name('update');
+            Route::delete('/{id}/destroy', 'destroy')->name('destroy');
         });
     });
     /* FACULTY */
@@ -300,7 +301,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isFaculty'])->prefix('facult
         Route::delete('/{id}/destroy', 'destroy')->name('destroy');
     });
 
- 
+
     /* STUDENT */
     Route::prefix('student')->name('student.')->controller(FacultyStudentController::class)->group(function () {
         Route::get('/', 'index')->name('index');
@@ -339,3 +340,6 @@ Route::get('admin/export/masterlist', 'App\Http\Controllers\ExportController@mas
 
 
 
+Route::get('getIpAddress', function (Request $request) {
+    return $request->ip();
+});

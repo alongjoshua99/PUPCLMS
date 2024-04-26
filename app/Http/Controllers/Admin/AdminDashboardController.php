@@ -10,7 +10,7 @@ use App\Models\Computer;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\DB;
 
 
 class AdminDashboardController extends Controller
@@ -21,31 +21,31 @@ class AdminDashboardController extends Controller
     public function index($filter = null)
     {
         try {
-            //$schedules = $this->getFacultySchedules();
-                // Call the method with a specific date
-            $schedules = TeacherClass::all();
-            
-           // $schedules = Auth::user()->facultyMember->teacherClasses()->get();
-            info("scheduleDates value from iteration: $schedules ");
+            // Call the method with a specific date
+            $schedules = getSchedules();
+            // dd($schedules);
+
             $recentLogs = AttendanceLog::where('student_id', '!=', null)->orderBy('created_at', 'desc')->take(5)->get();
-            
+
             return view('AMS.backend.admin-layouts.dashboard.index', compact('schedules', 'filter'));
         } catch (\Throwable $th) {
-            return redirect()->back()->with('errorAlert', $th->getMessage()); 
+            return redirect()->back()->with('errorAlert', $th->getMessage());
         }
     }
+
+
     private function getFacultySchedules($specificDate = null)
     {
         try {
             // Enable query logging
             DB::enableQueryLog();
-    
+
             // Retrieve the authenticated user's faculty member instance
             $facultyMember = Auth::user()->facultyMember;
-    
+
             // Load the necessary relationships
             $facultyMember->load('teacherClasses.scheduleDates.subject', 'teacherClasses.scheduleDates.section');
-    
+
             // Retrieve the scheduleDates for the specified date
             $scheduleDates = $facultyMember->teacherClasses->flatMap(function ($teacherClass) use ($specificDate) {
                 return $teacherClass->scheduleDates
@@ -61,18 +61,18 @@ class AdminDashboardController extends Controller
                         ];
                     });
             });
-    
+
             // Log the executed queries
             info(DB::getQueryLog());
             info('Faculty Schedules:', $scheduleDates->toArray());
-    
+
             return $scheduleDates;
         } catch (\Throwable $th) {
             // Log or handle the exception if needed
             return collect();
         }
     }
-    
+
 
     /**
      * Show the form for creating a new resource.
@@ -121,5 +121,4 @@ class AdminDashboardController extends Controller
     {
         //
     }
-    
 }

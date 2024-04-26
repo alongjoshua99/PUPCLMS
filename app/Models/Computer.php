@@ -28,21 +28,11 @@ class Computer extends Model
         return $this->hasMany(AttendanceLog::class, 'computer_id');
     }
 
-    public function computerStatusLog()
+    public function log()
     {
-        return $this->hasOne(ComputerStatusLog::class, 'computer_id');
+        return $this->hasOne(ComputerLog::class, 'computer_id');
     }
 
-    public function getStatus()
-    {   
-
-        // Retrieve the latest computer status log (ordered by id in descending order)
-        $status = $this->computerStatusLog;
-        if ($status) {
-            return $status->status;
-        }
-        return $this->status;
-    }
     public function isActive(){
         /* check if there is a student using this computer */
         /* get attendance logs today */

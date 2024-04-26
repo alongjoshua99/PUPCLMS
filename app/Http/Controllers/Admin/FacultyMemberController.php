@@ -132,7 +132,7 @@ class FacultyMemberController extends Controller
     {
         $user = User::find($id);
         $departments = Department::all();
-        $pageTitle = "Faculty - " . $user->facultyMember->getFullName();
+        $pageTitle = "Faculty - " . $user->facultyMember->full_name;
         return view('AMS.backend.admin-layouts.user.show', compact('user', 'departments', 'pageTitle'));
     }
 
@@ -198,10 +198,10 @@ class FacultyMemberController extends Controller
     {
         try {
             $user = User::find($id);
-    
+
             // Generate a random password with at least 10 characters
             $randomPassword = $this->generateRandomPassword(10);
-    
+
             $user->update([
                 'password' => Hash::make($randomPassword),
             ]);

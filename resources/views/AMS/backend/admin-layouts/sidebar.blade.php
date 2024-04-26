@@ -78,12 +78,12 @@
                             <i class="bi bi-circle"></i>
                             <span>Attendance Log</span>
                         </a>
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('admin.report.computer.index') }}">
                             <i class="bi bi-circle"></i>
                             <span>Computer Status Log</span>
                         </a>
-                    </li>
+                    </li> --}}
                     <li>
                         <a href="{{ route('admin.report.schedule.request.index') }}">
                             <i class="bi bi-circle"></i>

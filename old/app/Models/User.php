@@ -61,7 +61,7 @@ class User extends Authenticatable
     }
     public function computerStatusLogs()
     {
-        return $this->hasMany(ComputerStatusLog::class, 'user_id');
+        return $this->hasMany(ComputerLog::class, 'user_id');
     }
     public function logs(){
         return $this->hasMany(Log::class, 'user_id');

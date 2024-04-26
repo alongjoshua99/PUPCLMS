@@ -33,7 +33,7 @@
                                 @foreach ($schedules as $schedule)
                                     <tr>
                                         <td>
-                                            {{ $schedule->teacher->getFullName() }}
+                                            {{ $schedule->teacher->full_name }}
                                         </td>
                                         <td>
                                             <a

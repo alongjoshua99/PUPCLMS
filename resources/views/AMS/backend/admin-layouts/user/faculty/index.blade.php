@@ -6,7 +6,7 @@
         Accounts
     @else
         Informations
-        
+
     @endif
 @endsection
 
@@ -54,7 +54,7 @@
                                     @foreach ($users as $user)
                                         <tr>
                                             <td>
-                                                {{ $user->getName() }}
+                                                {{ $user->full_name }}
 
                                             </td>
 
@@ -114,7 +114,7 @@
                                         <tr>
                                             <td>
                                                 <div class="d-flex flex-column ">
-                                                    <span>{{ $facultyMem->getFullName() }}</span>
+                                                    <span>{{ $facultyMem->full_name }}</span>
                                                     <small>{{ $facultyMem->email }}</small>
                                                 </div>
                                             </td>

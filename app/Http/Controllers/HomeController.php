@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Computer;
 use App\Models\Log;
 use App\Models\SchoolYear;
 use App\Models\Section;
@@ -86,7 +87,6 @@ class HomeController extends Controller
                     if ($schedule->checkIfStudentHasScheduleToday()) {
                         $hasScheduleCounter++;
                     }
-
                 }
                 if ($hasScheduleCounter === 0) {
                     Auth::logout();
@@ -110,11 +110,10 @@ class HomeController extends Controller
 
             // Redirect users based on their roles
             if (Auth::user()->force_change_password) {
-                return redirect()->intended(route(Auth::user()->role->name.'.change-password.index'));
+                return redirect()->intended(route(Auth::user()->role->name . '.change-password.index'));
             }
             switch (Auth::user()->role->name) {
                 case 'admin':
-
                     return redirect()->intended(route('admin.dashboard.index'));
                 case 'faculty':
                     return redirect()->intended(route('faculty.dashboard.index'));
@@ -133,7 +132,7 @@ class HomeController extends Controller
         $request->session()->forget(Auth::id() . "_last_activity");
         // set the user's status to offline
         Auth::user()->status = "Offline";
-       // Auth::user()->save();
+        // Auth::user()->save();
         // create a log
         $log = Log::where('user_id', Auth::id())
             ->whereNull('time_out')
@@ -143,6 +142,11 @@ class HomeController extends Controller
         $log->update([
             'time_out' => now(),
         ]);
+
+        // get the ip address of the computer the student using
+        updateComputerStatus($request, 'logout');
+
+
         //regenerate   session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
