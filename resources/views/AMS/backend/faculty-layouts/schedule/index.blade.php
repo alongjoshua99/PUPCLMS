@@ -32,7 +32,7 @@
                                             {{ $schedule->subject->subject_name }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('faculty.schedule.show', ['id' => $schedule->id]) }}"
+                                            <a href="{{ route('faculty.schedule.show', $schedule) }}"
                                                 class="btn-link text-primary">
                                                 {{ $schedule->section->section_name }}
                                             </a>
@@ -40,8 +40,8 @@
 
                                         <td>
                                             {{-- button with eye icon --}}
-                                            <button class="btn btn-sm btn-link text-info" type="button" data-bs-toggle="modal"
-                                            data-bs-target="#view{{ $schedule->id }}">
+                                            <button class="btn btn-sm btn-link text-info" type="button"
+                                                data-bs-toggle="modal" data-bs-target="#view{{ $schedule->id }}">
                                                 <i class="ri-eye-line"></i>
                                             </button>
                                             @include('AMS.backend.faculty-layouts.schedule.modal._view')
@@ -51,14 +51,11 @@
                                         <td>
                                             <div class="d-flex justify-content-center px-2 py-1">
 
-                                                <button
-                                                    class="btn btn-link text-primary px-3 mb-0"
-                                                    type="button" data-bs-toggle="modal"
-                                                    data-bs-target="#edit{{ $schedule->id }}">
+                                                <a class="btn btn-link text-primary px-3 mb-0"
+                                                    href="{{ route('faculty.schedule.edit', $schedule) }}">
                                                     <i class="ri-edit-line text-primary me-2" aria-hidden="true"></i>
                                                     Reschedule
-                                                </button>
-                                                @include('AMS.backend.faculty-layouts.schedule.modal._edit')
+                                                </a>
 
                                             </div>
                                         </td>

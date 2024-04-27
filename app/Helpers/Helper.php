@@ -9,8 +9,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 if (!function_exists('getSchedules')) {
-    function getSchedules(?int $faculty_id = null, ?int $semester_id = null, ?int $sy_id = null)
+    function getSchedules(?int $faculty_id = null, ?int $teacher_class_id = null, ?bool $displaySectionName = false, ?bool $isForView = false, ?string $url = '', ?int $semester_id = null, ?int $sy_id = null)
     {
+
         $schedules = collect();
         $school_year = getCurrentSY();
 
@@ -20,6 +21,10 @@ if (!function_exists('getSchedules')) {
         if ($faculty_id) {
             $teacher_classes->where('teacher_id', $faculty_id);
         }
+        if ($teacher_class_id) {
+            $teacher_classes->where('id', '!=', $teacher_class_id);
+            // dd($teacher_classes->get());
+        }
 
         if ($semester_id && $sy_id) {
             $teacher_classes->where('semester_id', $semester_id)
@@ -28,7 +33,9 @@ if (!function_exists('getSchedules')) {
             $teacher_classes->where('semester_id', $school_year->semester_id)
                 ->where('sy_id', $school_year->id);
         }
-        // return  $teacher_classes->get();
+        if ($isForView) {
+            return  $teacher_classes->get();
+        }
         foreach ($teacher_classes->get() as $teacher_class) {
             foreach ($teacher_class->scheduleDates as $scheduleDate) {
                 $color = (checkIfComputerLaboratoryIsOccupied($teacher_class->id)) ? '#444'  : $teacher_class->color;
@@ -36,11 +43,53 @@ if (!function_exists('getSchedules')) {
                 $start = Carbon::parse($scheduleDate->date . ' ' . $scheduleDate->start_time)->format('Y-m-d\TH:i:s'); // Combine date and time, format in Moment.js
 
                 $end = Carbon::parse($scheduleDate->date . ' ' . $scheduleDate->end_time)->format('Y-m-d\TH:i:s'); // Combine date and time, format in Moment.js
+                if ($displaySectionName) {
+                    $schedules[] = [
+                        'title' => "{$teacher_class->subject->subject_code} - {$teacher_class->section->section_name}", // Use subject relationship
+                        'start' => $start,
+                        'end' => $end,
+                        'url' => $url,
+                        'color' => $color
+                    ];
+                } else {
+                    $schedules[] = [
+                        'title' => "{$teacher_class->subject->subject_code} - {$teacher_class->teacher->full_name}", // Use subject relationship
+                        'start' => $start,
+                        'end' => $end,
+                        'url' => $url,
+                        'color' => $color
+                    ];
+                }
+            }
+        }
 
+        return $schedules->all(); // Return array instead of object cast
+    }
+}
+if (!function_exists('formatSchedules')) {
+    function formatSchedules($teacher_class, ?bool $displaySectionName = false, ?string $url = '')
+    {
+        $schedules = collect();
+        foreach ($teacher_class->scheduleDates as $scheduleDate) {
+            $color = (checkIfComputerLaboratoryIsOccupied($teacher_class->id)) ? '#444'  : $teacher_class->color;
+
+            $start = Carbon::parse($scheduleDate->date . ' ' . $scheduleDate->start_time)->format('Y-m-d\TH:i:s'); // Combine date and time, format in Moment.js
+
+            $end = Carbon::parse($scheduleDate->date . ' ' . $scheduleDate->end_time)->format('Y-m-d\TH:i:s'); // Combine date and time, format in Moment.js
+            if ($displaySectionName) {
+                $schedules[] = [
+                    'title' => "{$teacher_class->subject->subject_code} - {$teacher_class->section->section_name}", // Use subject relationship
+                    'start' => $start,
+                    'end' => $end,
+                    'url' => $url,
+                    'color' => $color
+                ];
+            } else {
                 $schedules[] = [
                     'title' => "{$teacher_class->subject->subject_code} - {$teacher_class->teacher->full_name}", // Use subject relationship
                     'start' => $start,
                     'end' => $end,
+                    'url' => $url,
                     'color' => $color
                 ];
             }

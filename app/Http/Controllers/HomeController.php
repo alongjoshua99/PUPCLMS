@@ -7,6 +7,7 @@ use App\Models\Log;
 use App\Models\SchoolYear;
 use App\Models\Section;
 use App\Models\Student;
+use App\Models\StudentMasterList;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -23,8 +24,9 @@ class HomeController extends Controller
     public function register(Request $request)
     {
 
+        try {
         $request->validate([
-            'student_no' => 'required',
+            'student_no' => 'required|unique:students,student_no',
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|unique:students,email',
@@ -36,7 +38,10 @@ class HomeController extends Controller
             'section_id' => 'required',
             'section_id' => 'required',
         ]);
-        try {
+        $master_list = StudentMasterList::where('student_id_number', $request->student_no)->first();
+        if (!$master_list) {
+            return redirect()->back()->with('errorAlert', 'Invalid Student Number');
+        }
             $id =  Student::create([
                 'student_no' => $request->student_no,
                 'first_name' => $request->first_name,

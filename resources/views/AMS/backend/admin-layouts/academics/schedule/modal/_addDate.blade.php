@@ -29,8 +29,7 @@
                     <div class="row mb-3">
                         <div class="col-6">
                             <label for="date" class="form-label fw-bold text-black">Date</label>
-                            <input type="date" class="form-control @error('date') is-invalid @enderror"
-                                id="date" name="date">
+                            <input type="date" class="form-control" id="date" name="date">
                             @error('date')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror

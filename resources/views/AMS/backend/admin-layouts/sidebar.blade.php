@@ -87,7 +87,7 @@
                     <li>
                         <a href="{{ route('admin.report.schedule.request.index') }}">
                             <i class="bi bi-circle"></i>
-                            <span>Requests</span>
+                            <span>Schedule Requests</span>
                         </a>
                     </li>
 
@@ -114,6 +114,12 @@
                             <span>Students</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('admin.user.information.master_list.index') }}">
+                            <i class="bi bi-circle"></i>
+                            <span>Student Master Lists</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
 
@@ -122,12 +128,7 @@
                     <i class="ri-user-settings-line"></i><span>User - Accounts</span><i class="bi bi-chevron-down ms-auto"></i>
                 </a>
                 <ul id="users" class="nav-content collapse p-2" data-bs-parent="#sidebar-nav">
-                    <li>
-                    <a href="{{ route('admin.user.account.usermasterlist.index') }}">
-                        <i class="bi bi-circle"></i><span>User's Master List</span>
-                    </a>
 
-                    </li>
                     <li>
                         <a href="{{ route('admin.user.account.faculty.index') }}">
                             <i class="bi bi-circle"></i><span>Faculty</span>

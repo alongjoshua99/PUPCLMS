@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\ScheduleRequestController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\StudentController;
+use App\Http\Controllers\Admin\StudentMasterListController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\UserLogController;
 use App\Http\Controllers\Faculty\ComputerStatusLogController as FacultyComputerStatusLogController;
@@ -164,22 +165,22 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
             });
 
             /* STUDENT */
-            Route::prefix('student')->name('student.')->controller(StudentController::class)->group(function () {
-                Route::get('/{section_id?}', 'index')->name('index');
-                Route::get('/{id}', 'show')->name('show');
+            Route::prefix('student')->name('student.')->group(function () {
+                Route::controller(StudentController::class)->group(function () {
+                    Route::get('/{section_id?}', 'index')->name('index');
+                    Route::get('/{id}', 'show')->name('show');
+                    Route::post('/store', 'store')->name('store');
+                    Route::put('/{id}/edit', 'edit')->name('edit');
+                    Route::put('/{id}/update', 'update')->name('update');
+                    Route::delete('/{id}/destroy', 'destroy')->name('destroy');
+                });
+            });
+            Route::prefix('master_list')->name('master_list.')->controller(StudentMasterListController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
                 Route::post('/store', 'store')->name('store');
-                Route::put('/{id}/edit', 'edit')->name('edit');
-                Route::put('/{id}/update', 'update')->name('update');
-                Route::delete('/{id}/destroy', 'destroy')->name('destroy');
             });
         });
         Route::prefix('account')->name('account.')->group(function () {
-            /* USERS MASTER LIST */
-            Route::prefix('usermasterlist')->name('usermasterlist.')->controller(MasterListController::class)->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::put('/{id}/update', 'update')->name('update');
-                Route::post('/upload', 'upload')->name('upload');
-            });
 
             /* FACULTY */
             Route::prefix('faculty')->name('faculty.')->controller(FacultyMemberController::class)->group(function () {
@@ -291,15 +292,9 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isFaculty'])->prefix('facult
         Route::delete('/{id}/destroy', 'destroy')->name('destroy');
     });
     /* SCHEDULE */
-    Route::prefix('schedule')->name('schedule.')->controller(FacultyScheduleController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('/{id?}/{date_id?}', 'show')->name('show');
-        Route::post('/store', 'store')->name('store');
-        Route::post('/reschedule', 'reschedule')->name('reschedule');
-        Route::put('/{id}/edit', 'edit')->name('edit');
-        Route::put('/{type}/{id}/update', 'update')->name('update');
-        Route::delete('/{id}/destroy', 'destroy')->name('destroy');
-    });
+
+    Route::resource('schedule', FacultyScheduleController::class); // Handles: index, show, store, update, destroy
+    Route::post('/reschedule', [FacultyScheduleController::class, 'reschedule'])->name('schedule.reschedule');
 
 
     /* STUDENT */
@@ -336,7 +331,6 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isStudent'])->prefix('studen
     });
 });
 
-Route::get('admin/export/masterlist', 'App\Http\Controllers\ExportController@masterlist')->name('admin.export.masterlist');
 
 
 

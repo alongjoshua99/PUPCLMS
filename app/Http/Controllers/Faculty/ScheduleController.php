@@ -7,7 +7,9 @@ use App\Models\AttendanceLog;
 use App\Models\ScheduleDate;
 use App\Models\ScheduleRequest;
 use App\Models\SchoolYear;
+use App\Models\TeacherClass;
 use Carbon\Carbon;
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,7 +20,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $teacherClasses = Auth::user()->facultyMember->teacherClasses->sortBy('date', SORT_REGULAR, true);
+        $teacherClasses = getSchedules(Auth::user()->faculty_member_id, null, false, true);
         return view('AMS.backend.faculty-layouts.schedule.index', compact('teacherClasses'));
     }
 
@@ -41,10 +43,10 @@ class ScheduleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id, $date_id = null)
+    public function show(TeacherClass $schedule, $date_id = null)
     {
         try {
-            $schedule = Auth::user()->facultyMember->teacherClasses()->findOrFail($id);
+            $schedule = Auth::user()->facultyMember->teacherClasses()->findOrFail($schedule->id);
             $section = $schedule->section->section_name;
             $subject = $schedule->subject->subject_name;
             if ($date_id) {
@@ -62,19 +64,19 @@ class ScheduleController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(TeacherClass $schedule)
     {
-        //
+        // dd($schedule->subject, getSchedules(null, $schedule->id));
+        return view('AMS.backend.faculty-layouts.schedule.edit', ['schedule' => $schedule, 'schedules' => getSchedules(null, $schedule->id, true)]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update($type, string $id)
+    public function update($type, TeacherClass $schedule)
     {
         try {
             $sy = SchoolYear::where('is_active', 1)->first();
-            $schedule = ScheduleDate::findOrFail($id);
             if ($type === "in") {
                 AttendanceLog::create([
                     'teacher_class_id' => $schedule->teacher_class_id,
@@ -100,7 +102,7 @@ class ScheduleController extends Controller
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }
     }
-    
+
     /**
      * Remove the specified resource from storage.
      */
@@ -108,30 +110,26 @@ class ScheduleController extends Controller
     {
         try {
             if ($request->has('reason') && $request->reason != null) {
-                info("date value from input: $request->date_id ");
+                info("date value from input: $request->old_date_id ");
                 ScheduleRequest::create([
-                    
-                    'date_id' => $request->date_id,
-
+                    'date_id' => $request->old_date_id,
                     'new_date' => $request->new_date,
                     'start_time' => $request->start_time,
                     'end_time' => $request->end_time,
                     'reason' => $request->reason,
                 ]);
-            }else{
-                info("date value reason null: $request->date_id ");
+            } else {
+                info("date value reason null: $request->old_date_id ");
                 ScheduleRequest::create([
-                    'date_id' => $request->date_id,
+                    'date_id' => $request->old_date_id,
                     'new_date' => $request->new_date,
                     'start_time' => $request->start_time,
                     'end_time' => $request->end_time,
                 ]);
-
             }
             return redirect()->back()->with('successToast', 'Request sent');
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }
     }
-    
 }

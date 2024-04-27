@@ -28,7 +28,7 @@
                     <div class="card-body">
 
                         <!-- Table with stripped rows -->
-                        <table class="table" id="schedules-table">
+                        {{-- <table class="table" id="schedules-table">
                             <thead>
                                 <tr>
                                     <th scope="col">Date</th>
@@ -63,7 +63,7 @@
                                    </tr>
                                 @endforeach
                             </tbody>
-                        </table>
+                        </table> --}}
 
                     </div>
                 </div>
@@ -72,12 +72,30 @@
         </div>
     </section>
 @endsection
+@section('styles')
+    <script src="{{ asset('assets/packages/fullcalendar-6.1.8/packages/core/index.global.min.js') }}"></script>
+    <script src="{{ asset('assets/packages/fullcalendar-6.1.8/packages/daygrid/index.global.min.js') }}"></script>
+@endsection
 @section('scripts')
     <script>
-        $(document).ready(function() {
-            $('#schedules-table').DataTable({
-                "ordering": false
+            document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    events: [
+                        @foreach ($schedules as $schedule)
+                        {
+                                    title: '{{ $schedule['title'] }}',
+                                    start: '{{ $schedule['start'] }}',
+                                    end: '{{ $schedule['end'] }}',
+                                    color: '{{  $schedule['color'] }}', // Assign a unique color for each subject
+                                    textColor: 'white'
+                                },
+                        @endforeach
+                    ]
+                });
+                calendar.render();
             });
-        });
     </script>
 @endsection
+

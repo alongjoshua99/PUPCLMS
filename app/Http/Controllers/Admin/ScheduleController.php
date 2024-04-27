@@ -96,7 +96,8 @@ class ScheduleController extends Controller
     {
         try {
             $schedule = TeacherClass::find($id);
-            return view('AMS.backend.admin-layouts.academics.schedule.edit', compact('schedule'));
+            $schedules = formatSchedules($schedule);
+            return view('AMS.backend.admin-layouts.academics.schedule.edit', compact('schedule', 'schedules'));
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }
