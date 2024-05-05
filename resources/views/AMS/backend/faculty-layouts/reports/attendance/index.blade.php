@@ -20,8 +20,10 @@
                         <table class="table" id="schedules-table">
                             <thead>
                                 <tr>
-                                    <th scope="col">Teacher</th>
+                                    <th scope="col">#</th>
+                                    {{-- <th scope="col">Teacher</th> --}}
                                     <th scope="col">Students</th>
+                                    <th scope="col">Section</th>
                                     <th scope="col">Subject</th>
                                 </tr>
                             </thead>
@@ -29,11 +31,16 @@
                                 @foreach ($schedules as $schedule)
                                     <tr>
                                         <td>
-                                            {{ $schedule->teacher->full_name }}
+                                            {{ $loop->index + 1 }}
                                         </td>
                                         <td>
                                             <a
-                                                href="{{ route('faculty.report.attendance.show', ['id' => $schedule->id]) }}">{{ $schedule->section->section_name }}</a>
+                                                href="{{ route('faculty.report.attendance.show', ['id' => $schedule->id]) }}">
+                                                {{ $schedule->section->section_name }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            {{ $schedule->attendanceLogs()->count() }}
                                         </td>
                                         <td>
                                             {{ $schedule->subject->subject_name }}

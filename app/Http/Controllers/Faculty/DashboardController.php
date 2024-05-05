@@ -17,7 +17,7 @@ class DashboardController extends Controller
     {
         try {
 
-            $schedules = getSchedules(Auth::user()->faculty_member_id);
+            $schedules = getSchedules();
             $recentLogs = AttendanceLog::where('student_id','!=', null)->orderBy('created_at', 'desc')->take(5)->get();
             $recentLogs = AttendanceLog::where('student_id','!=', null)->orderBy('created_at', 'desc')->take(5)->get();
             return view('AMS.backend.faculty-layouts.dashboard.index', compact('schedules', 'filter'));

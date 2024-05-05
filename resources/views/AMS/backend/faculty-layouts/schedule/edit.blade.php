@@ -101,8 +101,7 @@
     </section>
 @endsection
 @section('styles')
-    <script src="{{ asset('assets/packages/fullcalendar-6.1.8/packages/core/index.global.min.js') }}"></script>
-    <script src="{{ asset('assets/packages/fullcalendar-6.1.8/packages/daygrid/index.global.min.js') }}"></script>
+<script src="{{ asset('assets/packages/fullcalendar-6.1.8/dist/index.global.min.js') }}"></script>
 @endsection
 @section('scripts')
     <script>
@@ -110,6 +109,12 @@
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
+                nowIndicator: true,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
                 height: 500, // Set height to 500 pixels
                 events: [
                     @foreach ($schedules as $schedule)

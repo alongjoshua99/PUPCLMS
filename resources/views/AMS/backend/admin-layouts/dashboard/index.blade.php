@@ -86,28 +86,33 @@
     </section>
 @endsection
 @section('styles')
-    <script src="{{ asset('assets/packages/fullcalendar-6.1.8/packages/core/index.global.min.js') }}"></script>
-    <script src="{{ asset('assets/packages/fullcalendar-6.1.8/packages/daygrid/index.global.min.js') }}"></script>
+    <script src="{{ asset('assets/packages/fullcalendar-6.1.8/dist/index.global.min.js') }}"></script>
 @endsection
 @section('scripts')
     <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                var calendarEl = document.getElementById('calendar');
-                var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    events: [
-                        @foreach ($schedules as $schedule)
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                nowIndicator: true,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                },
+                events: [
+                    @foreach ($schedules as $schedule)
                         {
-                                    title: '{{ $schedule['title'] }}',
-                                    start: '{{ $schedule['start'] }}',
-                                    end: '{{ $schedule['end'] }}',
-                                    color: '{{  $schedule['color'] }}', // Assign a unique color for each subject
-                                    textColor: 'white'
-                                },
-                        @endforeach
-                    ]
-                });
-                calendar.render();
+                            title: '{{ $schedule['title'] }}',
+                            start: '{{ $schedule['start'] }}',
+                            end: '{{ $schedule['end'] }}',
+                            color: '{{ $schedule['color'] }}', // Assign a unique color for each subject
+                            textColor: 'white'
+                        },
+                    @endforeach
+                ]
             });
+            calendar.render();
+        });
     </script>
 @endsection

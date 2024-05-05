@@ -12,9 +12,13 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between border-bottom-0">
                         <h3 class="text-maroon">@yield('page-title')</h3>
-                        <button class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#add">Add
-                            Schedule</button>
-                    @include('AMS.backend.admin-layouts.academics.schedule.modal._add')
+                        {{-- <button class="btn btn-outline-maroon" data-bs-toggle="modal" data-bs-target="#add">
+                            Add Schedule
+                        </button>
+                        @include('AMS.backend.admin-layouts.academics.schedule.modal._add') --}}
+                        <a class="btn btn-outline-maroon" href="{{ route('admin.academic.schedule.create') }}">
+                            Add Schedule
+                        </a>
 
                     </div>
                     <div class="card-body">

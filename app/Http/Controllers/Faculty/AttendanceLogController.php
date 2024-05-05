@@ -10,16 +10,14 @@ use App\Models\ScheduleDate;
 use App\Models\SchoolYear;
 use App\Models\Semester;
 use App\Models\TeacherClass;
+use Illuminate\Support\Facades\Auth;
 
 class AttendanceLogController extends Controller
 {
     public function index()
     {
 
-        $schedules = TeacherClass::with(['attendanceLogs' => function ($query) {
-            $query->where('sy_id', SchoolYear::where('is_active', true)->first()->id)
-                ->where('semester_id', SchoolYear::where('is_active', true)->first()->semester_id);
-        }])->get();
+        $schedules = getSchedules(Auth::user()->faculty_member_id, null, false, true);
 
         return view('AMS.backend.faculty-layouts.reports.attendance.index', compact('schedules'));
     }
@@ -84,7 +82,7 @@ class AttendanceLogController extends Controller
             $subject = $schedule->subject->subject_name;
             $ScheduleDate = null;
             if ($date_id) {
-                $ScheduleDate = ScheduleDate::find($date_id); 
+                $ScheduleDate = ScheduleDate::find($date_id);
             }
             return view('AMS.backend.faculty-layouts.reports.attendance.show', compact('schedule','section', 'subject','ScheduleDate'));
         } catch (\Throwable $th) {

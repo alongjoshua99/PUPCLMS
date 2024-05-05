@@ -98,8 +98,14 @@ if (!function_exists('formatSchedules')) {
         return $schedules->all(); // Return array instead of object cast
     }
 }
+if (!function_exists('countStudents')) {
+    function countStudents($teacher_class)
+    {
+        
+    }
+}
 
-
+if (!function_exists('checkIfComputerLaboratoryIsOccupied')) {
 function checkIfComputerLaboratoryIsOccupied($teacher_class_id)
 {
     return AttendanceLog::with('teacherClass') // Eager load Teacher relationship
@@ -109,6 +115,7 @@ function checkIfComputerLaboratoryIsOccupied($teacher_class_id)
         ->whereNull('time_out')
         ->whereDate('created_at', now())
         ->first();
+}
 }
 
 if (!function_exists('getCurrentSY')) {

@@ -109,24 +109,21 @@ class ScheduleController extends Controller
     public function reschedule(Request $request)
     {
         try {
-            if ($request->has('reason') && $request->reason != null) {
-                info("date value from input: $request->old_date_id ");
-                ScheduleRequest::create([
-                    'date_id' => $request->old_date_id,
-                    'new_date' => $request->new_date,
-                    'start_time' => $request->start_time,
-                    'end_time' => $request->end_time,
-                    'reason' => $request->reason,
-                ]);
-            } else {
-                info("date value reason null: $request->old_date_id ");
-                ScheduleRequest::create([
-                    'date_id' => $request->old_date_id,
-                    'new_date' => $request->new_date,
-                    'start_time' => $request->start_time,
-                    'end_time' => $request->end_time,
-                ]);
-            }
+            $request->validate([
+                'old_date_id' => 'required',
+                'new_date' => 'after:now|required',
+                'start_time' => 'required',
+                'end_time' => 'required',
+                'reason' => 'required',
+            ]);
+            ScheduleRequest::create([
+                'date_id' => $request->old_date_id,
+                'new_date' => $request->new_date,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time,
+                'reason' => $request->reason,
+            ]);
+
             return redirect()->back()->with('successToast', 'Request sent');
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorAlert', $th->getMessage());

@@ -16,22 +16,24 @@ class SemesterSeeder extends Seeder
         $data = [
             [
                 'name' => '1st Semester',
-                'start_date' => '2021-06-01',
-                'end_date' => '2021-10-31',
+                'start_date' => '2024-06-01',
+                'end_date' => '2024-10-31',
             ],
             [
                 'name' => '2nd Semester',
-                'start_date' => '2021-11-01',
-                'end_date' => '2022-03-31',
+                'start_date' => '2024-11-01',
+                'end_date' => '2025-03-31',
             ],
             [
                 'name' => 'Summer',
-                'start_date' => '2022-04-01',
-                'end_date' => '2022-05-31',
+                'start_date' => '2025-04-01',
+                'end_date' => '2025-05-31',
             ],
         ];
+
         foreach ($data as $key => $value) {
             \App\Models\Semester::create($value);
         }
+
     }
 }

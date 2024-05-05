@@ -70,6 +70,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
         /* SCHEDULE */
         Route::prefix('schedule')->name('schedule.')->controller(ScheduleController::class)->group(function () {
             Route::get('/', 'index')->name('index');
+            Route::get('/create', 'create')->name('create');
             Route::get('/{id}', 'show')->name('show');
             Route::post('/store/{id}', 'store')->name('store');
             Route::get('/{id}/edit', 'edit')->name('edit');

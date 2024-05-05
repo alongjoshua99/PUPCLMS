@@ -1,23 +1,33 @@
-@extends('AMS.backend.faculty-layouts.sidebar')
+@extends('AMS.backend.admin-layouts.sidebar')
 
 @section('page-title')
-    Dashboard
+    Create schedule
 @endsection
 
 @section('contents')
     <section class="section">
         <div class="row">
-            <div class="col-12">
+            <div class="col-lg-12">
                 <div class="card">
-
-                    <div class="card-header">
-                        <h5 class="mb-0">Schedules</h5>
+                    <div class="card-header d-flex justify-content-between border-bottom-0">
+                        <h3 class="text-maroon">@yield('page-title')</h3>
+                        {{-- back button --}}
+                        <div class="d-flex">
+                            <a href="{{ route('admin.academic.schedule.index') }}" class="btn btn-maroon me-1">
+                                <i class="ri-arrow-go-back-line"></i>
+                                Back
+                            </a>
+                        </div>
                     </div>
-
-                    <div class="card-body p-3">
-
-                        <div id='calendar'></div>
-
+                    <div class="card-body mt-5">
+                        <div class="row">
+                            <div class="col-6">
+                                <div id='calendar'></div>
+                            </div>
+                            <div class="col-6">
+                                <livewire:admin.schedule.add />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -19,7 +19,7 @@ class ScheduleController extends Controller
      */
     public function index()
     {
-        $schedules = TeacherClass::all();
+        $schedules = getSchedules(null,null,null,true);
         $teachers = FacultyMember::with('department')->where('department_id', 2)->get();
         $subjects = Subject::all();
         $sections = Section::all();
@@ -32,7 +32,10 @@ class ScheduleController extends Controller
      */
     public function create()
     {
-        //
+        // dd(getSchedules());
+        return view('AMS.backend.admin-layouts.academics.schedule.create', [
+            'schedules'=> getSchedules()
+        ]);
     }
 
     /**
