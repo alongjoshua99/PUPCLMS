@@ -21,10 +21,9 @@
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    {{-- <th scope="col">Teacher</th> --}}
-                                    <th scope="col">Students</th>
                                     <th scope="col">Section</th>
                                     <th scope="col">Subject</th>
+                                    <th scope="col">Dates</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -34,16 +33,26 @@
                                             {{ $loop->index + 1 }}
                                         </td>
                                         <td>
-                                            <a
-                                                href="{{ route('faculty.report.attendance.show', ['id' => $schedule->id]) }}">
-                                                {{ $schedule->section->section_name }}
-                                            </a>
-                                        </td>
-                                        <td>
-                                            {{ $schedule->attendanceLogs()->count() }}
+                                            {{ $schedule->section->section_name }}
                                         </td>
                                         <td>
                                             {{ $schedule->subject->subject_name }}
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-outline-maroon dropdown-toggle" type="button"
+                                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    Dates
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    @foreach ($schedule->scheduleDates as $schedule_date)
+                                                        <li><a class="dropdown-item"
+                                                                href="{{ route('faculty.report.attendance.show', ['id' => $schedule->id, 'date_id' => $schedule_date->id]) }}">{{ date('F d, Y', strtotime($schedule_date->date)) }}</a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+
+                                            </div>
                                         </td>
 
                                     </tr>
