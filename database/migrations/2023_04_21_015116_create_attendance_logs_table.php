@@ -21,9 +21,6 @@ return new class extends Migration
             $table->foreignId('faculty_member_id')
                 ->nullable()
                 ->constrained('faculty_members');
-            $table->foreignId('computer_id')
-                ->nullable()
-                ->constrained('computers');
             $table->foreignId('sy_id')
                 ->constrained('school_years');
             $table->foreignId('semester_id')

@@ -66,7 +66,7 @@ class ScheduleController extends Controller
      */
     public function edit(TeacherClass $schedule)
     {
-        // dd($schedule->subject, getSchedules(null, $schedule->id));
+        // dd($schedule, getSchedules(null, $schedule->id));
         return view('AMS.backend.faculty-layouts.schedule.edit', ['schedule' => $schedule, 'schedules' => getSchedules(null, $schedule->id, true)]);
     }
 

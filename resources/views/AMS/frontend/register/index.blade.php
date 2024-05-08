@@ -41,23 +41,6 @@
             </div>
             <div class="row mb-3">
                 <div class="col-12">
-                    <label for="date_of_birth" class="form-label fw-bold">Date of Birth:</label>
-                    <input type="date" class="form-control" id="date_of_birth" name="date_of_birth" required>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-5">
-                    <label for="gender" class="form-label fw-bold">Gender:</label>
-                    <select class="form-control" id="gender" name="gender" required>
-                        <option value="">Select Gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                </div>
-
-            </div>
-            <div class="row mb-3">
-                <div class="col-12">
                     <label for="section_id" class="form-label fw-bold">Section:</label>
                     <select class="form-control" id="section_id" name="section_id" required>
                         <option value="">Select Section</option>

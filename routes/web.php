@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\FacultyMemberController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\ScheduleController;
 use App\Http\Controllers\Admin\ScheduleRequestController;
+use App\Http\Controllers\Admin\SchoolYearController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentMasterListController;
@@ -104,6 +105,12 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
         Route::post('/store', 'store')->name('store');
         Route::put('/{id}/update', 'update')->name('update');
         Route::delete('/{id}/destroy', 'destroy')->name('destroy');
+    });
+    Route::prefix('school-year')->name('school-year.')->controller(SchoolYearController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('/store', 'store')->name('store');
+        Route::put('/{id}/edit', 'edit')->name('edit');
+        Route::put('/{id}/update', 'update')->name('update');
     });
 
     /* REPORTS */

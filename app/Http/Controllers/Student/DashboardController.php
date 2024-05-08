@@ -13,7 +13,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $schedules = Auth::user()->student->section->schedules()->get();
+        $schedules = getSchedulesForSection(Auth::user()->student->section_id);
+
 
         return view('AMS.backend.student-layouts.dashboard.index', compact('schedules'));
     }

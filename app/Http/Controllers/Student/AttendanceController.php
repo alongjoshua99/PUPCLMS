@@ -19,9 +19,18 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        $schedules = Auth::user()->student->getScheduleBy('today');
-        $computers = Computer::all();
-        return view('AMS.backend.student-layouts.attendance.index', compact('schedules', 'computers'));
+        $school_year = getCurrentSY();
+        $schedules = Auth::user()
+        ->student
+        ->section
+        ->schedules()
+        ->whereHas('scheduleDates', function($query){
+            $query->whereDate('date' , now());
+        })
+        ->where('semester_id', $school_year->semester_id)
+        ->where('sy_id', $school_year->id)
+        ->get();
+        return view('AMS.backend.student-layouts.attendance.index', compact('schedules'));
     }
 
     /**
@@ -62,10 +71,7 @@ class AttendanceController extends Controller
     public function update(Request $request, string $id)
     {
         try {
-            $request->validate([
-                'computer_id' => 'required',
-            ]);
-            $sy = SchoolYear::where('is_active', 1)->first();
+            $school_year = getCurrentSY();
 
             $remark = '';
             $schedule = TeacherClass::find($id);
@@ -85,12 +91,10 @@ class AttendanceController extends Controller
             AttendanceLog::create([
                 'teacher_class_id' => $id,
                 'student_id' => Auth::user()->student->id,
-                'computer_id' => $request->computer_id,
-                'sy_id' => $sy->id,
-                'semester_id' => $sy->semester_id,
+                'sy_id' => $school_year->id,
+                'semester_id' => $school_year->semester_id,
                 'remarks' => 'Present',
                 'time_in' => now(),
-
             ]);
             return redirect()->back()->with('successToast', 'Attendance successfully logged!');
         } catch (\Throwable $th) {

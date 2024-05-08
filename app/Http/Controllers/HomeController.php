@@ -30,15 +30,17 @@ class HomeController extends Controller
             'first_name' => 'required',
             'last_name' => 'required',
             'email' => 'required|unique:students,email',
-            'date_of_birth' => 'required|date',
             'phone' => 'required',
-            'gender' => 'required',
             'password' => 'required|confirmed',
             'password_confirmation' => 'required|same:password',
             'section_id' => 'required',
             'section_id' => 'required',
         ]);
         $master_list = StudentMasterList::where('student_id_number', $request->student_no)->first();
+        $master_list_count = StudentMasterList::count();
+        if ($master_list_count == 0) {
+            return redirect()->back()->with('errorAlert', 'No Masterlist');
+        }
         if (!$master_list) {
             return redirect()->back()->with('errorAlert', 'Invalid Student Number');
         }
@@ -47,9 +49,7 @@ class HomeController extends Controller
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'email' => Str::lower($request->email),
-                'date_of_birth' => $request->date_of_birth,
                 'phone' => $request->phone,
-                'gender' => $request->gender,
                 'address' => $request->address,
                 'section_id' => $request->section_id,
                 'course_id' => Section::find($request->section_id)->course->id,
@@ -61,7 +61,7 @@ class HomeController extends Controller
                 'role_id' => 4,
                 'student_id' => $id,
             ]);
-            return redirect()->back()->with('successToast', 'Registration Successful');
+            return redirect()->route('login.index')->with('successToast', 'Registration Successful');
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }
@@ -84,20 +84,20 @@ class HomeController extends Controller
 
         if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
             // Check if the user is a student and has a schedule today
-            if (Auth::user()->role->name === 'student') {
-                $student = Student::find(Auth::user()->student_id);
-                $hasScheduleCounter = 0;
-                // dd($student->section->schedules);
-                foreach ($student->section->schedules as $schedule) {
-                    if ($schedule->checkIfStudentHasScheduleToday()) {
-                        $hasScheduleCounter++;
-                    }
-                }
-                if ($hasScheduleCounter === 0) {
-                    Auth::logout();
-                    return redirect()->back()->with('errorAlert', 'You have no schedule today');
-                }
-            }
+            // if (Auth::user()->role->name === 'student') {
+            //     $student = Student::find(Auth::user()->student_id);
+            //     $hasScheduleCounter = 0;
+            //     // dd($student->section->schedules);
+            //     foreach ($student->section->schedules as $schedule) {
+            //         if ($schedule->checkIfStudentHasScheduleToday()) {
+            //             $hasScheduleCounter++;
+            //         }
+            //     }
+            //     if ($hasScheduleCounter > 0) {
+            //         Auth::logout();
+            //         return redirect()->back()->with('errorAlert', 'You have no schedule today');
+            //     }
+            // }
 
             // Authentication was successful...
             Auth::user()->status = "Online";

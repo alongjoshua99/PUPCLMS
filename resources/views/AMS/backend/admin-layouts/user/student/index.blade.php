@@ -106,10 +106,8 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Gender</th>
                                         <th scope="col">Phone</th>
                                         <th scope="col">Address</th>
-                                        <th scope="col">Date of birth</th>
                                         <th scope="col">Section & Course</th>
                                         <th scope="col" class="text-center">Action</th>
                                     </tr>
@@ -123,10 +121,8 @@
                                                     <small>{{ $student->email }}</small>
                                                 </div>
                                             </td>
-                                            <td>{{ $student->gender }}</td>
                                             <td>{{ $student->phone }}</td>
                                             <td>{{ $student->address }}</td>
-                                            <td>{{ date('F d, Y', strtotime($student->date_of_birth)) }}</td>
                                             <td>
                                                 <div class="d-flex flex-column">
                                                     <span>{{ $student->section->section_name }}</span>

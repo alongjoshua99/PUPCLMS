@@ -29,6 +29,6 @@ class SchoolYear extends Model
     }
     public function semester()
     {
-        return $this->belongsTo(Semester::class, 'sy_id');
+        return $this->belongsTo(Semester::class, 'semester_id');
     }
 }

@@ -31,21 +31,7 @@
                     @method('PUT')
                     <div class="modal-body">
                         {{-- generate a select of computers --}}
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <label for="computer" class="form-label">Computer</label>
-                                <select class="form-select" aria-label="Default select example" name="computer_id"
-                                    required>
-                                    <option selected disabled>Select Computer</option>
-                                    @foreach ($computers as $computer)
-                                        @if ($computer->getStatus() == 'Working' && !$computer->isActive())
-                                            <option value="{{ $computer->id }}">{{ $computer->computer_name }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
 
-                            </div>
-                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

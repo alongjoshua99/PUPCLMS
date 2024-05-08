@@ -17,11 +17,10 @@ class DashboardController extends Controller
     {
         try {
 
-            $schedules = getSchedules();
+            $schedules = getSchedules(Auth::user()->faculty_member_id);
             $recentLogs = AttendanceLog::where('student_id','!=', null)->orderBy('created_at', 'desc')->take(5)->get();
             $recentLogs = AttendanceLog::where('student_id','!=', null)->orderBy('created_at', 'desc')->take(5)->get();
             return view('AMS.backend.faculty-layouts.dashboard.index', compact('schedules', 'filter'));
-            dd('Invalid filter.');
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }

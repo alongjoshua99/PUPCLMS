@@ -42,7 +42,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
+                initialView: 'timeGridWeek',
                 nowIndicator: true,
                 headerToolbar: {
                     left: 'prev,next today',
@@ -61,6 +61,7 @@
                     @endforeach
                 ]
             });
+            calendar.setOption('weekends', false);
             calendar.render();
         });
     </script>

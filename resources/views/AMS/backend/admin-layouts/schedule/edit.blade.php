@@ -81,7 +81,7 @@
             document.addEventListener('DOMContentLoaded', function() {
                 var calendarEl = document.getElementById('calendar');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
+                    initialView: 'timeGridWeek',
                     events: [
                         @foreach ($schedules as $schedule)
                         {
@@ -94,7 +94,8 @@
                         @endforeach
                     ]
                 });
-                calendar.render();
+               calendar.setOption('weekends', false);
+            calendar.render();
             });
     </script>
 @endsection

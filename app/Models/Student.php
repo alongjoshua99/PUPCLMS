@@ -47,7 +47,7 @@ class Student extends Model
         $query = $this->section->schedules()->whereHas('scheduleDates', function ($query) use ($type) {
             switch ($type) {
                 case 'today':
-                    $query->whereDate('schedule_dates.date', now()->format('Y-m-d'));
+                    $query->whereDate('date', now()->format('Y-m-d'));
                     break;
                 case 'week':
                     $query->whereBetween('schedule_dates.date', [
@@ -64,14 +64,11 @@ class Student extends Model
             }
         });
         
-        $schedule = $query->get();
+
         
         
 
-        if ($schedule) {
-            return $schedule;
-        }
-        return collect();
+        return $query->get();
     }
     public function checkIfStudentHasSchedule()
     {

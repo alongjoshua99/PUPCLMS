@@ -66,6 +66,46 @@ if (!function_exists('getSchedules')) {
         return $schedules->all(); // Return array instead of object cast
     }
 }
+if (!function_exists('getSchedulesForSection')) {
+    function getSchedulesForSection(int $section_id, ?string $url = '', ?int $semester_id = null, ?int $sy_id = null)
+    {
+
+        $schedules = collect();
+        $school_year = getCurrentSY();
+
+        $teacher_classes = TeacherClass::query()
+            ->with('scheduleDates')  // Eager load subject relationship
+            ->where('section_id', $section_id);
+      
+
+        if ($semester_id && $sy_id) {
+            $teacher_classes->where('semester_id', $semester_id)
+                ->where('sy_id', $sy_id);
+        } else {
+            $teacher_classes->where('semester_id', $school_year->semester_id)
+                ->where('sy_id', $school_year->id);
+        }
+        foreach ($teacher_classes->get() as $teacher_class) {
+            foreach ($teacher_class->scheduleDates as $scheduleDate) {
+                $color = (checkIfComputerLaboratoryIsOccupied($teacher_class->id)) ? '#444'  : $teacher_class->color;
+
+                $start = Carbon::parse($scheduleDate->date . ' ' . $scheduleDate->start_time)->format('Y-m-d\TH:i:s'); // Combine date and time, format in Moment.js
+
+                $end = Carbon::parse($scheduleDate->date . ' ' . $scheduleDate->end_time)->format('Y-m-d\TH:i:s'); // Combine date and time, format in Moment.js
+                
+                $schedules[] = [
+                    'title' => "{$teacher_class->subject->subject_code} - {$teacher_class->teacher->full_name}", // Use subject relationship
+                    'start' => $start,
+                    'end' => $end,
+                    'url' => $url,
+                    'color' => $color
+                ];
+            }
+        }
+
+        return $schedules->all(); // Return array instead of object cast
+    }
+}
 if (!function_exists('formatSchedules')) {
     function formatSchedules($teacher_class, ?bool $displaySectionName = false, ?string $url = '')
     {
@@ -101,21 +141,20 @@ if (!function_exists('formatSchedules')) {
 if (!function_exists('countStudents')) {
     function countStudents($teacher_class)
     {
-        
     }
 }
 
 if (!function_exists('checkIfComputerLaboratoryIsOccupied')) {
-function checkIfComputerLaboratoryIsOccupied($teacher_class_id)
-{
-    return AttendanceLog::with('teacherClass') // Eager load Teacher relationship
-        ->where('teacher_class_id', $teacher_class_id)
-        ->where('faculty_member_id', '!=', null)
-        ->whereNotNull('time_in')
-        ->whereNull('time_out')
-        ->whereDate('created_at', now())
-        ->first();
-}
+    function checkIfComputerLaboratoryIsOccupied($teacher_class_id)
+    {
+        return AttendanceLog::with('teacherClass') // Eager load Teacher relationship
+            ->where('teacher_class_id', $teacher_class_id)
+            ->where('faculty_member_id', '!=', null)
+            ->whereNotNull('time_in')
+            ->whereNull('time_out')
+            ->whereDate('created_at', now())
+            ->first();
+    }
 }
 
 if (!function_exists('getCurrentSY')) {

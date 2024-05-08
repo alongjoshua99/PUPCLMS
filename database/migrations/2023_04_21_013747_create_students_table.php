@@ -19,8 +19,6 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->string('address');
-            $table->date('date_of_birth');
-            $table->string('gender');
             $table->unsignedBigInteger('section_id');
             $table->unsignedBigInteger('course_id');
             $table->unsignedBigInteger('sy_id');

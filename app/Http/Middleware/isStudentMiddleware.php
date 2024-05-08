@@ -22,7 +22,7 @@ class isStudentMiddleware
     {
         // Check if the user is a student
         if (Auth::user()->role->name !== 'student') {
-            return redirect()->back()->with('errorAlert', 'For Student error, You are not authorized to access this page');
+            return redirect()->back()->with('errorAlert', ' You are not authorized to access this page');
         }
 
         // Check if the student has a schedule today
@@ -32,11 +32,11 @@ class isStudentMiddleware
         $semester = $student->section->schedules()->first()->semester;
 
         // Check if the semester is active
-        $currentDate = now()->format('Y-m-d');
-        if (!$semester || !$semester->isActiveOnDate($currentDate)) {
-            // Perform necessary actions when the semester is not active
-            return $this->handleInactiveSemester($request);
-        }
+        // $currentDate = now()->format('Y-m-d');
+        // if (!$semester || !$semester->isActiveOnDate($currentDate)) {
+        //     // Perform necessary actions when the semester is not active
+        //     return $this->handleInactiveSemester($request);
+        // }
 
         // Check if the student has a schedule today
         $hasScheduleCounter = 0;
@@ -47,7 +47,7 @@ class isStudentMiddleware
         }
 
         // If the student has no schedule, log them out
-        if ($hasScheduleCounter === 0) {
+        if ($hasScheduleCounter > 0) {
             return $this->handleNoSchedule($request);
         }
 

@@ -57,7 +57,16 @@
                     <i class="ri-computer-line"></i><span>Computers</span>
                 </a>
 
-            </li><!-- End Components Nav -->
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::is('admin.school-year.index') ? 'active' : '' }}"
+                    href="{{ route('admin.school-year.index') }}">
+                    <i class="ri-book-open-line"></i>
+                    <span>School Years</span>
+                </a>
+
+            </li>
+            <!-- End Components Nav -->
 
             {{--  <li class="nav-item">
                 <a class="nav-link "  href="">
@@ -67,7 +76,6 @@
             </li> --}}
             <!-- End Forms Nav -->
 
-            </li>
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#reports" data-bs-toggle="collapse" href="#">
                     <i class="ri-booklet-line"></i><span>Reports</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -78,12 +86,12 @@
                             <i class="bi bi-circle"></i>
                             <span>Attendance Log</span>
                         </a>
-                    {{-- <li>
+                    <li>
                         <a href="{{ route('admin.report.computer.index') }}">
                             <i class="bi bi-circle"></i>
-                            <span>Computer Status Log</span>
+                            <span>Computer Log</span>
                         </a>
-                    </li> --}}
+                    </li>
                     <li>
                         <a href="{{ route('admin.report.schedule.request.index') }}">
                             <i class="bi bi-circle"></i>
