@@ -73,7 +73,7 @@ class ScheduleController extends Controller
     public function update($type, string $id)
     {
         try {
-            $sy = SchoolYear::where('is_active', 1)->first();
+            $sy = getCurrentSY();
             $schedule = ScheduleDate::findOrFail($id);
             if ($type === "in") {
                 AttendanceLog::create([

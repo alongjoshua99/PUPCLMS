@@ -47,7 +47,7 @@ class ScheduleController extends Controller
                 'date' => 'required',
             ]);
 
-            $sy = SchoolYear::where('is_active', 1)->first();
+            $sy = getCurrentSY();
             $scheduleDates = ScheduleDate::with('schedule')
                 ->whereHas('schedule', function ($query) use ($sy) {
                     $query->where('sy_id', $sy->id)

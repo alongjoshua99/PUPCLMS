@@ -96,7 +96,7 @@ class Add extends Component
             '#17becf', '#1b9e77', '#d95f02', '#7570b3', '#e7298a'
         ];
         $color = $colors[random_int(0, count($colors) - 1)];
-        $sy = SchoolYear::where('is_active', 1)->first();
+        $sy = getCurrentSY();
         $generatedColor = TeacherClass::where('sy_id',$sy->id)->where('semester_id',$sy->semester_id)->where('color', $color)->first() ? $this->generateColor() : $color;
         return $generatedColor;
     }
@@ -111,7 +111,7 @@ class Add extends Component
         $message = 'Schedule successfully added!';
         $teacher_class_id = null;
 
-        $sy = SchoolYear::where('is_active', 1)->first();
+        $sy = getCurrentSY();
         foreach ($dates as $date) {
             $scheduleDates = ScheduleDate::with('schedule')
                 ->whereHas('schedule', function ($query) use ($sy) {
@@ -145,7 +145,7 @@ class Add extends Component
                         'section_id' => $validatedData['section_id'],
                         'start_date' => $validatedData['start_date'],
                         'end_date' => $validatedData['end_date'],
-                        'sy_id' => SchoolYear::where('is_active', 1)->first()->id,
+                        'sy_id' => getCurrentSY()->id,
                         'semester_id' => $validatedData['semester_id'],
                         'color' => $this->generateColor(),
                     ])->id;

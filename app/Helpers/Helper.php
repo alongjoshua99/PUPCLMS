@@ -66,6 +66,51 @@ if (!function_exists('getSchedules')) {
         return $schedules->all(); // Return array instead of object cast
     }
 }
+if (!function_exists('getAllSchedules')) {
+    function getAllSchedules(?int $semester_id = null, ?int $sy_id = null, ?bool $displaySectionName = false, ?bool $isForView = false, ?string $url = '',)
+    {
+
+        $schedules = collect();
+
+        $teacher_classes = TeacherClass::query()
+            ->with('scheduleDates'); // Eager load subject relationship
+
+        if ($semester_id) {
+            $teacher_classes->where('semester_id', $semester_id);
+        } 
+        if ($isForView) {
+            return  $teacher_classes->get();
+        }
+        foreach ($teacher_classes->get() as $teacher_class) {
+            foreach ($teacher_class->scheduleDates as $scheduleDate) {
+                $color = (checkIfComputerLaboratoryIsOccupied($teacher_class->id)) ? '#444'  : $teacher_class->color;
+
+                $start = Carbon::parse($scheduleDate->date . ' ' . $scheduleDate->start_time)->format('Y-m-d\TH:i:s'); // Combine date and time, format in Moment.js
+
+                $end = Carbon::parse($scheduleDate->date . ' ' . $scheduleDate->end_time)->format('Y-m-d\TH:i:s'); // Combine date and time, format in Moment.js
+                if ($displaySectionName) {
+                    $schedules[] = [
+                        'title' => "{$teacher_class->subject->subject_code} - {$teacher_class->section->section_name}", // Use subject relationship
+                        'start' => $start,
+                        'end' => $end,
+                        'url' => $url,
+                        'color' => $color
+                    ];
+                } else {
+                    $schedules[] = [
+                        'title' => "{$teacher_class->subject->subject_code} - {$teacher_class->teacher->full_name}", // Use subject relationship
+                        'start' => $start,
+                        'end' => $end,
+                        'url' => $url,
+                        'color' => $color
+                    ];
+                }
+            }
+        }
+
+        return $schedules->all(); // Return array instead of object cast
+    }
+}
 if (!function_exists('getSchedulesForSection')) {
     function getSchedulesForSection(int $section_id, ?string $url = '', ?int $semester_id = null, ?int $sy_id = null)
     {
@@ -160,7 +205,7 @@ if (!function_exists('checkIfComputerLaboratoryIsOccupied')) {
 if (!function_exists('getCurrentSY')) {
     function getCurrentSY()
     {
-        return SchoolYear::where('is_active', 1)->first();
+        return getCurrentSY();
     }
 }
 if (!function_exists('updateComputerStatus')) {
@@ -171,16 +216,22 @@ if (!function_exists('updateComputerStatus')) {
         $computerLog = ComputerLog::where('ip_address', $ipAddress)->where('status', 'pending')->first();
         if ($computer) {
             if ($action == 'login') {
-                $computer->update(['status' => 'active']);
+                $computer->update(['status' => 'occupied']);
             } else {
                 $computer->update(['status' => 'offline']);
             }
-        }
-        // generate a report that this computer is not in the list.
-        if ($computerLog) {
-            $computerLog->update(['created_at' => now()]);
-        } else {
-            ComputerLog::create(['ip_address' => $ipAddress]);
+        }else{
+            // generate a report that this computer is not in the list.
+            if ($computerLog) {
+                $computerLog->update([
+                        'created_at' => now()
+                    ]);
+            } else {
+                ComputerLog::create([
+                    'report' => 'Invalid IP Address',
+                    'ip_address' => $ipAddress
+                ]);
+            }
         }
     }
 }

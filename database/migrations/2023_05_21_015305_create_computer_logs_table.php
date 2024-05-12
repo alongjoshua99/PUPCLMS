@@ -13,7 +13,9 @@ return new class extends Migration
     {
         Schema::create('computer_logs', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('computer_id')->nullable()->constrained();
             $table->string('ip_address')->nullable();
+            $table->string('report');
             $table->enum('status', ['checked', 'pending'])->default('pending');
             $table->timestamps();
         });

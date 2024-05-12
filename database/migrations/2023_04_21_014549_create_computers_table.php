@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('storage');
             $table->string('graphics');
             $table->string('ip_address')->nullable();
-            $table->enum('status', ['active', 'offline', 'under_maintenance'])->default('offline');
+            $table->enum('status', ['active','occupied', 'offline', 'under_maintenance'])->default('offline');
             $table->timestamps();
         });
     }

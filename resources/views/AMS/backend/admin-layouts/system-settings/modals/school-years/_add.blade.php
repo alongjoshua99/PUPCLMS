@@ -5,7 +5,7 @@
                 <h5 class="modal-title text-white">Add School Year</h5>
 
             </div>
-            <form action="{{ route('admin.school-year.store') }}" method="POST">
+            <form action="{{ route('admin.system-settings.store') }}" method="POST">
                 <div class="modal-body">
                     @csrf
                     @method('POST')

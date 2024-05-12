@@ -28,6 +28,30 @@ class UserSeeder extends Seeder
                 'role_id' => 2,
                 'faculty_member_id' => 2,
             ],
+            [
+                'email' => FacultyMember::find(3)->email,
+                'password' => Hash::make('password'),
+                'role_id' => 2,
+                'faculty_member_id' => 3,
+            ],
+            [
+                'email' => FacultyMember::find(4)->email,
+                'password' => Hash::make('password'),
+                'role_id' => 2,
+                'faculty_member_id' => 4,
+            ],
+            [
+                'email' => FacultyMember::find(5)->email,
+                'password' => Hash::make('password'),
+                'role_id' => 2,
+                'faculty_member_id' => 5,
+            ],
+            [
+                'email' => FacultyMember::find(6)->email,
+                'password' => Hash::make('password'),
+                'role_id' => 2,
+                'faculty_member_id' => 6,
+            ],
         ];
         foreach ($data as $item) {
             \App\Models\User::create($item);

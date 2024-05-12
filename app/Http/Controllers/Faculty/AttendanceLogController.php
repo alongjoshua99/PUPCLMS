@@ -39,7 +39,7 @@ class AttendanceLogController extends Controller
                 });
             });
         }])->having('students_count', '>', 0)->get();
-        $currentYear = SchoolYear::where('is_active', 1)->first()->id;
+        $currentYear = getCurrentSY()->id;
         $getTotalPerSemester = Semester::withCount([
             'attendanceLogs' => function ($query) use ($currentYear) {
                 $query->where('sy_id', $currentYear);

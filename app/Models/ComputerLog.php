@@ -19,4 +19,7 @@ class ComputerLog extends Model
     ]; */
     protected $guarded = [];
 
+    public function computer(){
+        return $this->belongsTo(Computer::class, 'computer_id');
+    }
 }

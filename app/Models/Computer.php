@@ -28,9 +28,9 @@ class Computer extends Model
         return $this->hasMany(AttendanceLog::class, 'computer_id');
     }
 
-    public function log()
+    public function logs()
     {
-        return $this->hasOne(ComputerLog::class, 'computer_id');
+        return $this->hasMany(ComputerLog::class, 'computer_id');
     }
 
     public function isActive(){

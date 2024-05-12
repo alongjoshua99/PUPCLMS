@@ -54,15 +54,16 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::is('admin.computer.index') ? 'active' : '' }}"
                     href="{{ route('admin.computer.index') }}">
-                    <i class="ri-computer-line"></i><span>Computers</span>
+                    <i class="ri-computer-line"></i>
+                    <span>Computers</span>
                 </a>
 
             </li>
             <li class="nav-item">
-                <a class="nav-link {{ Route::is('admin.school-year.index') ? 'active' : '' }}"
-                    href="{{ route('admin.school-year.index') }}">
+                <a class="nav-link {{ Route::is('admin.system-settings.index') ? 'active' : '' }}"
+                    href="{{ route('admin.system-settings.index') }}">
                     <i class="ri-book-open-line"></i>
-                    <span>School Years</span>
+                    <span>System Settings</span>
                 </a>
 
             </li>
@@ -122,12 +123,12 @@
                             <span>Students</span>
                         </a>
                     </li>
-                    <li>
+                    {{-- <li>
                         <a href="{{ route('admin.user.information.master_list.index') }}">
                             <i class="bi bi-circle"></i>
                             <span>Student Master Lists</span>
                         </a>
-                    </li>
+                    </li> --}}
                 </ul>
             </li>
 

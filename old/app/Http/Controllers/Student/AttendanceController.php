@@ -65,7 +65,7 @@ class AttendanceController extends Controller
             $request->validate([
                 'computer_id' => 'required',
             ]);
-            $sy = SchoolYear::where('is_active', 1)->first();
+            $sy = getCurrentSY();
 
             $remark = '';
             $schedule = TeacherClass::find($id);

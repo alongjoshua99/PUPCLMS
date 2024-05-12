@@ -15,7 +15,9 @@
                             {{ $section_name != null ? '- ' . $section_name : '' }}
                         </h3>
                         <div class="d-flex align-items-center">
-                            <div class="dropdown me-1">
+                            <button class="btn btn-outline-maroon me-1" data-bs-toggle="modal" data-bs-target="#add">Upload Masterlist</button>
+                            @include('AMS.backend.admin-layouts.user.student.master_list.modal._add')
+                            <div class="dropdown">
                                 <button class="btn btn-outline-maroon dropdown-toggle" type="button" id="dropdownMenuButton"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                     Section
@@ -39,7 +41,6 @@
                                     </li>
                                 </ul>
                             </div>
-
                         </div>
                     </div>
                     <div class="card-body">

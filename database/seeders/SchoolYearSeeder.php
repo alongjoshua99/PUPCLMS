@@ -14,11 +14,11 @@ class SchoolYearSeeder extends Seeder
     {
         $data = [
             [
-                'name' => '2021-2022',
-                'start_date' => '2021-06-01',
-                'end_date' => '2022-03-31',
+                'name' => '2023-2024',
+                'start_date' => '2023-06-01',
+                'end_date' => '2024-05-31',
                 'is_active' => true,
-                'semester_id' => 1,
+                'semester_id' => 3,
             ],
         ];
         foreach ($data as $key => $value) {

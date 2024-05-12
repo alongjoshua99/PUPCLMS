@@ -47,10 +47,10 @@ class ScheduleController extends Controller
             $validatedData = $request->validate([
                 'start_time' => 'required',
                 'end_time' => 'required',
-                'date' => 'required',
+                'date' => 'required|date|after:today',
             ]);
-
-            $sy = SchoolYear::where('is_active', 1)->first();
+            // dd($validatedData);
+            $sy = getCurrentSY();
             $scheduleDates = ScheduleDate::with('schedule')
                 ->whereHas('schedule', function ($query) use ($sy) {
                     $query->where('sy_id', $sy->id)
@@ -87,7 +87,7 @@ class ScheduleController extends Controller
                 return redirect()->back()->with('successToast', 'Schedule successfully added!');
             }
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            // dd($th->getMessage());
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }
     }
@@ -113,6 +113,7 @@ class ScheduleController extends Controller
     public function update(Request $request, string $id)
     {
         try {
+
             $date = ScheduleDate::find($id);
             $date->update([
                 'start_time' => $request->start_time,

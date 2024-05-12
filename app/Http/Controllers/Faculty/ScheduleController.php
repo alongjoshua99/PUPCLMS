@@ -76,7 +76,7 @@ class ScheduleController extends Controller
     public function update($type, TeacherClass $schedule)
     {
         try {
-            $sy = SchoolYear::where('is_active', 1)->first();
+            $sy = getCurrentSY();
             if ($type === "in") {
                 AttendanceLog::create([
                     'teacher_class_id' => $schedule->teacher_class_id,

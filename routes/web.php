@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\StudentMasterListController;
 use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\SystemSettingController;
 use App\Http\Controllers\Admin\UserLogController;
 use App\Http\Controllers\Faculty\ComputerStatusLogController as FacultyComputerStatusLogController;
 use App\Http\Controllers\Faculty\CourseController  as FacultyCourseController;
@@ -32,6 +33,7 @@ use App\Http\Controllers\Admin\UserMasterListController as MasterListController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImportController;
 use Illuminate\Http\Request;
+use Symfony\Component\Process\Process;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,11 +108,10 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
         Route::put('/{id}/update', 'update')->name('update');
         Route::delete('/{id}/destroy', 'destroy')->name('destroy');
     });
-    Route::prefix('school-year')->name('school-year.')->controller(SchoolYearController::class)->group(function () {
+    Route::prefix('system-settings')->name('system-settings.')->controller(SystemSettingController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');
-        Route::put('/{id}/edit', 'edit')->name('edit');
-        Route::put('/{id}/update', 'update')->name('update');
+        Route::put('/{id}/update/{is_semester}', 'update')->name('update');
     });
 
     /* REPORTS */
@@ -344,4 +345,5 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isStudent'])->prefix('studen
 
 Route::get('getIpAddress', function (Request $request) {
     return $request->ip();
+
 });
