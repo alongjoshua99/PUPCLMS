@@ -91,8 +91,6 @@ class Add extends Component
 
         return $dates;
     }
-
-
     // Implement your logic to generate a random color for the schedule
     private function generateColor()
     {

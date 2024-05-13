@@ -29,7 +29,7 @@ class isStudentMiddleware
         $student = Student::find(Auth::user()->student_id);
 
         // Use a similar query to retrieve the semester
-        $semester = $student->section->schedules()->first()->semester;
+        // $semester = $student->section->schedules()->first()->semester;
 
         // Check if the semester is active
         // $currentDate = now()->format('Y-m-d');
@@ -39,15 +39,10 @@ class isStudentMiddleware
         // }
 
         // Check if the student has a schedule today
-        $hasScheduleCounter = 0;
-        foreach ($student->section->schedules as $schedule) {
-            if ($schedule->checkIfStudentHasScheduleToday()) {
-                $hasScheduleCounter++;
-            }
-        }
+       $hasSchedule = checkIfStudentHasSchedule($student->section->schedules());
 
         // If the student has no schedule, log them out
-        if ($hasScheduleCounter > 0) {
+        if (!$hasSchedule) {
             return $this->handleNoSchedule($request);
         }
 
@@ -81,12 +76,12 @@ class isStudentMiddleware
         $request->session()->forget(Auth::id() . "_last_activity");
         // Set the user's status to offline
         Auth::user()->status = "Offline";
+        updateComputerStatus($request, 'logout');
         // Regenerate session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         // Logout the user
         Auth::logout();
-
         return redirect()->route('home.index')->with('errorAlert', 'You have no schedule today');
     }
 

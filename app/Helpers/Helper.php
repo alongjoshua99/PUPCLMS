@@ -77,7 +77,7 @@ if (!function_exists('getAllSchedules')) {
 
         if ($semester_id) {
             $teacher_classes->where('semester_id', $semester_id);
-        } 
+        }
         if ($isForView) {
             return  $teacher_classes->get();
         }
@@ -121,7 +121,7 @@ if (!function_exists('getSchedulesForSection')) {
         $teacher_classes = TeacherClass::query()
             ->with('scheduleDates')  // Eager load subject relationship
             ->where('section_id', $section_id);
-      
+
 
         if ($semester_id && $sy_id) {
             $teacher_classes->where('semester_id', $semester_id)
@@ -137,7 +137,7 @@ if (!function_exists('getSchedulesForSection')) {
                 $start = Carbon::parse($scheduleDate->date . ' ' . $scheduleDate->start_time)->format('Y-m-d\TH:i:s'); // Combine date and time, format in Moment.js
 
                 $end = Carbon::parse($scheduleDate->date . ' ' . $scheduleDate->end_time)->format('Y-m-d\TH:i:s'); // Combine date and time, format in Moment.js
-                
+
                 $schedules[] = [
                     'title' => "{$teacher_class->subject->subject_code} - {$teacher_class->teacher->full_name}", // Use subject relationship
                     'start' => $start,
@@ -183,9 +183,21 @@ if (!function_exists('formatSchedules')) {
         return $schedules->all(); // Return array instead of object cast
     }
 }
-if (!function_exists('countStudents')) {
-    function countStudents($teacher_class)
+if (!function_exists('checkIfStudentHasSchedule')) {
+    function checkIfStudentHasSchedule($schedules)
     {
+        $date = Carbon::now()->format('Y-m-d');
+        $time = Carbon::now()->format('H:m:s');
+
+        $school_year = getCurrentSY();
+        
+        return  $schedules->whereHas('scheduleDates', function ($query) use ($date, $time) {
+            $query->whereDate('date', $date)
+                ->where('start_time', '<=', $time)->where('end_time', '>=', $time);
+        })
+            ->where('sy', $school_year->id)
+            ->where('semester_id', $school_year->semester_id)
+            ->first();
     }
 }
 
@@ -220,12 +232,12 @@ if (!function_exists('updateComputerStatus')) {
             } else {
                 $computer->update(['status' => 'offline']);
             }
-        }else{
+        } else {
             // generate a report that this computer is not in the list.
             if ($computerLog) {
                 $computerLog->update([
-                        'created_at' => now()
-                    ]);
+                    'created_at' => now()
+                ]);
             } else {
                 ComputerLog::create([
                     'report' => 'Invalid IP Address',
