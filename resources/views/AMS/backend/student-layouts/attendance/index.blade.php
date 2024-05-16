@@ -20,8 +20,9 @@
                             <tr>
                                 <th scope="col">Subject</th>
                                 <th scope="col">Teacher</th>
-                                <th scope="col">Time</th>
-                                <th scope="col" class="text-center">Action</th>
+                                <th scope="col">Scheduled time</th>
+                                <th scope="col">Time In</th>
+                                <th scope="col">Time Out</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -43,13 +44,14 @@
                                         {{ date('h:i:a', strtotime($time->end_time)) }}
                                     </td>
                                     <td>
-                                        <div class="d-flex justify-content-center px-2 py-1">
-                                            <button class="btn btn-link text-primary mb-0" type="button"
-                                                data-bs-toggle="modal" data-bs-target="#edit{{ $schedule->id }}">
-                                                <i class="ri-edit-line text-primary me-2" aria-hidden="true""></i>
-                                            </button>
-                                            @include('AMS.backend.student-layouts.attendance.modal._take_attendance')
-                                        </div>
+                                        @if (checkIfStudentAlreadyTimeIn($schedule, Auth::user()->student->id))
+                                        {{ date('h:i:a', strtotime(checkIfStudentAlreadyTimeIn($schedule, Auth::user()->student->id)->time_in)) }}
+                                    @endif
+                                    </td>
+                                    <td>
+                                        @if (checkIfStudentAlreadyTimeOut($schedule, Auth::user()->student->id))
+                                        {{ date('h:i:a', strtotime(checkIfStudentAlreadyTimeOut($schedule, Auth::user()->student->id)->time_out)) }}
+                                    @endif
                                     </td>
                                 </tr>
                             @endforeach

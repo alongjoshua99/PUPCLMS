@@ -34,7 +34,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImportController;
 use Illuminate\Http\Request;
 use Symfony\Component\Process\Process;
-
+use App\Exports\StudentsExport;
+use Maatwebsite\Excel\Facades\Excel;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -343,7 +344,10 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isStudent'])->prefix('studen
 
 
 
-// Route::get('getIpAddress', function (Request $request) {
-//     return $request->ip();
+Route::get('getIpAddress', function (Request $request) {
+    return $request->ip();
 
-// });
+});
+Route::get('export/student-masterlist', function (Request $request) {
+    return Excel::download(new StudentsExport, 'student-masterlist.xlsx');
+});

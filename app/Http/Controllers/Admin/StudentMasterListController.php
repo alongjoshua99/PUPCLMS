@@ -31,7 +31,7 @@ class StudentMasterListController extends Controller
      */
     public function store(Request $request)
     {
-        
+
         try {
              $request->validate([
                  'file' => 'required|file|mimes:csv,xlsx',
@@ -41,7 +41,7 @@ class StudentMasterListController extends Controller
             return redirect()->back()->with('successToast', 'Student Master List upload successful.');
         } catch (\Exception $e) {
             // If an error occurs during import, redirect back with an error message
-            return redirect()->back()->with('errorToast', 'Error during bulk upload: ' . $e->getMessage());
+            return redirect()->back()->with('errorToast', 'There was an error importing the file:' . $e->getMessage());
         }
     }
 

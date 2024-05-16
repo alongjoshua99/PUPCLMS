@@ -11,7 +11,15 @@
                     <i class="bi bi-grid"></i>
                     <span>Dashboard</span>
                 </a>
-            </li><!-- End Dashboard Nav -->
+            </li>
+            {{-- <li class="nav-item">
+                <a class="nav-link {{ Route::is('faculty.attendance.index') ? 'active' : '' }}"
+                    href="{{ route('faculty.attendance.index') }}">
+                    <i class="bi bi-clendar"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li> --}}
+            <!-- End Dashboard Nav -->
 
             <li class="nav-item">
                 <a class="nav-link collapsed" data-bs-target="#facultyReports" data-bs-toggle="collapse" href="#">

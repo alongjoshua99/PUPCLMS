@@ -36,12 +36,13 @@ class isStudentMiddleware
         // }
 
         // Check if the student has a schedule today
-       $hasSchedule = checkIfStudentHasSchedule($student->section->schedules());
+       $hasSchedule = checkIfStudentHasSchedule($student->section_id);
 
         // If the student has no schedule, log them out
         if (!$hasSchedule) {
             return $this->handleNoSchedule($request);
         }
+        return $next($request);
     }
 
 

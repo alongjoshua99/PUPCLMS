@@ -22,7 +22,13 @@
                                 <i class="ri-arrow-go-back-line"></i>
                                 Back
                             </a>
-                            <div class="dropdown">
+                            {{-- @if (!checkIfTeacherAlreadyTimeIn($ScheduleDate, Auth::user()->faculty_member_id ))
+                            <a href="{{ route('faculty.schedule.create') }}" class="btn btn-outline-maroon me-1">
+                                <i class="ri-arrow-go-back-line"></i>
+                                Time In
+                            </a>
+                            @endif --}}
+                            {{-- <div class="dropdown">
                                 <button class="btn btn-outline-maroon dropdown-toggle" type="button"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     Dates
@@ -43,8 +49,8 @@
                                     </li>
                                 </ul>
 
-                            </div>
-                        </div>
+                            </div>--}}
+                        </div> 
                     </div>
                     <div class="card-body">
 
@@ -53,8 +59,6 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Student</th>
-                                    <th scope="col">Computer No.</th>
-                                    <th scope="col">Date</th>
                                     <th scope="col">Time in</th>
                                     <th scope="col">Time Out</th>
                                 </tr>
@@ -67,12 +71,6 @@
                                     <tr>
                                         <td>
                                             {{ $log->student->getFullName() }}
-                                        </td>
-                                        <td>
-                                            {{ $log->computer->computer_number }}
-                                        </td>
-                                        <td>
-                                            {{ $log->time_in}}
                                         </td>
                                         <td>
                                             {{ date('h:i A', strtotime($log->time_in)) }}

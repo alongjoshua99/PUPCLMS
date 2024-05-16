@@ -67,9 +67,9 @@
                             <select class="form-select @error('status') is-invalid @enderror" name="status"
                                 id="status">
                                 <option value="">Select Status</option>
-                                <option value="Online" {{ $computer->status == 'Online' ? 'selected' : '' }}>Online
+                                <option value="online" {{ $computer->status == 'online' ? 'selected' : '' }}>Online
                                 </option>
-                                <option value="Offline" {{ $computer->status == 'Offline' ? 'selected' : '' }}>
+                                <option value="offline" {{ $computer->status == 'offline' ? 'selected' : '' }}>
                                 Offline</option>
                             </select>
                             @error('status')

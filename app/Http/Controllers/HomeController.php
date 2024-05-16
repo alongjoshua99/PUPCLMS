@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends Controller
 {
@@ -25,25 +26,25 @@ class HomeController extends Controller
     {
 
         try {
-        $request->validate([
-            'student_no' => 'required|unique:students,student_no',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|unique:students,email',
-            'phone' => 'required',
-            'password' => 'required|confirmed',
-            'password_confirmation' => 'required|same:password',
-            'section_id' => 'required',
-            'section_id' => 'required',
-        ]);
-        $master_list = StudentMasterList::where('student_id_number', $request->student_no)->first();
-        $master_list_count = StudentMasterList::count();
-        if ($master_list_count == 0) {
-            return redirect()->back()->with('errorAlert', 'No Masterlist');
-        }
-        if (!$master_list) {
-            return redirect()->back()->with('errorAlert', 'Invalid Student Number');
-        }
+            $request->validate([
+                'student_no' => 'required|unique:students,student_no',
+                'first_name' => 'required',
+                'last_name' => 'required',
+                'email' => 'required|unique:students,email',
+                'phone' => 'required',
+                'password' => 'required|confirmed',
+                'password_confirmation' => 'required|same:password',
+                'section_id' => 'required',
+                'section_id' => 'required',
+            ]);
+            $master_list = StudentMasterList::where('student_id_number', $request->student_no)->first();
+            $master_list_count = StudentMasterList::count();
+            if ($master_list_count == 0) {
+                return redirect()->back()->with('errorAlert', 'No Masterlist');
+            }
+            if (!$master_list) {
+                return redirect()->back()->with('errorAlert', 'Invalid Student Number');
+            }
             $id =  Student::create([
                 'student_no' => $request->student_no,
                 'first_name' => $request->first_name,
@@ -83,20 +84,16 @@ class HomeController extends Controller
         ]);
         if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
             // Check if the user is a student and has a schedule today
-            // if (Auth::user()->role->name === 'student') {
-            //     $student = Student::find(Auth::user()->student_id);
-            //     $hasScheduleCounter = 0;
-            //     // dd($student->section->schedules);
-            //     foreach ($student->section->schedules as $schedule) {
-            //         if ($schedule->checkIfStudentHasScheduleToday()) {
-            //             $hasScheduleCounter++;
-            //         }
-            //     }
-            //     if ($hasScheduleCounter > 0) {
-            //         Auth::logout();
-            //         return redirect()->back()->with('errorAlert', 'You have no schedule today');
-            //     }
-            // }
+            if (Auth::user()->role->name === 'student') {
+                $hasSchedule = checkIfStudentHasSchedule(Auth::user()->student->section_id);
+
+                // If the student has no schedule, log them out
+                if (!$hasSchedule) {
+                    return $this->handleNoSchedule($request);
+                }
+                $schedule = getTheScheduleOfStudent(Auth::user()->student->section_id);
+                $attendance = createStudentTimeInAttendance($schedule, Auth::user()->student->id, $request->ip());
+            }
 
             // Authentication was successful...
             Auth::user()->status = "Online";
@@ -130,8 +127,29 @@ class HomeController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
+    protected function handleNoSchedule(Request $request): Response
+    {
+        // Remove last_activity from session
+        $request->session()->forget(Auth::id() . "_last_activity");
+
+        // Set the user's status to offline
+        Auth::user()->status = "Offline";
+        // Regenerate session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        // Logout the user
+        Auth::logout();
+        return redirect()->route('home.index')->with('errorAlert', 'You have no schedule today');
+    }
     public function logout(Request $request)
     {
+
+        if (Auth::user()->role->name === 'student') {
+            updateComputerStatus($request, 'logout');
+            $schedule = getTheScheduleOfStudent(Auth::user()->student->section_id);
+            $attendance = createStudentTimeOutAttendance($schedule, Auth::user()->student->id);
+            // dd($attendance);
+        }
         // remove last_activity from session
         $request->session()->forget(Auth::id() . "_last_activity");
         // set the user's status to offline
@@ -146,9 +164,6 @@ class HomeController extends Controller
         $log->update([
             'time_out' => now(),
         ]);
-
-        // get the ip address of the computer the student using
-        updateComputerStatus($request, 'logout');
 
 
         //regenerate   session

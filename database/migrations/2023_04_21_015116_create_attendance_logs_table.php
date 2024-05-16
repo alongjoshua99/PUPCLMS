@@ -25,9 +25,11 @@ return new class extends Migration
                 ->constrained('school_years');
             $table->foreignId('semester_id')
                 ->constrained('semesters');
-            $table->string('remarks'); // present, absent, late
-            $table->dateTime('time_in');
-            $table->dateTime('time_out')->nullable();
+            // $table->string('remarks'); // present, absent, late
+            $table->date('date');
+            $table->time('time_in');
+            $table->time('time_out')->nullable();
+            $table->text('ip_address');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -54,10 +54,10 @@ class CheckUserStatusMiddleware
             session([Auth::id() . "_last_activity" => now()]);
             return $next($request);
         }
-        if (auth()->user()->status == "inactive") {
+        if (auth()->user()->status == "Inactive") {
             return redirect()->route('login.index')->with('errorAlert', 'Your account is inactive. Please contact the administrator.');
         }
-        if (auth()->user()->status == "offline") {
+        if (auth()->user()->status == "Offline") {
             return redirect()->route('login.index')->with('errorAlert', 'Your account is offline due to inactive or force logout.');
         }
         $request->session()->forget(Auth::id() . "_last_activity");
