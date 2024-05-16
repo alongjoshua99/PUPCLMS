@@ -2,14 +2,11 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\Computer;
 use App\Models\Student;
-use App\Models\Semester;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-
 
 class isStudentMiddleware
 {
@@ -45,12 +42,6 @@ class isStudentMiddleware
         if (!$hasSchedule) {
             return $this->handleNoSchedule($request);
         }
-
-        // update the ip address of the computer the student using
-        updateComputerStatus($request, 'login');
-
-
-        return $next($request);
     }
 
 
@@ -59,16 +50,17 @@ class isStudentMiddleware
         updateComputerStatus($request, 'logout');
         // Remove last_activity from session
         $request->session()->forget(Auth::id() . "_last_activity");
-        // Set the user's status to offline
-        Auth::user()->status = "Offline";
-        // Regenerate session
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        // Logout the user
-        Auth::logout();
+            // set the user's status to offline
+            Auth::user()->status = "offline";
+            Auth::user()->save();
+            //regenerate   session
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            // logout the user
+            Auth::logout();
 
-        return redirect()->route('home.index')->with('errorAlert', 'You are not currently enrolled for this semester or the semester is not active.');
-    }
+            return redirect()->route('home.index')->with('errorAlert', 'You have no schedule today');
+        }
 
     protected function handleNoSchedule(Request $request): Response
     {
@@ -84,5 +76,4 @@ class isStudentMiddleware
         Auth::logout();
         return redirect()->route('home.index')->with('errorAlert', 'You have no schedule today');
     }
-
 }

@@ -81,7 +81,6 @@ class HomeController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
-
         if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
             // Check if the user is a student and has a schedule today
             // if (Auth::user()->role->name === 'student') {

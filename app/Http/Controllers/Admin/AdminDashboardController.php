@@ -22,12 +22,11 @@ class AdminDashboardController extends Controller
     {
         try {
             // Call the method with a specific date
-            $schedules = getSchedules();
+            // $schedules = getSchedules();
             // dd($schedules);
 
-            $recentLogs = AttendanceLog::where('student_id', '!=', null)->orderBy('created_at', 'desc')->take(5)->get();
-
-            return view('AMS.backend.admin-layouts.dashboard.index', compact('schedules', 'filter'));
+            return view('AMS.backend.admin-layouts.dashboard.index',
+        ['schedules' => getSchedules()]);
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }

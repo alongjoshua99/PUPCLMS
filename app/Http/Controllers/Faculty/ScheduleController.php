@@ -111,7 +111,7 @@ class ScheduleController extends Controller
         try {
             $request->validate([
                 'old_date_id' => 'required',
-                'new_date' => 'after:now|required',
+                'new_date' => 'required|date|after:today',
                 'start_time' => 'required',
                 'end_time' => 'required',
                 'reason' => 'required',

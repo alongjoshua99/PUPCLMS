@@ -12,16 +12,14 @@ use App\Models\TeacherClass;
 use Carbon\Carbon;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 
 class TeacherClassSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $faker = Factory::create();
-        $sy = getCurrentSY();
+        $sy = $this->getCurrentSY();
         $semesters = Semester::where('id', '!=', 2)->get();
 
         foreach ($semesters as $semester) {
@@ -40,11 +38,16 @@ class TeacherClassSeeder extends Seeder
                     $days = collect();
 
                     for ($e = 0; $e < 3; $e++) {
-                        $randomDay = rand(1, 5);
-                        $days->push($faker->date('l', strtotime("next $randomDay weekday")));
+                        $randomDay = rand(1, 5); // Monday (1) to Friday (5)
+                        $days->push(Carbon::createFromFormat('N', $randomDay)->format('l'));
                     }
 
+                    dd($days);
+   
+
                     $dates = $this->getDates($start_date->format('Y-m-d'), $end_date->format('Y-m-d'), $days);
+
+          dd($dates);
 
                     $teacherClass = TeacherClass::create([
                         'teacher_id' => $teacher->id,
@@ -56,7 +59,12 @@ class TeacherClassSeeder extends Seeder
                         'semester_id' => $semester->id,
                         'color' => $this->generateColor(),
                     ]);
-
+                    ScheduleDate::create([
+                        'teacher_class_id' => $teacherClass->id,
+                        'date' => $end_date,
+                        'start_time' => '07:00:00',
+                        'end_time' => '18:00:00'
+                    ]);
                     foreach ($dates as $date) {
                         $conflicts = ScheduleDate::whereHas('schedule', function ($query) use ($sy, $semester) {
                             $query->where('sy_id', $sy->id)->where('semester_id', $semester->id);
@@ -69,6 +77,8 @@ class TeacherClassSeeder extends Seeder
                                     });
                             })->count();
 
+                        Log::info("Checking conflicts for date: $date, start_time: $start_time, end_time: $end_time, conflicts: $conflicts");
+
                         if ($conflicts == 0) {
                             ScheduleDate::create([
                                 'teacher_class_id' => $teacherClass->id,
@@ -76,6 +86,8 @@ class TeacherClassSeeder extends Seeder
                                 'start_time' => $start_time,
                                 'end_time' => $end_time
                             ]);
+
+                            Log::info("ScheduleDate created for date: $date, start_time: $start_time, end_time: $end_time");
                         }
                     }
                 }
@@ -83,62 +95,49 @@ class TeacherClassSeeder extends Seeder
         }
     }
 
-
-
-    private function getDates($start_date, $end_date, $days)
+    private function getDates($startDate, $endDate, $days)
     {
         $dates = [];
-        $start_date = Carbon::parse($start_date);
-        $end_date = Carbon::parse($end_date);
+        $currentDate = Carbon::parse($startDate);
+        $endDate = Carbon::parse($endDate);
 
-        while ($start_date->lte($end_date)) {
-            if ($days->contains($start_date->englishDayOfWeek)) {
-                $dates[] = $start_date->toDateString();
+        while ($currentDate->lte($endDate)) {
+            $dayOfWeek = $currentDate->format('l');
+            if ($days->contains($dayOfWeek) && !$this->isWeekend($currentDate)) {
+                $dates[] = $currentDate->toDateString();
             }
-            $start_date->addDay();
+            $currentDate->addDay();
         }
 
+        Log::info("Generated Dates: " . implode(', ', $dates));
         return $dates;
     }
 
-
-
-    private function generateRandomTime($ranges)
+    private function isWeekend($date)
     {
-        $rangeIndex = array_rand($ranges);
-        $range = $ranges[$rangeIndex];
-        $time = Carbon::createFromTimeString($range);
-        $randomTime = $time->addMinutes(rand(0, $time->diffInMinutes(Carbon::createFromTimeString($range))));
-
-        return $randomTime->format('H:i:s');
+        return $date->isSaturday() || $date->isSunday();
     }
 
-    // Implement your logic to generate a random color for the schedule
+    private function generateRandomTime(array $ranges): string
+    {
+      $rangeIndex = array_rand($ranges);
+      $range = $ranges[$rangeIndex];
+  
+      $startRange = Carbon::parse($range[0]);
+      $endRange = Carbon::parse($range[1])->addHours(3);
+  
+      $randomTime = $startRange->addMinutes(rand(0, $startRange->diffInMinutes($endRange)));
+  
+      return $randomTime->format('H:i:s');
+    }
+
     private function generateColor()
     {
-        // You can use a library like https://github.com/brendanhedges/php-color to generate random colors
-        // Or implement your own logic here
         return '#' . str_pad(dechex(rand(0, 0xFFFFFF)), 6, '0', STR_PAD_LEFT);
     }
 
-    // private function getDates($start_date, $end_date, $days)
-    // {
-    //     $dates = [];
-    //     $start_date = new \DateTime($start_date);
-    //     $end_date = new \DateTime($end_date);
-    //     $interval = \DateInterval::createFromDateString('1 day');
-    //     $period = new \DatePeriod($start_date, $interval, $end_date);
-    //     foreach ($period as $dt) {
-    //         if ($dt->format('N') >= 6) { // Check if it's Saturday (6) or Sunday (7)
-    //             continue; // Skip weekends
-    //         }
-    //         foreach ($days as $day) {
-    //             if ($dt->format("l") === $day) {
-    //                 $dates[] = $dt->format("Y-m-d");
-    //             }
-    //         }
-    //     }
-
-    //     return $dates;
-    // }
+    private function getCurrentSY()
+    {
+        return SchoolYear::where('is_active', 1)->first();
+    }
 }

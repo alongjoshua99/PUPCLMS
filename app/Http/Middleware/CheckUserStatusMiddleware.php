@@ -57,7 +57,7 @@ class CheckUserStatusMiddleware
         if (auth()->user()->status == "inactive") {
             return redirect()->route('login.index')->with('errorAlert', 'Your account is inactive. Please contact the administrator.');
         }
-        if (auth()->user()->status == "Offline") {
+        if (auth()->user()->status == "offline") {
             return redirect()->route('login.index')->with('errorAlert', 'Your account is offline due to inactive or force logout.');
         }
         $request->session()->forget(Auth::id() . "_last_activity");

@@ -343,7 +343,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isStudent'])->prefix('studen
 
 
 
-Route::get('getIpAddress', function (Request $request) {
-    return $request->ip();
+// Route::get('getIpAddress', function (Request $request) {
+//     return $request->ip();
 
-});
+// });

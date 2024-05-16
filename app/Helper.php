@@ -37,6 +37,7 @@ if (!function_exists('getSchedules')) {
             return  $teacher_classes->get();
         }
         foreach ($teacher_classes->get() as $teacher_class) {
+
             foreach ($teacher_class->scheduleDates as $scheduleDate) {
                 $color = (checkIfComputerLaboratoryIsOccupied($teacher_class->id)) ? '#444'  : $teacher_class->color;
 
@@ -190,7 +191,7 @@ if (!function_exists('checkIfStudentHasSchedule')) {
         $time = Carbon::now()->format('H:m:s');
 
         $school_year = getCurrentSY();
-        
+
         return  $schedules->whereHas('scheduleDates', function ($query) use ($date, $time) {
             $query->whereDate('date', $date)
                 ->where('start_time', '<=', $time)->where('end_time', '>=', $time);
@@ -217,7 +218,7 @@ if (!function_exists('checkIfComputerLaboratoryIsOccupied')) {
 if (!function_exists('getCurrentSY')) {
     function getCurrentSY()
     {
-        return getCurrentSY();
+        return SchoolYear::where('is_active', 1)->first();
     }
 }
 if (!function_exists('updateComputerStatus')) {
