@@ -34,7 +34,7 @@ class FacultyMemberSeeder extends Seeder
                 'last_name' => $faker->lastName(),
                 'email' => 'pupfaculty@app.com',
                 'phone' => '09123456789',
-                'department_id' => 2,
+                'department_id' => 3,
             ],
             [
                 'first_name' => $faker->firstName(),

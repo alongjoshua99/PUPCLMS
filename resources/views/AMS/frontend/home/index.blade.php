@@ -9,9 +9,6 @@
         <a href="{{ route('login.index') }}" id="login" class="btn btn-outline-maroon text-maroon">
             Login
         </a>
-        <a href="{{ route('register.index') }}" id="register" class="btn btn-maroon">
-            Register
-        </a>
     </div>
 @endsection
 

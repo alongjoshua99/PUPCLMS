@@ -43,19 +43,12 @@ class ScheduleController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(TeacherClass $schedule, $date_id = null)
+    public function show(TeacherClass $schedule)
     {
         try {
-            $schedule = Auth::user()->facultyMember->teacherClasses()->findOrFail($schedule->id);
-            $section = $schedule->section->section_name;
+            $section = $schedule->section;
             $subject = $schedule->subject->subject_name;
-            if ($date_id) {
-                $ScheduleDate = ScheduleDate::findOrFail($date_id);
-            }
-            $ScheduleDate = ScheduleDate::whereDate('date', now())->first();
-            if ($ScheduleDate) {
-            }
-            return view('AMS.backend.faculty-layouts.schedule.show', compact('schedule', 'section', 'subject', 'ScheduleDate'));
+            return view('AMS.backend.faculty-layouts.schedule.show', compact('schedule', 'section', 'subject'));
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }

@@ -121,6 +121,8 @@ class Add extends Component
         $message = 'Schedule successfully added!';
         $teacher_class_id = null;
 
+        $this->start_time = Carbon::parse( $this->start_time)->addMinute();
+        $this->end_time = Carbon::parse( $this->end_time)->subMinute();
         $sy = getCurrentSY();
         foreach ($dates as $date) {
             $conflicts = ScheduleDate::whereHas('schedule', function ($query) use ($sy, $semester) {
@@ -130,7 +132,7 @@ class Add extends Component
                     $query->whereBetween('start_time', [$this->start_time, $this->end_time])
                         ->orWhereBetween('end_time', [$this->start_time, $this->end_time])
                         ->orWhere(function ($query) {
-                            $query->where('start_time', '<=', $this->start_time)->where('end_time', '>=', $this->end_time);
+                            $query->where('start_time', '<', $this->start_time)->where('end_time', '>', $this->end_time);
                         });
                 })->count();
             if ($conflicts > 0) {

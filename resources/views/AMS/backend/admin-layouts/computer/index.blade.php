@@ -55,6 +55,8 @@
                                         <td>
                                             @if ($computer->status === "active")
                                                 <span class="badge bg-success">Online</span>
+                                            @elseif ($computer->status === "occupied")
+                                                <span class="badge bg-info">Occupied</span>
                                             @elseif ($computer->status === "offline")
                                                 <span class="badge bg-danger">Offline</span>
                                             @elseif ($computer->status === "under_maintenance")

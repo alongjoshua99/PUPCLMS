@@ -83,21 +83,7 @@
                             @enderror
                         </div>
                     </div>
-                    {{-- generate a select for status --}}
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="name" class="form-label fw-bold text-black">Status</label>
-                            <select class="form-select @error('status') is-invalid @enderror" name="status"
-                                id="status">
-                                <option value="">Select Status</option>
-                                <option value="Working">Working</option>
-                                <option value="Not Working">Not Working</option>
-                            </select>
-                            @error('status')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

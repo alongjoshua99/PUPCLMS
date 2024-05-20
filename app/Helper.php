@@ -237,6 +237,15 @@ if (!function_exists('createStudentTimeInAttendance')) {
             ->first();
 
         if (!$attendance) {
+            $schedule = $teacher_class->scheduleDates()->where('date', now()->format('Y-m-d'))
+            ->where(function ($query) {
+                $query->where('start_time', '<', now()->format('H:m:s'))->where('end_time', '>', now()->format('H:m:s'));
+            })->first();
+            $formatted_time_in = Carbon::parse($schedule->start_time)->addMinutes(30)->format('H:m:s');
+            $remarks = 'Present';
+            if (now()->format('H:m:s') > $formatted_time_in) {
+                $remarks = 'Late';
+            }
             return AttendanceLog::create([
                 'teacher_class_id' => $teacher_class->id,
                 'student_id' => $student_id,
@@ -244,7 +253,8 @@ if (!function_exists('createStudentTimeInAttendance')) {
                 'semester_id' => $school_year->semester_id,
                 'date' => now()->format('Y-m-d'),
                 'time_in' => now()->format('H:m:s'),
-                'ip_address' =>$ip_address
+                'ip_address' =>$ip_address,
+                'remarks' =>$remarks,
             ]);
         }
     }
@@ -262,7 +272,6 @@ if (!function_exists('createStudentTimeOutAttendance')) {
             ->whereNotNull('time_in')
             ->whereNull('time_out')
             ->first();
-
         if ($attendance) {
             return $attendance->update([
                 'time_out' => now()->format('H:m:s')
@@ -319,7 +328,6 @@ if (!function_exists('createTeacherTimeOutAttendance')) {
         }
     }
 }
-
 if (!function_exists('checkIfStudentAlreadyTimeIn')) {
     function checkIfStudentAlreadyTimeIn($teacher_class, $student_id)
     {
@@ -408,6 +416,7 @@ if (!function_exists('updateComputerStatus')) {
         $ipAddress = $request->ip();
         $computer = Computer::where('ip_address', $ipAddress)->first();
         $computerLog = ComputerLog::where('ip_address', $ipAddress)->where('status', 'pending')->first();
+        // dd($computer, $computerLog , $ipAddress);
         if ($computer) {
             if ($action == 'login') {
                 $computer->update(['status' => 'occupied']);
@@ -427,5 +436,51 @@ if (!function_exists('updateComputerStatus')) {
                 ]);
             }
         }
+    }
+}
+if (!function_exists('getComputerStatusColor')) {
+    function getComputerStatusColor($status)
+    {
+        switch ($status) {
+            case 'active':
+                return 'bg-success';
+            case 'occupied':
+                return 'bg-info';
+            case 'offline':
+                return 'bg-danger';
+            case 'under_maintenance':
+                return 'bg-warning';
+            default:
+                return 'bg-secondary';
+        }
+    }
+}
+if (!function_exists('getStudentInThisComputer')) {
+    function getStudentInThisComputer($schedule, $ip_address)
+    {
+        if ($schedule) {
+            $school_year = getCurrentSY();
+            $attendance =  AttendanceLog::with('teacherClass') // Eager load Teacher relationship
+                ->where('teacher_class_id', $schedule->teacher_class_id)
+                ->where('sy_id', $school_year->id)
+                ->where('semester_id', $school_year->semester_id)
+                ->whereDate('date', now())
+                ->where('ip_address', $ip_address)
+                ->first();
+                // dd($attendance);
+                if ($attendance) {
+                    return $attendance->student->getFullName();
+                }
+        }
+        return '';
+    }
+}
+if (!function_exists('getComputerNumber')) {
+    function getComputerNumber( $ip_address)
+    {
+        $computer = Computer::where('ip_address', $ip_address)->first();
+            if ($computer) {
+                return $computer;
+            }
     }
 }

@@ -91,6 +91,8 @@ class HomeController extends Controller
                 if (!$hasSchedule) {
                     return $this->handleNoSchedule($request);
                 }
+
+                updateComputerStatus($request, 'login');
                 $schedule = getTheScheduleOfStudent(Auth::user()->student->section_id);
                 $attendance = createStudentTimeInAttendance($schedule, Auth::user()->student->id, $request->ip());
             }
@@ -154,7 +156,7 @@ class HomeController extends Controller
         $request->session()->forget(Auth::id() . "_last_activity");
         // set the user's status to offline
         Auth::user()->status = "Offline";
-        // Auth::user()->save();
+        Auth::user()->save();
         // create a log
         $log = Log::where('user_id', Auth::id())
             ->whereNull('time_out')

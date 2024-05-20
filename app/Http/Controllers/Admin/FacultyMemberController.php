@@ -25,18 +25,23 @@ class FacultyMemberController extends Controller
         $currentRouteName = app('router')->getRoutes()->match(app('request')->create(url()->current()))->getName();
 
         if ($currentRouteName == "admin.user.account.faculty.index") {
-            $users = User::where('faculty_member_id', '!=', null)->get();
+            $users = User::with('facultyMember')
+            ->where('faculty_member_id', '!=', null)
+            ->whereHas('facultyMember', function($query){
+                    $query->whereIn('department_id', [2,3]);
+            })  
+            ->get();
             $pageTitle = "Faculty";
             $departments = Department::all();
-            $facultyMembers = FacultyMember::whereDoesntHave('user')->get();
+            $facultyMembers = FacultyMember::whereDoesntHave('user')->whereIn('department_id', [2,3])->get();
             $roles = Role::all();
             return view('AMS.backend.admin-layouts.user.faculty.index', compact('users', 'departments', 'facultyMembers', 'roles', 'pageTitle'));
         }
         if ($currentRouteName == "admin.user.information.faculty.index") {
-            $facultyMems = FacultyMember::all();
+            $facultyMems = FacultyMember::with('department')->whereIn('department_id', [2,3])->get();
             $pageTitle = "Faculty";
             $departments = Department::all();
-            $facultyMembers = FacultyMember::whereDoesntHave('user')->get();
+            $facultyMembers = FacultyMember::whereDoesntHave('user')->whereIn('department_id', [2,3])->get();
             $roles = Role::all();
             return view('AMS.backend.admin-layouts.user.faculty.index', compact('facultyMems', 'departments', 'facultyMembers', 'roles', 'pageTitle'));
         }

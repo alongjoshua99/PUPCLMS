@@ -57,7 +57,7 @@ class ComputerLogController extends Controller
         try {
             $status = ComputerLog::findOrFail($id);
             $status->update([
-                'status' => $request->status,
+                ''
             ]);
 
             return redirect()->back()->with('successToast', 'Status updated successfully!');

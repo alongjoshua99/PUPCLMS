@@ -33,15 +33,17 @@ class CheckComputerStatus extends Command
             if ($computer->ip_address) {
                 $process = new Process(["ping", "-c", "1", $computer->ip_address]);
                 $process->run();
-    
+
                 if ($process->isSuccessful()) {
                     $this->info("Computer with IP: $computer->ip_address is Online");
                     if ($computer->status !='occupied') {
                         $computer->update(['status' => 'active']);
                     }
                 } else {
-                    $this->info("Computer with IP: $computer->ip_address is Offline");
-                    $computer->update(['status' => 'offline']);
+                    if ($computer->status !='occupied') {
+                        $this->info("Computer with IP: $computer->ip_address is Offline");
+                        $computer->update(['status' => 'offline']);
+                    }
                 }
             }else{
                 $this->info("Computer: $computer->computer_name doesn`t have ip address set.");

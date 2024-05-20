@@ -7,6 +7,7 @@ use App\Models\TeacherClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AttendanceLog;
+use App\Models\Computer;
 
 class DashboardController extends Controller
 {
@@ -16,11 +17,30 @@ class DashboardController extends Controller
     public function index($filter = null)
     {
         try {
+            $school_year = getCurrentSY();
+            $schedule = null;
 
-            $schedules = getSchedules(Auth::user()->faculty_member_id);
-            $recentLogs = AttendanceLog::where('student_id','!=', null)->orderBy('created_at', 'desc')->take(5)->get();
-            $recentLogs = AttendanceLog::where('student_id','!=', null)->orderBy('created_at', 'desc')->take(5)->get();
-            return view('AMS.backend.faculty-layouts.dashboard.index', compact('schedules', 'filter'));
+            $teacher_classes = TeacherClass::query()
+                ->with('scheduleDates') // Eager load subject relationship
+                ->where('teacher_id', Auth::user()->faculty_member_id)
+                ->whereHas('scheduleDates', function ($query) {
+                    $query->where('date', now()->format('Y-m-d'))
+                        ->where(function ($q) {
+                            $q->where('start_time', '<', now()->format('H:m:s'))->where('end_time', '>', now()->format('H:m:s'));
+                        });
+                })
+                ->first();
+                if ($teacher_classes) {
+                    $schedule = $teacher_classes->scheduleDates()->where('date', now()->format('Y-m-d'))
+                    ->where(function ($query) {
+                        $query->where('start_time', '<', now()->format('H:m:s'))->where('end_time', '>', now()->format('H:m:s'));
+                    })->first();
+                }
+
+
+            $recentLogs = AttendanceLog::where('student_id', '!=', null)->orderBy('created_at', 'desc')->take(5)->get();
+            $computers = Computer::all();
+            return view('AMS.backend.faculty-layouts.dashboard.index', compact('schedule', 'computers'));
         } catch (\Throwable $th) {
             return redirect()->back()->with('errorAlert', $th->getMessage());
         }

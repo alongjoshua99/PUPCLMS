@@ -59,8 +59,10 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Student</th>
+                                    <th scope="col">Computer no.</th>
                                     <th scope="col">Time in</th>
                                     <th scope="col">Time Out</th>
+                                    <th scope="col">Remarks</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,15 +75,21 @@
                                             {{ $log->student->getFullName() }}
                                         </td>
                                         <td>
+                                            {{ getComputerNumber($log->ip_address)->computer_number }}
+                                        </td>
+                                        <td>
                                             {{ date('h:i A', strtotime($log->time_in)) }}
                                         </td>
                                         <td>
                                             @if ($log->time_out != null)
                                                 {{ date('h:i A', strtotime($log->time_out)) }}
                                             @else
-                                                <span class="badge bg-danger">No Data</span>
+                                            <span class="badge bg-danger">No Data</span>
                                             @endif
                                         </td>
+                                            <td>
+                                                {{ $log->remarks }}
+                                            </td>
                                     </tr>
                                 @endforeach
                             </tbody>

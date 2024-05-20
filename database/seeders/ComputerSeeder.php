@@ -12,100 +12,16 @@ class ComputerSeeder extends Seeder
      */
     public function run(): void
     {
-        $data = [
-            [
-                'computer_number' => '01',
-                'computer_name' => 'Computer 01',
+        for ($i=1; $i <=36; $i++) {
+            \App\Models\Computer::create([
+                'computer_number' => $i,
+                'computer_name' => 'Computer '. $i,
                 'os' => 'Windows 10',
                 'processor' => 'Intel Core i5',
                 'memory' => '8GB',
                 'storage' => '500GB',
                 'graphics' => 'Nvidia GTX 1050',
-            ],
-            [
-                'computer_number' => '02',
-                'computer_name' => 'Computer 02',
-                'os' => 'Windows 10',
-                'processor' => 'Intel Core i5',
-                'memory' => '8GB',
-                'storage' => '500GB',
-                'graphics' => 'Nvidia GTX 1050',
-            ],
-            [
-                'computer_number' => '03',
-                'computer_name' => 'Computer 03',
-                'os' => 'Windows 10',
-                'processor' => 'Intel Core i5',
-                'memory' => '8GB',
-                'storage' => '500GB',
-                'graphics' => 'Nvidia GTX 1050',
-            ],
-            [
-                'computer_number' => '04',
-                'computer_name' => 'Computer 04',
-                'os' => 'Windows 10',
-                'processor' => 'Intel Core i5',
-                'memory' => '8GB',
-                'storage' => '500GB',
-                'graphics' => 'Nvidia GTX 1050',
-            ],
-            [
-                'computer_number' => '05',
-                'computer_name' => 'Computer 05',
-                'os' => 'Windows 10',
-                'processor' => 'Intel Core i5',
-                'memory' => '8GB',
-                'storage' => '500GB',
-                'graphics' => 'Nvidia GTX 1050',
-            ],
-            [
-                'computer_number' => '06',
-                'computer_name' => 'Computer 06',
-                'os' => 'Windows 10',
-                'processor' => 'Intel Core i5',
-                'memory' => '8GB',
-                'storage' => '500GB',
-                'graphics' => 'Nvidia GTX 1050',
-            ],
-            [
-                'computer_number' => '07',
-                'computer_name' => 'Computer 07',
-                'os' => 'Windows 10',
-                'processor' => 'Intel Core i5',
-                'memory' => '8GB',
-                'storage' => '500GB',
-                'graphics' => 'Nvidia GTX 1050',
-            ],
-            [
-                'computer_number' => '08',
-                'computer_name' => 'Computer 08',
-                'os' => 'Windows 10',
-                'processor' => 'Intel Core i5',
-                'memory' => '8GB',
-                'storage' => '500GB',
-                'graphics' => 'Nvidia GTX 1050',
-            ],
-            [
-                'computer_number' => '09',
-                'computer_name' => 'Computer 09',
-                'os' => 'Windows 10',
-                'processor' => 'Intel Core i5',
-                'memory' => '8GB',
-                'storage' => '500GB',
-                'graphics' => 'Nvidia GTX 1050',
-            ],
-            [
-                'computer_number' => '10',
-                'computer_name' => 'Computer 10',
-                'os' => 'Windows 10',
-                'processor' => 'Intel Core i5',
-                'memory' => '8GB',
-                'storage' => '500GB',
-                'graphics' => 'Nvidia GTX 1050',
-            ],
-        ];
-        foreach ($data as $item) {
-            \App\Models\Computer::create($item);
+            ]);
         }
     }
 }

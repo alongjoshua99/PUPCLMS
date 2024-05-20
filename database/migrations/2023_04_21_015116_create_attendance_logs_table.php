@@ -25,7 +25,7 @@ return new class extends Migration
                 ->constrained('school_years');
             $table->foreignId('semester_id')
                 ->constrained('semesters');
-            // $table->string('remarks'); // present, absent, late
+            $table->string('remarks'); // present, absent, late
             $table->date('date');
             $table->time('time_in');
             $table->time('time_out')->nullable();

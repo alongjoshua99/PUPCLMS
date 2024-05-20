@@ -12,14 +12,6 @@
 
                     <div class="row mb-3">
                         <div class="col-md-12">
-                            <label for="name" class="form-label fw-bold text-black">Computer no.</label>
-                            <input type="text" class="form-control" name="computer_number" id="computer_number"
-                                placeholder="Computer no." value="{{ $computer->computer_number }}">
-                        </div>
-                    </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-12">
                             <label for="name" class="form-label fw-bold text-black">IP Address</label>
                             <input type="text" class="form-control" name="ip_address" id="ip_address"
                                 placeholder="IP Address" value="{{ $computer->ip_address }}">
@@ -61,22 +53,7 @@
                                 placeholder="Storage" value="{{ $computer->storage }}">
                         </div>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label for="name" class="form-label fw-bold text-black">Status</label>
-                            <select class="form-select @error('status') is-invalid @enderror" name="status"
-                                id="status">
-                                <option value="">Select Status</option>
-                                <option value="online" {{ $computer->status == 'online' ? 'selected' : '' }}>Online
-                                </option>
-                                <option value="offline" {{ $computer->status == 'offline' ? 'selected' : '' }}>
-                                Offline</option>
-                            </select>
-                            @error('status')
-                                <div class="text-danger">{{ $message }}</div>
-                            @enderror
-                        </div>
-                    </div>
+                
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

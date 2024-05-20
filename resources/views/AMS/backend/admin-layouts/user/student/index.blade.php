@@ -15,7 +15,9 @@
                             {{ $section_name != null ? '- ' . $section_name : '' }}
                         </h3>
                         <div class="d-flex align-items-center">
+                            @if (Route::is('admin.user.information.student.index'))
                             <button class="btn btn-outline-maroon me-1" data-bs-toggle="modal" data-bs-target="#add">Upload Masterlist</button>
+                            @endif
                             @include('AMS.backend.admin-layouts.user.student.master_list.modal._add')
                             <div class="dropdown">
                                 <button class="btn btn-outline-maroon dropdown-toggle" type="button" id="dropdownMenuButton"

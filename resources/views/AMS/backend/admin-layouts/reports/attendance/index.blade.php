@@ -12,10 +12,10 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between border-bottom-0">
                         <h3 class="text-maroon">@yield('page-title')</h3>
-                        <a href="{{ route('admin.report.attendance.charts') }}" class="btn btn-outline-maroon">
+                        {{-- <a href="{{ route('admin.report.attendance.charts') }}" class="btn btn-outline-maroon">
                             <i class="ri-line-chart-line"></i>
                             Charts
-                        </a>
+                        </a> --}}
                     </div>
                     <div class="card-body">
 

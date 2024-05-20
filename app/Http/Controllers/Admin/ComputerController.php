@@ -34,12 +34,11 @@ class ComputerController extends Controller
         $request->validate([
             'computer_number' => 'required|unique:computers,computer_number',
             'computer_name' => 'required',
-            'ip_address' => 'required',
+            'ip_address' => 'required|unique:computers,ip_address',
             'os' => 'required',
             'processor' => 'required',
             'memory' => 'required',
             'storage' => 'required',
-            'status'=> 'required',
         ]);
         try {
             Computer::create([
@@ -50,8 +49,6 @@ class ComputerController extends Controller
                 'processor' => $request->processor,
                 'memory' => $request->memory,
                 'storage' => $request->storage,
-                'status' => $request->status,
-
             ]);
             return back()->with('successToast', 'The computer has been added');
         } catch (\Throwable $th) {
@@ -81,16 +78,22 @@ class ComputerController extends Controller
     public function update(Request $request, $id)
     {
         try {
+            $request->validate([
+                'computer_name' => 'required',
+                'ip_address' => 'required|unique:computers,ip_address',
+                'os' => 'required',
+                'processor' => 'required',
+                'memory' => 'required',
+                'storage' => 'required',
+            ]);
             $computer = Computer::findOrFail($id);
             $computer->update([
-                'computer_number' => $request->computer_number,
                 'computer_name' => $request->computer_name,
                 'ip_address'=> $request->ip_address,
                 'os' => $request->os,
                 'processor' => $request->processor,
                 'memory' => $request->memory,
                 'storage' => $request->storage,
-                'status' => $request->status,
             ]);
             return back()->with('successToast', 'The computer has been updated');
             // return back()->withToastSuccess('The computer has been updated');

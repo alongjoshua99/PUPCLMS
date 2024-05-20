@@ -23,6 +23,7 @@
                                 <th scope="col">Scheduled time</th>
                                 <th scope="col">Time In</th>
                                 <th scope="col">Time Out</th>
+                                <th scope="col">Remark</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,13 +46,18 @@
                                     </td>
                                     <td>
                                         @if (checkIfStudentAlreadyTimeIn($schedule, Auth::user()->student->id))
-                                        {{ date('h:i:a', strtotime(checkIfStudentAlreadyTimeIn($schedule, Auth::user()->student->id)->time_in)) }}
-                                    @endif
+                                            {{ date('h:i:a', strtotime(checkIfStudentAlreadyTimeIn($schedule, Auth::user()->student->id)->time_in)) }}
+                                        @endif
                                     </td>
                                     <td>
                                         @if (checkIfStudentAlreadyTimeOut($schedule, Auth::user()->student->id))
-                                        {{ date('h:i:a', strtotime(checkIfStudentAlreadyTimeOut($schedule, Auth::user()->student->id)->time_out)) }}
-                                    @endif
+                                            {{ date('h:i:a', strtotime(checkIfStudentAlreadyTimeOut($schedule, Auth::user()->student->id)->time_out)) }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if (checkIfStudentAlreadyTimeIn($schedule, Auth::user()->student->id))
+                                            {{ checkIfStudentAlreadyTimeIn($schedule, Auth::user()->student->id)->remarks }}
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
