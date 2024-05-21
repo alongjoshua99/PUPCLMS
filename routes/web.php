@@ -284,12 +284,12 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isFaculty'])->prefix('facult
         Route::prefix('attendance')->name('attendance.')->controller(FacultyAttendanceLogController::class)->group(function () {
 
             Route::get('/', 'index')->name('index');
-            Route::get('/charts', 'charts')->name('charts');
-            Route::get('/{id?}/{date_id?}', 'show')->name('show');
-            Route::post('/store', 'store')->name('store');
-            Route::put('/{id}/edit', 'edit')->name('edit');
-            Route::put('/{id}/update', 'update')->name('update');
-            Route::delete('/{id}/destroy', 'destroy')->name('destroy');
+            Route::get('/pdf/{id}/{schedule_date_id}', 'pdf')->name('pdf');
+            Route::get('/{id?}/{schedule_date_id?}', 'show')->name('show');
+            // Route::post('/store', 'store')->name('store');
+            // Route::put('/{id}/edit', 'edit')->name('edit');
+            // Route::put('/{id}/update', 'update')->name('update');
+            // Route::delete('/{id}/destroy', 'destroy')->name('destroy');
         });
     });
     /* FACULTY */

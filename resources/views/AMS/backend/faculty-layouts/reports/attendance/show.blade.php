@@ -1,18 +1,51 @@
 @extends('AMS.backend.faculty-layouts.sidebar')
 
 @section('page-title')
-    {{ $section }} - {{ $subject }} @if ($ScheduleDate)
-    ({{ date('F d, Y', strtotime($ScheduleDate->date)) }})
-@else
-<!--  (No Schedule for today)-->
-@endif
+    {{ $section }} - {{ $subject }}
 @endsection
 
 @section('contents')
     <section class="section">
         <div class="row">
             <div class="col-lg-12">
-
+                <div class="row mb-3">
+                    <div class="col-lg-2 col-md-12 px-1">
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="height: 70px">
+                                    <div class="d-flex justify-content-center align-content-center mt-5 flex-column">
+                                        <h5 class="font-weight-bold text-center">No. Of Present</h5>
+                                        <h6 class="text-center">{{ countNumberOfAttendanceBy($schedule, $schedule_date, 'present') }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-12 px-1">
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="height: 70px">
+                                    <div class="d-flex justify-content-center align-content-center mt-5 flex-column">
+                                        <h5 class="font-weight-bold text-center">No. Of Late</h5>
+                                        <h6 class="text-center">{{ countNumberOfAttendanceBy($schedule, $schedule_date, 'late') }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-12 px-1">
+                        <div class="card">
+                            <div class="card-body">
+                                <div style="height: 70px">
+                                    <div class="d-flex justify-content-center align-content-center mt-5 flex-column">
+                                        <h5 class="font-weight-bold text-center">No. Of Absent</h5>
+                                        <h6 class="text-center">{{ countNumberOfAttendanceBy($schedule, $schedule_date, 'absent') }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header d-flex justify-content-between border-bottom-0">
                         <h3 class="text-maroon">@yield('page-title')</h3>
@@ -22,7 +55,11 @@
                                 <i class="ri-arrow-go-back-line"></i>
                                 Back
                             </a>
-                            {{-- @if (!checkIfTeacherAlreadyTimeIn($ScheduleDate, Auth::user()->faculty_member_id ))
+                            <a href="{{ route('faculty.report.attendance.pdf', ['id' => $schedule->id, 'schedule_date_id' => $schedule_date->id]) }}"
+                                class="btn btn-outline-maroon me-1">
+                                Download PDF
+                            </a>
+                            {{-- @if (!checkIfTeacherAlreadyTimeIn($ScheduleDate, Auth::user()->faculty_member_id))
                             <a href="{{ route('faculty.schedule.create') }}" class="btn btn-outline-maroon me-1">
                                 <i class="ri-arrow-go-back-line"></i>
                                 Time In
@@ -49,11 +86,10 @@
                                     </li>
                                 </ul>
 
-                            </div>--}}
-                        </div> 
+                            </div> --}}
+                        </div>
                     </div>
                     <div class="card-body">
-
                         <!-- Table with stripped rows -->
                         <table class="table" id="schedules-table">
                             <thead>
@@ -67,7 +103,9 @@
                             </thead>
                             <tbody>
                                 @php
-                                    $logs = $ScheduleDate ? $schedule->getLogsByDate($ScheduleDate->date) : $schedule->attendanceLogs()->where('student_id','!=',null)->get();
+                                    $logs = $schedule->attendanceLogs()
+                                    ->whereDate('date', $schedule_date->date)
+                                    ->where('student_id', '!=', null)->get();
                                 @endphp
                                 @foreach ($logs as $log)
                                     <tr>
@@ -84,12 +122,12 @@
                                             @if ($log->time_out != null)
                                                 {{ date('h:i A', strtotime($log->time_out)) }}
                                             @else
-                                            <span class="badge bg-danger">No Data</span>
+                                                <span class="badge bg-danger">No Data</span>
                                             @endif
                                         </td>
-                                            <td>
-                                                {{ $log->remarks }}
-                                            </td>
+                                        <td>
+                                            {{ $log->remarks }}
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

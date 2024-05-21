@@ -52,7 +52,7 @@ class AttendanceLogController extends Controller
                 });
             }
         ])->having('attendance_logs_count', '>', 0)->get();
-        return view('AMS.backend.faculty-layouts.reports.attendance.charts', compact('getTotalPerWeek', 'getTotalToday', 'getTotalPerSchoolYear','getTotalPerSemester'));
+        return view('AMS.backend.faculty-layouts.reports.attendance.charts', compact('getTotalPerWeek', 'getTotalToday', 'getTotalPerSchoolYear', 'getTotalPerSemester'));
     }
 
     /**
@@ -70,21 +70,27 @@ class AttendanceLogController extends Controller
     {
         //
     }
-
+    public function pdf($schedule_id, $schedule_date_id)
+    {
+        $schedule = TeacherClass::with('attendanceLogs')->find($schedule_id);
+        return view('AMS.backend.faculty-layouts.reports.attendance.pdf', [
+            'schedule' =>  TeacherClass::with('attendanceLogs')->find($schedule_id),
+            'section' => $schedule->section,
+            'subject' => $schedule->subject,
+            'schedule_date' => ScheduleDate::find($schedule_date_id),
+        ]);
+    }
     /**
      * Display the specified resource.
      */
-    public function show($id, $date_id = null)
+    public function show($id, $schedule_date_id = null)
     {
         try {
             $schedule = TeacherClass::with('attendanceLogs')->findOrFail($id);
-             $section = $schedule->section->section_name;
+            $section = $schedule->section->section_name;
             $subject = $schedule->subject->subject_name;
-            $ScheduleDate = null;
-            if ($date_id) {
-                $ScheduleDate = ScheduleDate::find($date_id);
-            }
-            return view('AMS.backend.faculty-layouts.reports.attendance.show', compact('schedule','section', 'subject','ScheduleDate'));
+            $schedule_date = ScheduleDate::find($schedule_date_id);
+            return view('AMS.backend.faculty-layouts.reports.attendance.show', compact('schedule', 'section', 'subject', 'schedule_date'));
         } catch (\Throwable $th) {
             return back()->with('errorAlert', $th->getMessage());
         }

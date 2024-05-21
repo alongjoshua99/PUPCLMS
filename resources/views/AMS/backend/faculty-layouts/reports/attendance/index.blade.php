@@ -47,7 +47,7 @@
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                                     @foreach ($schedule->scheduleDates as $schedule_date)
                                                         <li><a class="dropdown-item"
-                                                                href="{{ route('faculty.report.attendance.show', ['id' => $schedule->id, 'date_id' => $schedule_date->id]) }}">{{ date('F d, Y', strtotime($schedule_date->date)) }}</a>
+                                                                href="{{ route('faculty.report.attendance.show', ['id' => $schedule->id, 'schedule_date_id' => $schedule_date->id]) }}">{{ date('F d, Y', strtotime($schedule_date->date)) }}</a>
                                                         </li>
                                                     @endforeach
                                                 </ul>

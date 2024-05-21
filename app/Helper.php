@@ -238,9 +238,9 @@ if (!function_exists('createStudentTimeInAttendance')) {
 
         if (!$attendance) {
             $schedule = $teacher_class->scheduleDates()->where('date', now()->format('Y-m-d'))
-            ->where(function ($query) {
-                $query->where('start_time', '<', now()->format('H:m:s'))->where('end_time', '>', now()->format('H:m:s'));
-            })->first();
+                ->where(function ($query) {
+                    $query->where('start_time', '<', now()->format('H:m:s'))->where('end_time', '>', now()->format('H:m:s'));
+                })->first();
             $formatted_time_in = Carbon::parse($schedule->start_time)->addMinutes(30)->format('H:m:s');
             $remarks = 'Present';
             if (now()->format('H:m:s') > $formatted_time_in) {
@@ -253,8 +253,8 @@ if (!function_exists('createStudentTimeInAttendance')) {
                 'semester_id' => $school_year->semester_id,
                 'date' => now()->format('Y-m-d'),
                 'time_in' => now()->format('H:m:s'),
-                'ip_address' =>$ip_address,
-                'remarks' =>$remarks,
+                'ip_address' => $ip_address,
+                'remarks' => $remarks,
             ]);
         }
     }
@@ -302,7 +302,7 @@ if (!function_exists('createTeacherTimeInAttendance')) {
                 'semester_id' => $school_year->semester_id,
                 'date' => now()->format('Y-m-d'),
                 'time_in' => now()->format('H:m:s'),
-                'ip_address' =>$ip_address
+                'ip_address' => $ip_address
             ]);
         }
     }
@@ -353,7 +353,7 @@ if (!function_exists('checkIfTeacherAlreadyTimeIn')) {
             ->where('faculty_member_id', $faculty_member_id)
             ->where('sy_id', $school_year->id)
             ->where('semester_id', $school_year->semester_id)
-              ->whereDate('date', now())
+            ->whereDate('date', now())
             ->whereNotNull('time_in')
             ->whereNull('time_out')
             ->orWhereNotNull('time_out')
@@ -467,20 +467,46 @@ if (!function_exists('getStudentInThisComputer')) {
                 ->whereDate('date', now())
                 ->where('ip_address', $ip_address)
                 ->first();
-                // dd($attendance);
-                if ($attendance) {
-                    return $attendance->student->getFullName();
-                }
+            // dd($attendance);
+            if ($attendance) {
+                return $attendance->student->getFullName();
+            }
         }
         return '';
     }
 }
 if (!function_exists('getComputerNumber')) {
-    function getComputerNumber( $ip_address)
+    function getComputerNumber($ip_address)
     {
         $computer = Computer::where('ip_address', $ip_address)->first();
-            if ($computer) {
-                return $computer;
-            }
+        if ($computer) {
+            return $computer;
+        }
+    }
+}
+if (!function_exists('countNumberOfAttendanceBy')) {
+    function countNumberOfAttendanceBy($schedule, $schedule_date, $type)
+    {
+        switch ($type) {
+            case 'present':
+                return $schedule->attendanceLogs()
+                    ->whereDate('date', $schedule_date->date)
+                    ->where('student_id', '!=', null)->count();
+            case 'late':
+                return $schedule->attendanceLogs()
+                    ->where('remarks', 'Late')
+                    ->whereDate('date', $schedule_date->date)
+                    ->where('student_id', '!=', null)
+                    ->count();
+            case 'absent':
+                $count = $schedule->section->students()->count() - $schedule->attendanceLogs()
+                    ->whereDate('date', $schedule_date->date)
+                    ->where('student_id', '!=', null)
+                    ->count();
+                if ($count < 0) {
+                    $count = 0;
+                }
+                return  $count;
+        }
     }
 }
