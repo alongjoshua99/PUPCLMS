@@ -13,7 +13,7 @@
                         <h3 class="text-maroon">@yield('page-title')</h3>
                         {{-- back button --}}
                         <div class="d-flex">
-                            <a href="{{ route('admin.academic.schedule.index') }}" class="btn btn-maroon me-1">
+                            <a href="{{ route('admin.schedules.index') }}" class="btn btn-maroon me-1">
                                 <i class="ri-arrow-go-back-line"></i>
                                 Back
                             </a>

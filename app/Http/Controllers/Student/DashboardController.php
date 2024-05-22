@@ -13,7 +13,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $schedules = getSchedulesForSection(Auth::user()->student->section_id);
+        $schedules = getSchedulesForSection(Auth::user()->student->section_id,true);
         // $schedule = getTheScheduleOfStudent(Auth::user()->student->section_id);
         // $attendance = createStudentTimeInAttendance($schedule, Auth::user()->student->id);
         // dd($schedule,$attendance);

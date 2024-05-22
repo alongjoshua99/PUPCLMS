@@ -5,7 +5,7 @@
                 <h5 class="modal-title text-white">Add Date</h5>
 
             </div>
-            <form action="{{ route('admin.academic.schedule.store', ['id' => $schedule->id]) }}" method="POST">
+            <form action="{{ route('admin.schedules.store', ['id' => $schedule->id]) }}" method="POST">
                 <div class="modal-body">
                     @csrf
                     <div class="row mb-3">

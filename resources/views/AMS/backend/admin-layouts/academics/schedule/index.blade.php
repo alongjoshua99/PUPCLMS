@@ -16,7 +16,7 @@
                             Add Schedule
                         </button>
                         @include('AMS.backend.admin-layouts.academics.schedule.modal._add') --}}
-                        <a class="btn btn-outline-maroon" href="{{ route('admin.academic.schedule.create') }}">
+                        <a class="btn btn-outline-maroon" href="{{ route('admin.schedules.create') }}">
                             Add Schedule
                         </a>
 
@@ -50,7 +50,7 @@
 
                                         <td>
                                             <a class="btn btn-link text-info px-3 mb-0"
-                                            href="{{ route('admin.academic.schedule.edit',['id' => $schedule->id]) }}">
+                                            href="{{ route('admin.schedules.edit',['id' => $schedule->id]) }}">
                                                 <i class="ri-eye-line text-info me-2" aria-hidden="true"></i>
                                             </a>
 

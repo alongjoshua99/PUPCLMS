@@ -95,6 +95,8 @@
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'timeGridWeek',
                 nowIndicator: true,
+                slotMinTime: '08:00', // 8 AM
+                slotMaxTime: '22:00', // 9 PM
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
@@ -110,9 +112,9 @@
                             textColor: 'white'
                         },
                     @endforeach
-                ]
+                ],
+
             });
-           calendar.setOption('weekends', false);
             calendar.render();
         });
     </script>

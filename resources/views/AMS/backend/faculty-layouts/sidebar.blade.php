@@ -12,13 +12,13 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            {{-- <li class="nav-item">
-                <a class="nav-link {{ Route::is('faculty.attendance.index') ? 'active' : '' }}"
-                    href="{{ route('faculty.attendance.index') }}">
-                    <i class="bi bi-clendar"></i>
-                    <span>Dashboard</span>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::is('faculty.seat-plan.index') ? 'active' : '' }}"
+                    href="{{ route('faculty.seat-plan.index') }}">
+                    <i class="bi bi-laptop"></i>
+                    <span>Seat Plan</span>
                 </a>
-            </li> --}}
+            </li>
             <!-- End Dashboard Nav -->
 
             <li class="nav-item">
@@ -34,7 +34,7 @@
                 </ul>
 
             </li>
-       
+
             <li class="nav-item">
                 <a class="nav-link {{ Route::is('faculty.schedule.*') ? 'active' : '' }}"
                     href="{{ route('faculty.schedule.index') }}">

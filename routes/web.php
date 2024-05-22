@@ -35,6 +35,7 @@ use App\Http\Controllers\ImportController;
 use Illuminate\Http\Request;
 use Symfony\Component\Process\Process;
 use App\Exports\StudentsExport;
+use App\Http\Controllers\Faculty\SeatPlanController;
 use Maatwebsite\Excel\Facades\Excel;
 /*
 |--------------------------------------------------------------------------
@@ -68,16 +69,6 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
             Route::get('/{id}', 'show')->name('show');
             Route::post('/store', 'store')->name('store');
             Route::put('/{id}/edit', 'edit')->name('edit');
-            Route::put('/{id}/update', 'update')->name('update');
-            Route::delete('/{id}/destroy', 'destroy')->name('destroy');
-        });
-        /* SCHEDULE */
-        Route::prefix('schedule')->name('schedule.')->controller(ScheduleController::class)->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/create', 'create')->name('create');
-            Route::get('/{id}', 'show')->name('show');
-            Route::post('/store/{id}', 'store')->name('store');
-            Route::get('/{id}/edit', 'edit')->name('edit');
             Route::put('/{id}/update', 'update')->name('update');
             Route::delete('/{id}/destroy', 'destroy')->name('destroy');
         });
@@ -115,6 +106,26 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
         Route::put('/{id}/update/{is_semester}', 'update')->name('update');
     });
 
+    /* SCHEDULE */
+    Route::prefix('schedules')->name('schedules.')->group(function () {
+        Route::get('/', [ScheduleController::class,'index'])->name('index');
+        Route::get('/create', [ScheduleController::class,'create'])->name('create');
+        // Route::get('/{id}', [ScheduleController::class,'show'])->name('show');
+        Route::post('/store/{id}', [ScheduleController::class,'store'])->name('store');
+        Route::get('/{id}/edit', [ScheduleController::class,'edit'])->name('edit');
+        Route::put('/{id}/update', [ScheduleController::class,'update'])->name('update');
+        Route::delete('/{id}/destroy', [ScheduleController::class,'destroy'])->name('destroy');
+
+        /* SCHEDULE REQUEST  */
+        Route::prefix('/request')->name('request.')->controller(ScheduleRequestController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{status}', 'show')->name('show');
+            Route::post('/store', 'store')->name('store');
+            Route::put('/{id}/edit', 'edit')->name('edit');
+            Route::put('/{id}/{status}/update', 'update')->name('update');
+            Route::delete('/{id}/{status}/destroy', 'destroy')->name('destroy');
+        });
+    });
     /* REPORTS */
     Route::prefix('report')->name('report.')->group(function () {
 
@@ -235,6 +246,7 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
 //faculty
 Route::middleware(['auth', 'alert', 'checkStatus', 'isFaculty'])->prefix('faculty')->name('faculty.')->group(function () {
     Route::get('/dashboard/{filter?}', [FacultyDashboardController::class, 'index'])->name('dashboard.index');
+    Route::get('/seat-plan', [SeatPlanController::class, 'index'])->name('seat-plan.index');
 
     Route::prefix('academics')->name('academic.')->group(function () {
 

@@ -9,7 +9,7 @@
                 Do you want to delete this data?
             </div>
             <div class="modal-footer">
-                <form action="{{ route('admin.academic.schedule.destroy', ['id' => $date->id]) }}" method="POST">
+                <form action="{{ route('admin.schedules.destroy', ['id' => $date->id]) }}" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

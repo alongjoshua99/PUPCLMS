@@ -90,7 +90,10 @@ class AttendanceLogController extends Controller
             $section = $schedule->section->section_name;
             $subject = $schedule->subject->subject_name;
             $schedule_date = ScheduleDate::find($schedule_date_id);
-            return view('AMS.backend.faculty-layouts.reports.attendance.show', compact('schedule', 'section', 'subject', 'schedule_date'));
+            $logs = $schedule->attendanceLogs()
+                ->whereDate('date', $schedule_date->date)
+                ->where('student_id', '!=', null)->get();
+            return view('AMS.backend.faculty-layouts.reports.attendance.show', compact('schedule', 'section', 'subject', 'schedule_date', 'logs'));
         } catch (\Throwable $th) {
             return back()->with('errorAlert', $th->getMessage());
         }

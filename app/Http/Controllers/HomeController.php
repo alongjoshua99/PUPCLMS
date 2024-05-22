@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends Controller
 {
+
     /* generate a home function and add comment */
     public function home()
     {
@@ -89,8 +90,12 @@ class HomeController extends Controller
 
                 // If the student has no schedule, log them out
                 if (!$hasSchedule) {
-                    return $this->handleNoSchedule($request);
+                    return $this->handleForceLogOut($request, 'You have no schedule today');
                 }
+                // If the student has no schedule, log them out
+                // if (checkIfComputerIsNotOccupied($request->ip())) {
+                //     return $this->handleForceLogOut($request, 'Computer is already occupied');
+                // }
 
                 updateComputerStatus($request, 'login');
                 $schedule = getTheScheduleOfStudent(Auth::user()->student->section_id);
@@ -142,6 +147,20 @@ class HomeController extends Controller
         // Logout the user
         Auth::logout();
         return redirect()->route('home.index')->with('errorAlert', 'You have no schedule today');
+    }
+    protected function handleForceLogOut(Request $request, $message): Response
+    {
+        // Remove last_activity from session
+        $request->session()->forget(Auth::id() . "_last_activity");
+
+        // Set the user's status to offline
+        Auth::user()->status = "Offline";
+        // Regenerate session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        // Logout the user
+        Auth::logout();
+        return redirect()->route('home.index')->with('errorAlert', $message);
     }
     public function logout(Request $request)
     {

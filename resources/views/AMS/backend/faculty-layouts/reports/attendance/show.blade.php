@@ -15,7 +15,7 @@
                                 <div style="height: 70px">
                                     <div class="d-flex justify-content-center align-content-center mt-5 flex-column">
                                         <h5 class="font-weight-bold text-center">No. Of Present</h5>
-                                        <h6 class="text-center">{{ countNumberOfAttendanceBy($schedule, $schedule_date, 'present') }}</h6>
+                                        <h6 class="text-center">{{ countNumberOfAttendanceBy($schedule, $schedule_date->date, 'present') }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -27,7 +27,7 @@
                                 <div style="height: 70px">
                                     <div class="d-flex justify-content-center align-content-center mt-5 flex-column">
                                         <h5 class="font-weight-bold text-center">No. Of Late</h5>
-                                        <h6 class="text-center">{{ countNumberOfAttendanceBy($schedule, $schedule_date, 'late') }}</h6>
+                                        <h6 class="text-center">{{ countNumberOfAttendanceBy($schedule, $schedule_date->date, 'late') }}</h6>
                                     </div>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                                 <div style="height: 70px">
                                     <div class="d-flex justify-content-center align-content-center mt-5 flex-column">
                                         <h5 class="font-weight-bold text-center">No. Of Absent</h5>
-                                        <h6 class="text-center">{{ countNumberOfAttendanceBy($schedule, $schedule_date, 'absent') }}</h6>
+                                        <h6 class="text-center">{{ countNumberOfAttendanceBy($schedule, $schedule_date->date, 'absent') }}</h6>
                                     </div>
                                 </div>
                             </div>

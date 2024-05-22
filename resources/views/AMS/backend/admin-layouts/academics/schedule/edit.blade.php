@@ -15,7 +15,7 @@
                             <button class="btn btn-outline-maroon me-1" data-bs-toggle="modal" data-bs-target="#addDate">Add
                                 Date</button>
                             {{-- bacl buton with icon --}}
-                            <a href="{{ route('admin.academic.schedule.index') }}" class="btn btn-outline-maroon">
+                            <a href="{{ route('admin.schedules.index') }}" class="btn btn-outline-maroon">
                                 <i class="ri-arrow-go-back-line"></i>
                                 Back</a>
 

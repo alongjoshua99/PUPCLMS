@@ -10,46 +10,15 @@
             <div class="col-6">
                 <div class="card">
 
-                    <div class="card-header">
-                        <h5 class="mb-0">Schedules</h5>
-                    </div>
-
-                    <div class="card-body p-3">
-
-                        <div id='calendar'></div>
-
-                    </div>
-                </div>
-
-
-            </div>
-            {{-- <div class="card top-selling overflow-auto">
-
-                    <div class="filter">
-                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li class="dropdown-header text-start">
-                                <h6>Filter</h6>
-                            </li>
-
-                            <li><a class="dropdown-item"
-                                    href="{{ route('faculty.dashboard.index',['filter' => 'today']) }}">Today</a></li>
-                            <li><a class="dropdown-item"
-                                    href="{{ route('faculty.dashboard.index', ['filter' => 'week']) }}">This Week</a></li>
-                            <li><a class="dropdown-item"
-                                    href="{{ route('faculty.dashboard.index', ['filter' => 'month']) }}">This Month</a></li>
-                        </ul>
-                    </div>
-
                     <div class="card-body pb-0" style="height: 40%">
-                        <h5 class="card-title">Schedules <span>| {{ Str::ucfirst($filter) }}</span></h5>
+                        <h5 class="card-title">Schedules <span></span></h5>
 
                         <table class="table table-borderless">
                             <thead>
                                 <tr>
                                     <th scope="col">Subject</th>
                                     <th scope="col">Section</th>
-                                    <th scope="col">Date</th>
+                                    <th scope="col">Date & Time</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,16 +32,52 @@
                                         </td>
 
                                         <td>
-                                            {{ date('F d, Y', strtotime($schedule->date)) }}
-                                            <br>
-                                            At {{ date('h:i:a', strtotime($schedule->start_time)) }} -
-                                            {{ date('h:i:a', strtotime($schedule->end_time)) }}
+                                            <button class="btn btn-sm btn-link text-info" type="button"
+                                                data-bs-toggle="modal" data-bs-target="#view{{ $schedule->id }}">
+                                                <i class="ri-eye-line"></i>
+                                            </button>
+                                            <div class="modal fade" id="view{{ $schedule->id }}" tabindex="-1">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header bg-info">
+                                                            <h5 class="modal-title text-white">View Scheduled Dates</h5>
+                                                        </div>
+                                                        <div class="modal-body my-3">
+                                                            <!-- Table with stripped rows -->
+                                                            <table class="table" id="schedules-table">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">Date</th>
+                                                                        <th scope="col">Time</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    @foreach ($schedule->scheduleDates as $schedule_date)
+                                                                        <tr>
+                                                                            <td>
+                                                                                {{ date('F d, Y', strtotime($schedule_date->date)) }}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{ date('h:i A', strtotime($schedule_date->start_time)) }} - {{ date('h:i A', strtotime($schedule_date->end_time)) }}
+                                                                            </td>
+                                                                        </tr>
+                                                                    @endforeach
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
                                         <td colspan="3" class="text-center">
-                                            No schedules for {{ $filter }}.
+                                            No schedules
                                         </td>
                                 @endforelse
                             </tbody>
@@ -80,9 +85,8 @@
 
                     </div>
 
-                </div> --}}
-        </div>
-        </div>
+                </div>
+            </div>
     </section>
 @endsection
 @section('styles')
@@ -112,7 +116,7 @@
                     @endforeach
                 ]
             });
-           calendar.setOption('weekends', false);
+            calendar.setOption('weekends', false);
             calendar.render();
         });
     </script>

@@ -27,12 +27,6 @@
                             <span>Course</span>
                         </a>
                     </li>
-                    <li class="{{ Route::is('admin.academic.schedule.index') ? 'collapse-active' : '' }}">
-                        <a href="{{ route('admin.academic.schedule.index') }}">
-                            <i class="bi bi-circle"></i>
-                            <span>Schedule</span>
-                        </a>
-                    </li>
                     <li class="{{ Route::is('admin.academic.section.index') ? 'collapse-active' : '' }}">
                         <a href="{{ route('admin.academic.section.index') }}">
                             <i class="bi bi-circle"></i>
@@ -43,6 +37,30 @@
                         <a href="{{ route('admin.academic.subject.index') }}">
                             <i class="bi bi-circle"></i>
                             <span>Subject</span>
+                        </a>
+                    </li>
+
+                </ul>
+
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed {{ Route::is('admin.schedules.*') ? 'active' : '' }}" data-bs-target="#schedules"
+                    data-bs-toggle="collapse" href="#">
+                    <i class="ri-book-open-line"></i>
+                    <span>Schedules</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="schedules" class="nav-content collapse p-2" data-bs-parent="#sidebar-nav">
+                    <li class="{{ Route::is('admin.schedules.index') ? 'collapse-active' : '' }}">
+                        <a href="{{ route('admin.schedules.index') }}">
+                            <i class="bi bi-circle"></i>
+                            <span>Schedule List</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.schedules.request.index') }}">
+                            <i class="bi bi-circle"></i>
+                            <span>Requests</span>
                         </a>
                     </li>
 
@@ -87,18 +105,14 @@
                             <i class="bi bi-circle"></i>
                             <span>Attendance Log</span>
                         </a>
-                    <li>
+                    </li>
+                    {{-- <li>
                         <a href="{{ route('admin.report.computer.index') }}">
                             <i class="bi bi-circle"></i>
                             <span>Computer Log</span>
                         </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('admin.report.schedule.request.index') }}">
-                            <i class="bi bi-circle"></i>
-                            <span>Schedule Requests</span>
-                        </a>
-                    </li>
+                    </li> --}}
+                   
 
                 </ul>
 
