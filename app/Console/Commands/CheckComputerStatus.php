@@ -45,21 +45,7 @@ class CheckComputerStatus extends Command
                         $computer->update(['status' => 'offline']);
                     }
                 }
-            }else{
-                $this->info("Computer: $computer->computer_name doesn`t have ip address set.");
-                $computer_log = $computer->logs()->latest()->first();
-                if ($computer_log) {
-                    $computer_log->update([
-                        'created_at' => now()
-                    ]);
-                } else {
-                 $computer->logs()->create([
-                    'report' => 'No IP Address',
-                    'created_at' => now()
-                 ]);
-                }
             }
-
         }
     }
 }

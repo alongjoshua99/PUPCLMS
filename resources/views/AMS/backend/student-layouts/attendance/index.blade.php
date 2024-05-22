@@ -40,18 +40,18 @@
                                         @php
                                             $time = $schedule->getTime();
                                         @endphp
-                                        {{ date('h:i:a', strtotime($time->start_time)) }}
+                                        {{ date('h:i A', strtotime($time->start_time)) }}
                                         -
-                                        {{ date('h:i:a', strtotime($time->end_time)) }}
+                                        {{ date('h:i A', strtotime($time->end_time)) }}
                                     </td>
                                     <td>
                                         @if (checkIfStudentAlreadyTimeIn($schedule, Auth::user()->student->id))
-                                            {{ date('h:i:a', strtotime(checkIfStudentAlreadyTimeIn($schedule, Auth::user()->student->id)->time_in)) }}
+                                            {{ date('h:i A', strtotime(checkIfStudentAlreadyTimeIn($schedule, Auth::user()->student->id)->time_in)) }}
                                         @endif
                                     </td>
                                     <td>
                                         @if (checkIfStudentAlreadyTimeOut($schedule, Auth::user()->student->id))
-                                            {{ date('h:i:a', strtotime(checkIfStudentAlreadyTimeOut($schedule, Auth::user()->student->id)->time_out)) }}
+                                            {{ date('h:i A', strtotime(checkIfStudentAlreadyTimeOut($schedule, Auth::user()->student->id)->time_out)) }}
                                         @endif
                                     </td>
                                     <td>

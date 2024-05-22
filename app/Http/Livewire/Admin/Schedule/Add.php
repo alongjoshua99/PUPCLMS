@@ -121,8 +121,8 @@ class Add extends Component
         $message = 'Schedule successfully added!';
         $teacher_class_id = null;
 
-        $this->start_time = Carbon::parse( $this->start_time)->addMinute();
-        $this->end_time = Carbon::parse( $this->end_time)->subMinute();
+        $this->start_time = Carbon::parse( $this->start_time)->addMinutes(1);
+        $this->end_time = Carbon::parse( $this->end_time)->subMinutes(1);
         $sy = getCurrentSY();
         foreach ($dates as $date) {
             $conflicts = ScheduleDate::whereHas('schedule', function ($query) use ($sy, $semester) {
@@ -155,8 +155,8 @@ class Add extends Component
                 ScheduleDate::create([
                     'teacher_class_id' => $teacher_class_id,
                     'date' => $date,
-                    'start_time' => $validatedData['start_time'],
-                    'end_time' => $validatedData['end_time'],
+                    'start_time' => Carbon::parse($validatedData['start_time'])->format('H:i'),
+                    'end_time' => Carbon::parse($validatedData['end_time'])->format('H:i'),
                 ]);
             }
         }

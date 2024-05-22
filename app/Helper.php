@@ -188,8 +188,8 @@ if (!function_exists('checkIfStudentHasSchedule')) {
     function checkIfStudentHasSchedule($section_id)
     {
         $date = Carbon::now()->format('Y-m-d');
-        $time = Carbon::now()->format('H:m:s');
-
+        $time = Carbon::now()->format('H:i');
+// dd($time, now()->format('H:i'));
         $school_year = getCurrentSY();
         return  TeacherClass::with('scheduleDates')
             ->whereHas('scheduleDates', function ($query) use ($date, $time) {
@@ -206,7 +206,7 @@ if (!function_exists('getTheScheduleOfStudent')) {
     function getTheScheduleOfStudent($section_id)
     {
         $date = Carbon::now()->format('Y-m-d');
-        $time = Carbon::now()->format('H:m:s');
+        $time = Carbon::now()->format('H:i');
 
         $school_year = getCurrentSY();
         return  TeacherClass::with('scheduleDates')
@@ -233,26 +233,26 @@ if (!function_exists('createStudentTimeInAttendance')) {
             ->whereDate('date', now())
             ->whereNotNull('time_in')
             ->whereNull('time_out')
-            ->orWhereNotNull('time_out')
             ->first();
 
         if (!$attendance) {
             $schedule = $teacher_class->scheduleDates()->where('date', now()->format('Y-m-d'))
                 ->where(function ($query) {
-                    $query->where('start_time', '<', now()->format('H:m:s'))->where('end_time', '>', now()->format('H:m:s'));
+                    $query->where('start_time', '<', Carbon::now()->format('H:i'))->where('end_time', '>', Carbon::now()->format('H:i'));
                 })->first();
-            $formatted_time_in = Carbon::parse($schedule->start_time)->addMinutes(30)->format('H:m:s');
+            $formatted_time_in = Carbon::parse($schedule->start_time)->addMinutes(10)->format('H:i');
             $remarks = 'Present';
-            if (now()->format('H:m:s') > $formatted_time_in) {
+            if (Carbon::now()->format('H:i') > $formatted_time_in) {
                 $remarks = 'Late';
             }
+            // dd($schedule, $attendance);
             return AttendanceLog::create([
                 'teacher_class_id' => $teacher_class->id,
                 'student_id' => $student_id,
                 'sy_id' => $school_year->id,
                 'semester_id' => $school_year->semester_id,
-                'date' => now()->format('Y-m-d'),
-                'time_in' => now()->format('H:m:s'),
+                'date' => Carbon::now()->format('Y-m-d'),
+                'time_in' => Carbon::now()->format('H:i'),
                 'ip_address' => $ip_address,
                 'remarks' => $remarks,
             ]);
@@ -274,7 +274,7 @@ if (!function_exists('createStudentTimeOutAttendance')) {
             ->first();
         if ($attendance) {
             return $attendance->update([
-                'time_out' => now()->format('H:m:s')
+                'time_out' => Carbon::now()->format('H:i')
             ]);
         }
     }
@@ -301,7 +301,7 @@ if (!function_exists('createTeacherTimeInAttendance')) {
                 'sy_id' => $school_year->id,
                 'semester_id' => $school_year->semester_id,
                 'date' => now()->format('Y-m-d'),
-                'time_in' => now()->format('H:m:s'),
+                'time_in' => Carbon::now()->format('H:i'),
                 'ip_address' => $ip_address
             ]);
         }
@@ -323,7 +323,7 @@ if (!function_exists('createTeacherTimeOutAttendance')) {
 
         if ($attendance) {
             return $attendance->update([
-                'time_out' => now()->format('H:m:s')
+                'time_out' => Carbon::now()->format('H:i')
             ]);
         }
     }
@@ -332,47 +332,24 @@ if (!function_exists('checkIfStudentAlreadyTimeIn')) {
     function checkIfStudentAlreadyTimeIn($teacher_class, $student_id)
     {
         $school_year = getCurrentSY();
+        // dd(AttendanceLog::with('teacherClass') // Eager load Teacher relationship
+        // ->where('teacher_class_id', $teacher_class->id)
+        // ->where('student_id', $student_id)
+        // ->where('sy_id', $school_year->id)
+        // ->where('semester_id', $school_year->semester_id)
+        // ->whereDate('date', now()->format('Y-m-d'))
+        // ->whereNotNull('time_in')
+        // ->whereNull('time_out')
+        // ->first());
         return AttendanceLog::with('teacherClass') // Eager load Teacher relationship
             ->where('teacher_class_id', $teacher_class->id)
             ->where('student_id', $student_id)
             ->where('sy_id', $school_year->id)
             ->where('semester_id', $school_year->semester_id)
-            ->whereDate('date', now())
+            ->whereDate('date', now()->format('Y-m-d'))
             ->whereNotNull('time_in')
             ->whereNull('time_out')
-            ->orWhereNotNull('time_out')
-            ->first();
-    }
-}
-if (!function_exists('checkIfTeacherAlreadyTimeIn')) {
-    function checkIfTeacherAlreadyTimeIn($teacher_class, $faculty_member_id)
-    {
-        $school_year = getCurrentSY();
-        return AttendanceLog::with('teacherClass') // Eager load Teacher relationship
-            ->where('teacher_class_id', $teacher_class->id)
-            ->where('faculty_member_id', $faculty_member_id)
-            ->where('sy_id', $school_year->id)
-            ->where('semester_id', $school_year->semester_id)
-            ->whereDate('date', now())
-            ->whereNotNull('time_in')
-            ->whereNull('time_out')
-            ->orWhereNotNull('time_out')
-            ->first();
-    }
-}
-if (!function_exists('checkIfTeacherAlreadyTimeOut')) {
-    function checkIfTeacherAlreadyTimeOut($teacher_class, $faculty_member_id)
-    {
-        $school_year = getCurrentSY();
-        return AttendanceLog::with('teacherClass') // Eager load Teacher relationship
-            ->where('teacher_class_id', $teacher_class->id)
-            ->where('faculty_member_id', $faculty_member_id)
-            ->where('sy_id', $school_year->id)
-            ->where('semester_id', $school_year->semester_id)
-            ->whereDate('date', now())
-            ->whereNotNull('time_in')
-            ->whereNull('time_out')
-            ->orWhereNotNull('time_out')
+            // ->whereNotNull('time_out')
             ->first();
     }
 }
@@ -391,6 +368,37 @@ if (!function_exists('checkIfStudentAlreadyTimeOut')) {
             ->first();
     }
 }
+if (!function_exists('checkIfTeacherAlreadyTimeIn')) {
+    function checkIfTeacherAlreadyTimeIn($teacher_class, $faculty_member_id)
+    {
+        $school_year = getCurrentSY();
+        return AttendanceLog::with('teacherClass') // Eager load Teacher relationship
+            ->where('teacher_class_id', $teacher_class->id)
+            ->where('faculty_member_id', $faculty_member_id)
+            ->where('sy_id', $school_year->id)
+            ->where('semester_id', $school_year->semester_id)
+            ->whereDate('date', now())
+            ->whereNotNull('time_in')
+            ->whereNull('time_out')
+            ->first();
+    }
+}
+if (!function_exists('checkIfTeacherAlreadyTimeOut')) {
+    function checkIfTeacherAlreadyTimeOut($teacher_class, $faculty_member_id)
+    {
+        $school_year = getCurrentSY();
+        return AttendanceLog::with('teacherClass') // Eager load Teacher relationship
+            ->where('teacher_class_id', $teacher_class->id)
+            ->where('faculty_member_id', $faculty_member_id)
+            ->where('sy_id', $school_year->id)
+            ->where('semester_id', $school_year->semester_id)
+            ->whereDate('date', now())
+            ->whereNotNull('time_in')
+            ->whereNotNull('time_out')
+            ->first();
+    }
+}
+
 if (!function_exists('checkIfComputerLaboratoryIsOccupied')) {
     function checkIfComputerLaboratoryIsOccupied($teacher_class_id)
     {

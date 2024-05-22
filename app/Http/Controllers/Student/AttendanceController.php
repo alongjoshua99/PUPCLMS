@@ -30,6 +30,7 @@ class AttendanceController extends Controller
         ->where('semester_id', $school_year->semester_id)
         ->where('sy_id', $school_year->id)
         ->get();
+        // dd($schedules);
         return view('AMS.backend.student-layouts.attendance.index', compact('schedules'));
     }
 
