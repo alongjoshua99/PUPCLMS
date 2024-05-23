@@ -37,7 +37,7 @@
                                                 <select class="form-select" aria-label="Default select example"
                                                     name="old_date_id" id="old_date_id">
                                                     <option selected value="">----Select date----</option>
-                                                    @foreach ($schedule->scheduleDates as $date)
+                                                    @foreach ($presentDates as $date)
                                                         <option value="{{ $date->id }}">{{ date('M d, Y', strtotime($date->date)) }}</option>
                                                     @endforeach
                                                 </select>

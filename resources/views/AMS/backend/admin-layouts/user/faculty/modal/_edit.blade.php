@@ -86,6 +86,16 @@
                                             {{ $department->department_name }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="1" id="is_resigned" name="is_resigned" {{ ($facultyMem->isResigned) ? 'checked' : '' }}>
+                                    <label class="form-check-label" for="is_resigned">
+                                      Resigned
+                                    </label>
+                                  </div>
                                 @error('department')
                                     <div class="text-danger">{{ $message }}</div>
                                 @enderror

@@ -84,6 +84,9 @@ class HomeController extends Controller
             'password' => ['required'],
         ]);
         if (Auth::attempt(['email' => $credentials['email'], 'password' => $credentials['password']])) {
+            if (Auth::user()->status == "Resigned") {
+                return $this->handleForceLogOut($request, 'You have no longer access');
+            }
             // Check if the user is a student and has a schedule today
             if (Auth::user()->role->name === 'student') {
                 $hasSchedule = checkIfStudentHasSchedule(Auth::user()->student->section_id);

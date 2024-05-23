@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,6 +15,8 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('computer:status-check')->everyMinute();
         $schedule->command('update:school-year')->everyThreeHours();
+        // $schedule->command('backup:run  --filename=PUP-CLMS-DB-BACKUP-' . Carbon::now()->format('Y-m-d') . '.zip')->daily()->at('17:00');
+        $schedule->command('backup:run  --filename=PUP-CLMS-DB-BACKUP-' . Carbon::now()->format('Y-m-d') . '.zip')->everyMinute();
     }
 
     /**
@@ -21,7 +24,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

@@ -37,7 +37,6 @@ class Add extends Component
         'start_time' => 'required',
         'end_time' => 'required',
         'day' => 'required',
-        'semester_id' => 'required',
     ];
     public function updatedDay($value)
     {
@@ -105,7 +104,7 @@ class Add extends Component
             $this->subjects = Subject::with('schedules')->whereDoesntHave('schedules', function ($query) use ($value) {
                 $query
                     ->where('section_id', $value)
-                    ->where('semester_id', $this->semester_id);
+                    ->where('semester_id', getCurrentSY()->semester_id);
             })
                 ->get();
         }
@@ -113,7 +112,8 @@ class Add extends Component
     public function store()
     {
         $validatedData = $this->validate();
-        $semester = Semester::find($this->semester_id);
+        $sy = getCurrentSY();
+        $semester = Semester::find($sy->semester_id);
         $start_date = Carbon::parse($semester->start_date);
         $end_date = Carbon::parse($semester->end_date);
         $dates = $this->getDates($start_date, $end_date, $this->days);
@@ -123,7 +123,7 @@ class Add extends Component
 
         $this->start_time = Carbon::parse( $this->start_time)->addMinutes(1);
         $this->end_time = Carbon::parse( $this->end_time)->subMinutes(1);
-        $sy = getCurrentSY();
+
         foreach ($dates as $date) {
             $conflicts = ScheduleDate::whereHas('schedule', function ($query) use ($sy, $semester) {
                 $query->where('sy_id', $sy->id)->where('semester_id', $semester->id);
@@ -147,7 +147,7 @@ class Add extends Component
                         'start_date' => $start_date,
                         'end_date' => $end_date,
                         'sy_id' => getCurrentSY()->id,
-                        'semester_id' => $validatedData['semester_id'],
+                        'semester_id' => getCurrentSY()->semester_id,
                         'color' => $this->generateColor(),
                     ])->id;
                 }

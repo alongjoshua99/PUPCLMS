@@ -59,8 +59,16 @@ class ScheduleController extends Controller
      */
     public function edit(TeacherClass $schedule)
     {
-        // dd($schedule, getSchedules(null, $schedule->id));
-        return view('AMS.backend.faculty-layouts.schedule.edit', ['schedule' => $schedule, 'schedules' => getSchedules(null, $schedule->id, true)]);
+        $presentDates = [];
+        foreach ($schedule->scheduleDates as $scheduleDate) {
+            $formattedScheduleDate = Carbon::parse($scheduleDate->date)->format('Y-m-d');
+            $today = Carbon::today()->format('Y-m-d');
+            if ($formattedScheduleDate >= $today) {
+                $presentDates[] = $scheduleDate;
+            }
+        }
+        // dd($presentDates);
+        return view('AMS.backend.faculty-layouts.schedule.edit', ['schedule' => $schedule,'presentDates' => $presentDates, 'schedules' => getSchedules(null, $schedule->id, true)]);
     }
 
     /**
@@ -109,6 +117,23 @@ class ScheduleController extends Controller
                 'end_time' => 'required',
                 'reason' => 'required',
             ]);
+            $sy = getCurrentSY();
+            $date = Carbon::parse($request->new_date)->format('Y-m-d');
+            $start_time = Carbon::parse($request->start_time)->format('H:i');
+            $end_time = Carbon::parse($request->end_time)->format('H:i');
+            $conflicts = ScheduleDate::whereHas('schedule', function ($query) use ($sy) {
+                $query->where('sy_id', $sy->id)->where('semester_id', $sy->semester_id);
+            })->where('date', $date)
+                ->where(function ($query) use ($start_time, $end_time) {
+                    $query->whereBetween('start_time', [$start_time, $end_time])
+                        ->orWhereBetween('end_time', [$start_time, $end_time])
+                        ->orWhere(function ($query) use ($start_time, $end_time) {
+                            $query->where('start_time', '<', $start_time)->where('end_time', '>', $end_time);
+                        });
+                })->count();
+            if ($conflicts > 0) {
+                return redirect()->back()->with('errorAlert', 'There is a conflict on Time for date ' . date('F d, Y', strtotime($date)) . ' and ' . $conflicts . ' other date/s');
+            }
             ScheduleRequest::create([
                 'date_id' => $request->old_date_id,
                 'new_date' => $request->new_date,

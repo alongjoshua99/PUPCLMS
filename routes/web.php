@@ -35,6 +35,7 @@ use App\Http\Controllers\ImportController;
 use Illuminate\Http\Request;
 use Symfony\Component\Process\Process;
 use App\Exports\StudentsExport;
+use App\Http\Controllers\Admin\BackupController;
 use App\Http\Controllers\Faculty\SeatPlanController;
 use Maatwebsite\Excel\Facades\Excel;
 /*
@@ -104,6 +105,10 @@ Route::middleware(['auth', 'alert', 'checkStatus', 'isAdmin'])->prefix('admin')-
         Route::get('/', 'index')->name('index');
         Route::post('/store', 'store')->name('store');
         Route::put('/{id}/update/{is_semester}', 'update')->name('update');
+    });
+    Route::prefix('backups')->name('backups.')->controller(BackupController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/download/{file_name}', 'download')->name('download');
     });
 
     /* SCHEDULE */

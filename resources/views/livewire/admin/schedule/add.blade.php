@@ -16,20 +16,6 @@
             </div>
         </div>
         <div class="row mb-3">
-            <div class="col-12">
-                <label for="semester_id" class="form-label fw-bold text-black">Semester</label>
-                <select class="form-select" wire:model="semester_id" required>
-                    <option value="">----Select Semester----</option>
-                    @foreach ($semesters as $semester)
-                        <option value="{{ $semester->id }}">{{ $semester->name }}</option>
-                    @endforeach
-                </select>
-                @error('semester_id')
-                    <div class="text-danger">{{ $message }}</div>
-                @enderror
-            </div>
-        </div>
-        <div class="row mb-3">
             <label class="form-label fw-bold text-black">Section</label>
             <div class="col-12">
                 <select class="form-select" aria-label="Default select example" wire:model="section_id">

@@ -12,19 +12,20 @@
             </div>
             <div class="modal-footer">
                 <form
+                    action="{{ route('admin.schedules.request.update', ['id' => $request->id, 'status' => 'approved']) }}"
+                    method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-info text-white">Accept</button>
+                </form>
+                <form
                     action="{{ route('admin.schedules.request.update', ['id' => $request->id, 'status' => 'rejected']) }}"
                     method="POST">
                     @csrf
                     @method('PUT')
                     <button type="submit" class="btn btn-secondary">Reject</button>
                 </form>
-                <form
-                    action="{{ route('admin.schedules.request.update', ['id' => $request->id, 'status' => 'approved']) }}"
-                    method="POST">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-info text-white">Yes</button>
-                </form>
+
             </div>
         </div>
     </div>

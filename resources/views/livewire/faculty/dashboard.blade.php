@@ -66,7 +66,23 @@
                                 <div class="row mb-1">
                             @endif
                             <div class="col-lg-2 col-md-12 px-1">
-                                <div style="height: 150px"
+                                <div class="computer-icon">
+                                    <div class="monitor rounded text-white {{ getComputerStatusColor($computer->status) }}">
+                                        <span class="px-2 mb-5" style="top: 0; right: 0">
+                                            {{ $computer->computer_number }}
+                                        </span>
+                                        <div class="d-flex justify-content-center align-content-center ">
+                                            @if (($schedule && $computer->status == "occupied" )|| getStudentInThisComputer($schedule, $computer->ip_address) != '')
+                                                <span
+                                                    class="px-2 text-center">{{ getStudentInThisComputer($schedule, $computer->ip_address) }}</span>
+                                            @else
+                                                <span class="px-2 text-center">{{ $computer->computer_name }}</span>
+                                            @endif
+                                        </div>
+                                    </div>
+                                    <div class="base"></div>
+                                  </div>
+                                {{-- <div style="height: 150px"
                                     class="border rounded text-white {{ getComputerStatusColor($computer->status) }}">
                                     <span class="px-2 mb-5" style="top: 0; right: 0">
                                         {{ $computer->computer_number }}</span>
@@ -79,17 +95,51 @@
                                             <span class="px-2 text-center">{{ $computer->computer_name }}</span>
                                         @endif
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             @if ($col_count == 6 || $loop->last)
+                                </div>
+                            @endif
+                            @php
+                                $col_count++;
+                            @endphp
+                        @endforeach
                     </div>
-                    @endif
-                    @php
-                        $col_count++;
-                    @endphp
-                    @endforeach
                 </div>
             </div>
         </div>
     </div>
 </section>
+@push('styles')
+<style>
+    .computer-icon {
+        display: inline-block;
+        position: relative;
+        width: 150px;
+        height: 170px;
+    }
+
+    .monitor {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 60%;
+        /* Adjust for monitor size relative to base */
+        background-color: #000;
+        border-radius: 2px;
+        z-index: 1000;
+    }
+
+    .base {
+        position: absolute;
+        bottom: 25px;
+        left: 0;
+        width: 100%;
+        height: 30%;
+        /* Adjust for base size relative to monitor */
+        background-color: #ccc;
+        border-radius: 100% 100% 0 0;
+    }
+</style>
+@endpush

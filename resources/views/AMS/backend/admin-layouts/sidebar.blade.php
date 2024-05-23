@@ -85,6 +85,14 @@
                 </a>
 
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ Route::is('admin.backups.index') ? 'active' : '' }}"
+                    href="{{ route('admin.backups.index') }}">
+                    <i class="bi bi-data"></i>
+                    <span>Backups</span>
+                </a>
+
+            </li>
             <!-- End Components Nav -->
 
             {{--  <li class="nav-item">

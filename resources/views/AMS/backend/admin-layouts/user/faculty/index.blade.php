@@ -6,7 +6,6 @@
         Accounts
     @else
         Informations
-
     @endif
 @endsection
 
@@ -20,23 +19,23 @@
                         <h3 class="text-maroon">@yield('page-title')
                         </h3>
                         <div class="d-flex align-items-center">
-                            <button class="btn btn-outline-maroon me-1" data-bs-toggle="modal" data-bs-target="#add">Add
-                                @if (Route::is('admin.user.account.faculty.index'))
-                                    Account
-                                @else
+                            @if (Route::is('admin.user.information.faculty.index'))
+                            <div class="">
+                                <button class="btn btn-outline-maroon me-1" data-bs-toggle="modal" data-bs-target="#add">Add
                                     Faculty Member
-                                @endif
-                            </button>
+
+                                </button>
+                            </div>
+                            @endif
                             @if (Route::is('admin.user.account.faculty.index'))
                                 <a href="{{ route('admin.user.account.faculty.resetAllPassword') }}"
                                     class="btn btn-outline-maroon">Force Change Password All User</a>
                             @endif
-                            @include('AMS.backend.admin-layouts.user.faculty.modal._add')
-                        </div>
 
+                        </div>
+                        @include('AMS.backend.admin-layouts.user.faculty.modal._add')
                     </div>
                     <div class="card-body">
-
                         <!-- Table with stripped rows -->
                         <table class="table" id="users-table">
                             @if (Route::is('admin.user.account.faculty.index'))
@@ -67,7 +66,8 @@
                                                     <span class="badge bg-success">{{ $user->status }}</span>
                                                 @endif
                                                 @if ($user->status == 'Offline')
-                                                    <span class="badge bg-danger">Last active {{ $user->updated_at->diffForHumans() }}</span>
+                                                    <span class="badge bg-danger">Last active
+                                                        {{ $user->updated_at->diffForHumans() }}</span>
                                                 @endif
                                             </td>
                                             <td>
@@ -146,7 +146,6 @@
 
                         </table>
                         <!-- End Table with stripped rows -->
-
                     </div>
                 </div>
 

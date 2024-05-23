@@ -5,7 +5,9 @@
 @endsection
 
 @section('contents')
-@livewire('faculty.dashboard', ['schedule' => $schedule, 'teacher_class' => $teacher_class])
-
+    @livewire('faculty.dashboard', ['schedule' => $schedule, 'teacher_class' => $teacher_class])
 @endsection
 
+@section('styles')
+    @stack('styles')
+@endsection
