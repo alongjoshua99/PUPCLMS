@@ -59,34 +59,6 @@
                                 class="btn btn-outline-maroon me-1">
                                 Download PDF
                             </a>
-                            {{-- @if (!checkIfTeacherAlreadyTimeIn($ScheduleDate, Auth::user()->faculty_member_id))
-                            <a href="{{ route('faculty.schedule.create') }}" class="btn btn-outline-maroon me-1">
-                                <i class="ri-arrow-go-back-line"></i>
-                                Time In
-                            </a>
-                            @endif --}}
-                            {{-- <div class="dropdown">
-                                <button class="btn btn-outline-maroon dropdown-toggle" type="button"
-                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Dates
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    @foreach ($schedule->scheduleDates as $schedule_date)
-                                        <li><a class="dropdown-item {{ $ScheduleDate && $ScheduleDate->id == $schedule_date->id ? 'active' : '' }}"
-                                                href="{{ route('faculty.report.attendance.show', ['id' => $schedule->id, 'date_id' => $schedule_date->id]) }}">{{ date('F d, Y', strtotime($schedule_date->date)) }}</a>
-                                        </li>
-                                    @endforeach
-                                    <li>
-                                        <a href="{{ route('faculty.report.attendance.show', ['id' => $schedule->id]) }}"
-                                            class="dropdown-item">
-                                            <div class="d-flex align-items-center">
-                                                <span class="me-1">Reset filter</span> <i class="ri-refresh-line"></i>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                            </div> --}}
                         </div>
                     </div>
                     <div class="card-body">
@@ -101,12 +73,7 @@
                                     <th scope="col">Remarks</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                @php
-                                    $logs = $schedule->attendanceLogs()
-                                    ->whereDate('date', $schedule_date->date)
-                                    ->where('student_id', '!=', null)->get();
-                                @endphp
+                            <tbody
                                 @foreach ($logs as $log)
                                     <tr>
                                         <td>

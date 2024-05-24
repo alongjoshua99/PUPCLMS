@@ -44,8 +44,8 @@
                 <div class="card-header">
                     @if ($schedule)
                         <h5 class="mb-0">Seat Plan for - {{ $schedule->schedule->subject->subject_name }}
-                            ({{ date('h:m A', strtotime($schedule->start_time)) }} -
-                            {{ date('h:m A', strtotime($schedule->end_time)) }})</h5>
+                            ({{ date('h:i A', strtotime($schedule->start_time)) }} -
+                            {{ date('h:i A', strtotime($schedule->end_time)) }})</h5>
                     @else
                         <h5 class="mb-0">No Schedule</h5>
                     @endif
