@@ -46,7 +46,7 @@
             <li class="nav-item">
                 <a class="nav-link collapsed {{ Route::is('admin.schedules.*') ? 'active' : '' }}" data-bs-target="#schedules"
                     data-bs-toggle="collapse" href="#">
-                    <i class="ri-book-open-line"></i>
+                    <i class="ri-calendar-line"></i>
                     <span>Schedules</span>
                     <i class="bi bi-chevron-down ms-auto"></i>
                 </a>
@@ -88,7 +88,7 @@
             <li class="nav-item">
                 <a class="nav-link {{ Route::is('admin.backups.index') ? 'active' : '' }}"
                     href="{{ route('admin.backups.index') }}">
-                    <i class="bi bi-data"></i>
+                    <i class="ri-database-2-line"></i>
                     <span>Backups</span>
                 </a>
 
@@ -120,7 +120,7 @@
                             <span>Computer Log</span>
                         </a>
                     </li> --}}
-                   
+
 
                 </ul>
 

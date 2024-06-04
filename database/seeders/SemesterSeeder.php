@@ -27,7 +27,7 @@ class SemesterSeeder extends Seeder
             [
                 'name' => '2nd Semester',
                 'start_date' => '2024-04-01',
-                'end_date' => '2024-05-31',
+                'end_date' => '2024-07-31',
             ],
         ];
 

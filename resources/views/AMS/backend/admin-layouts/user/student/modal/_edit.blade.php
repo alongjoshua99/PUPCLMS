@@ -24,7 +24,7 @@
                         <button type="submit" id="submit-e" class="btn btn-primary">Reset Password</button>
                     </div>
                 </form>
-                
+
             @else
                 <form action="{{ route('admin.user.information.student.update', ['id' => $student->id]) }}" method="POST">
                     <div class="modal-body">
@@ -90,27 +90,7 @@
                                 @enderror
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-12">
-                                <label for="date_of_birth" class="form-label fw-bold text-black">Date of Birth</label>
-                                <input type="date" class="form-control" id="date_of_birth" name="date_of_birth"
-                                    value="{{ $student->date_of_birth }}">
-                                @error('date_of_birth')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-5">
-                                <label for="gender" class="form-label fw-bold">Gender:</label>
-                                <select class="form-control" id="gender" name="gender" required>
-                                    <option value="">Select Gender</option>
-                                    <option value="Male" @if ($student->gender === 'Male') selected @endif>Male</option>
-                                    <option value="Female" @if ($student->gender === 'Female') selected @endif>Female
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
+                     
                         <div class="row mb-3">
                             <div class="col-12">
                                 <label for="section_id" class="form-label fw-bold">Section:</label>
