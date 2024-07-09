@@ -64,7 +64,7 @@ class Add extends Component
     }
     private function sortDays()
     {
-        $daysOfWeek = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday');
+        $daysOfWeek = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
         $sorted = collect();
         foreach ($this->days as $k => $v) {
             $key = array_search($v, $daysOfWeek);

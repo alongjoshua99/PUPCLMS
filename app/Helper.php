@@ -512,8 +512,9 @@ if (!function_exists('getComputerNumber')) {
     {
         $computer = Computer::where('ip_address', $ip_address)->first();
         if ($computer) {
-            return $computer;
+            return $computer->computer_number;
         }
+        return 'No computer found.';
     }
 }
 if (!function_exists('countNumberOfAttendanceBy')) {

@@ -90,7 +90,7 @@
                                                         data-bs-toggle="modal" data-bs-target="#edit{{ $user->id }}"
                                                         data-bs-toggle="tooltip" data-bs-placement="top"
                                                         title="Change password">
-                                                        <i class="ri-pencil-line text-primary" aria-hidden="true"></i>
+                                                        <i class="ri-restart-line text-primary" aria-hidden="true"></i>
                                                     </button>
                                                     <button class="btn btn-link text-danger" type="button"
                                                         data-bs-toggle="modal" data-bs-target="#delete{{ $user->id }}"

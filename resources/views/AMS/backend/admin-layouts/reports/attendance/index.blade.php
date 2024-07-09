@@ -24,7 +24,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Teacher</th>
-                                    <th scope="col">Students</th>
+                                    <th scope="col">Section</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Subject</th>
                                 </tr>

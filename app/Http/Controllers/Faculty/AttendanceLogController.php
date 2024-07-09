@@ -73,8 +73,12 @@ class AttendanceLogController extends Controller
     public function pdf($schedule_id, $schedule_date_id)
     {
         $schedule = TeacherClass::with('attendanceLogs')->find($schedule_id);
+        $date = ScheduleDate::find($schedule_date_id)->date;
+        $logs = $schedule->attendanceLogs()->whereDate('date', $date)->get();
+
         return view('AMS.backend.faculty-layouts.reports.attendance.pdf', [
             'schedule' =>  TeacherClass::with('attendanceLogs')->find($schedule_id),
+            'logs' =>  $logs,
             'section' => $schedule->section,
             'subject' => $schedule->subject,
             'schedule_date' => ScheduleDate::find($schedule_date_id),

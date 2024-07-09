@@ -80,7 +80,7 @@
                                             {{ $log->student->getFullName() }}
                                         </td>
                                         <td>
-                                            {{ getComputerNumber($log->ip_address)->computer_number }}
+                                            {{ getComputerNumber($log->ip_address) }}
                                         </td>
                                         <td>
                                             {{ date('h:i A', strtotime($log->time_in)) }}

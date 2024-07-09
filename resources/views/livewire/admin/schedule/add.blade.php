@@ -43,8 +43,8 @@
                 @enderror
             </div>
         </div>
-      
-        
+
+
         <div class="row mb-3">
             <div class="col-6">
                 <label for="start_time" class="form-label fw-bold text-black">Start Time</label>
@@ -73,6 +73,7 @@
                     <option value="Wednesday">Wednesday</option>
                     <option value="Thursday">Thursday</option>
                     <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
                 </select>
                 @error('day')
                     <div class="text-danger">{{ $message }}</div>
@@ -88,7 +89,7 @@
             </div>
         </div>
 
-       
+
     </div>
     <div class="row">
         <div class="d-flex justify-content-end align-items-end">
